@@ -2,5 +2,20 @@
     <string name="app_name">Capstone_Project</string>
     <string name="admin_dashboard">ADMIN DASHBOARD</string>
     <string name="create_account">CREATE ACCOUNT</string>
+    <string name="formHeader">STUDENT ACCOUNT FORMS</string>
+    <string name="PrivacyNoticeHeader">Privacy Notice</string>
+    <string name="nameHeader"> Name:</string>
+    <string name="nameExample">(e.g. Lastname, Firstname Middle inital.)</string>
+    <string name="studentEmail">Student Email:</string>
+    <string name="studentnumberHeader">Student Number:</string>
+    <string name="courseHeader">Course:</string>
+
+    <string name="PrivacyNoticeBody">
+        The information you provide will be used exclusively to enhance the success of the organization\'s future events.
+        This data will help us improve planning, communication, and event experiences.
+        Your information will not be shared with third parties or used for any unrelated purposes.
+        We are committed to protecting your privacy and ensuring your data is handled responsibly.
+    </string>
+
 </resources>
 
