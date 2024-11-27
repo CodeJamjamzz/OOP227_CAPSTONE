@@ -18,17 +18,17 @@ Members of the organization create an account through answering the forms, where
 
 Key Features:
 
-Instant QR Code Registration: Participants can register for events in seconds by scanning their QR code, eliminating the need for manual forms.
-Admin Dashboard for Event Management: Event organizers can create, manage, and monitor multiple events through a centralized dashboard, enabling them to track participant numbers in real-time.
-Real-Time Data and Insights: Organizers have access to up-to-date statistics, including the number of attendees, which helps in planning and decision-making.
+Instant QR Code Registration - Participants can register for events in seconds by scanning their QR code, eliminating the need for manual forms.
+Admin Dashboard for Event Management - Event organizers can create, manage, and monitor multiple events through a centralized dashboard, enabling them to track participant numbers in real-time.
+Real-Time Data and Insights - Organizers have access to up-to-date statistics, including the number of attendees, which helps in planning and decision-making.
 
 
 Benefits:
 
-Streamlined Registration Process: Faster and more efficient check-ins reduce long queues and improve participant satisfaction.
-Accurate and Real-Time Reporting: Organizers can access real-time data on participant numbers, allowing for better event management and reporting.
-Enhanced User Experience: The elimination of manual forms ensures a smooth registration experience for both attendees and organizers.
-Scalable and Flexible: RegIt can handle multiple events simultaneously, making it ideal for organizations of any size.
+Streamlined Registration Process - Faster and more efficient check-ins reduce long queues and improve participant satisfaction.
+Accurate and Real-Time Reporting - Organizers can access real-time data on participant numbers, allowing for better event management and reporting.
+Enhanced User Experience - The elimination of manual forms ensures a smooth registration experience for both attendees and organizers.
+Scalable and Flexible - RegIt can handle multiple events simultaneously, making it ideal for organizations of any size.
 
 Objective:
 
