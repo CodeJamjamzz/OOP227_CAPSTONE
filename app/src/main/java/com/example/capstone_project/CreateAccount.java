@@ -25,7 +25,7 @@ public class CreateAccount extends AppCompatActivity {
             return insets;
         });
 
-        QRCodecreate = (TextView) findViewById(R.id.QRCodeCreateActivity);
+        QRCodecreate = findViewById(R.id.QRCodeCreateActivity);
     }
 
     public void createQRCodeActivity(View view){
