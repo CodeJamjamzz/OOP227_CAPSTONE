@@ -8,8 +8,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+// java code for activity_create_qrcode.xml screen
 public class CreateQRCode extends AppCompatActivity {
-
+    // open activity_create_qrcode.xml
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,4 +22,6 @@ public class CreateQRCode extends AppCompatActivity {
             return insets;
         });
     }
+
+    // need to add qr file handling and display, downloading qr, and other stuff
 }

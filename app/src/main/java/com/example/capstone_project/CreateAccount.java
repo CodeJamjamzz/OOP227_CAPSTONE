@@ -11,8 +11,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+// java code for activity_create_account.xml screen
 public class CreateAccount extends AppCompatActivity {
-
+    // open activity_create_account.xml
     TextView QRCodecreate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class CreateAccount extends AppCompatActivity {
         QRCodecreate = findViewById(R.id.QRCodeCreateActivity);
     }
 
+    // create account button; need to add qr generation and input verification
     public void createQRCodeActivity(View view){
         startActivity(new Intent(CreateAccount.this, CreateQRCode.class));
     }

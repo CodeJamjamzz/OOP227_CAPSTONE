@@ -12,10 +12,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+// java code for activity_main.xml screen the first one
 public class MainActivity extends AppCompatActivity {
-
+    // opens activity_main.xml
     TextView createAccount;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class SplashScreen extends AppCompatActivity {
 
+    // its just the splash screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +24,7 @@ public class SplashScreen extends AppCompatActivity {
             return insets;
         });
 
+        // just splashing screen duh
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
