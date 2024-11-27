@@ -26,7 +26,7 @@ public class CreateAccount extends AppCompatActivity {
             return insets;
         });
 
-        QRCodecreate = (TextView) findViewById(R.id.QRCodeCreateActivity);
+        QRCodecreate = findViewById(R.id.QRCodeCreateActivity);
     }
 
     // create account button; need to add qr generation and input verification
