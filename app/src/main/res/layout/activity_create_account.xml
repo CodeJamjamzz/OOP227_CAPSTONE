@@ -89,9 +89,9 @@
         app:layout_constraintVertical_bias="0.161" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/inputStudentNumber2"
+        android:id="@+id/inputStudentNumber"
         android:layout_width="330dp"
-        android:layout_height="50dp"
+        android:layout_height="56dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/inputfield_outline"
         android:hint="School Number"
@@ -154,7 +154,7 @@
         app:layout_constraintVertical_bias="0.596" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/inputStudentNumber"
+        android:id="@+id/inputEmail"
         android:layout_width="330dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -171,7 +171,7 @@
         app:layout_constraintVertical_bias="0.665" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/inputStudentNumber3"
+        android:id="@+id/inputCourse"
         android:layout_width="330dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -235,7 +235,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputStudentNumber3"
+        app:layout_constraintTop_toBottomOf="@+id/inputCourse"
         app:layout_constraintVertical_bias="0.704"  />
 
 
