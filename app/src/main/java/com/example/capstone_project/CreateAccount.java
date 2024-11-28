@@ -144,10 +144,7 @@ public class CreateAccount extends AppCompatActivity {
             return false; // length out of bounds
         }
         // Regex for allowing letters, spaces, apostrophes, and hyphens
-        if (!InputedName.matches("^[a-zA-Z\\s'-,.]+$")) {
-            return false; // invalid characters
-        }
-        return true;
+        return InputedName.matches("^[a-zA-Z\\s'-,.]+$"); // invalid characters
     }
 
     // valid student number checker
@@ -156,10 +153,7 @@ public class CreateAccount extends AppCompatActivity {
             return false; // empty or null
         }
         // Regex for xx-xxxx-xxx format (numbers only)
-        if (!InputedStudentNumber.matches("^\\d{2}-\\d{4}-\\d{3}$")) {
-            return false; // invalid format
-        }
-        return true;
+        return InputedStudentNumber.matches("^\\d{2}-\\d{4}-\\d{3}$"); // invalid format
     }
 
     // valid email checker
@@ -178,10 +172,7 @@ public class CreateAccount extends AppCompatActivity {
             return false; // empty or null
         }
         // Regex to allow uppercase letters (e.g., BSCS, BSN, BSMBA)
-        if (!InputedCourseYear.matches("^[A-Z]{2,}-[1-4]$")) {
-            return false; // invalid course format
-        }
-        return true;
+        return InputedCourseYear.matches("^[A-Z]{2,}-[1-4]$"); // invalid course format
     }
 
     public void getInformationCreateAccount(Intent nextActivity){
@@ -195,7 +186,6 @@ public class CreateAccount extends AppCompatActivity {
         nextActivity.putExtra("InputedStudentNumber", StudentNumber);
         nextActivity.putExtra("InputedEmail", Email);
         nextActivity.putExtra("InputedCourseYear", CourseYear);
-        return;
     }
 
     // create account button; need to add qr generation and input verification
