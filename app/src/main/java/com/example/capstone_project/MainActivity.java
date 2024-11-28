@@ -32,10 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         createAccount = (TextView) findViewById(R.id.createAccount);
 
-        // test firebase connectivity
         // https://firebase.google.com/docs/database/android/start#java_1
-        // IMPORTANT! ang database kay sensitive so like yeah dont push it
-        /*
+        /* test firebase connectivity
         FirebaseDatabase database = FirebaseDatabase.getInstance("database-link");
         DatabaseReference myRef = database.getReference("message");
         myRef.setValue("Hello, World!");
