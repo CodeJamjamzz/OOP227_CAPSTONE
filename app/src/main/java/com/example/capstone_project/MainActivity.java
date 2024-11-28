@@ -12,6 +12,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 // java code for activity_main.xml screen the first one
 public class MainActivity extends AppCompatActivity {
     // opens activity_main.xml
@@ -28,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         createAccount = (TextView) findViewById(R.id.createAccount);
+
+        // test firebase connectivity
+        // https://firebase.google.com/docs/database/android/start#java_1
+        // IMPORTANT! ang database kay sensitive so like yeah dont push it
+        /*
+        FirebaseDatabase database = FirebaseDatabase.getInstance("database-link");
+        DatabaseReference myRef = database.getReference("message");
+        myRef.setValue("Hello, World!");
+        */
     }
 
     public void createAccountActivity(View view){
