@@ -3,8 +3,10 @@ package com.example.capstone_project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
+import android.graphics.Bitmap;
 import android.widget.TextView;
+import android.widget.ImageView;
+import com.google.zxing.WriterException;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,7 @@ public class CreateQRCode extends AppCompatActivity {
     TextView DisplayStudentNumber;
     TextView DisplayEmail;
     TextView DisplayCourseYear;
+    ImageView qrCodeImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class CreateQRCode extends AppCompatActivity {
         DisplayStudentNumber = findViewById(R.id.outputStudentNumberDisplay);
         DisplayEmail = findViewById(R.id.outputEmailDisplay);
         DisplayCourseYear = findViewById(R.id.outputCourseYearDisplay);
+        qrCodeImageView = findViewById(R.id.qrCodeImageView);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -40,6 +44,7 @@ public class CreateQRCode extends AppCompatActivity {
         });
 
         DisplayInfo();
+        generateAndDisplayQRCode();
     }
 
     public void DisplayInfo(){
@@ -49,11 +54,28 @@ public class CreateQRCode extends AppCompatActivity {
         DisplayEmail.setText(previousActivity.getStringExtra("InputedEmail"));
         DisplayCourseYear.setText(previousActivity.getStringExtra("InputedCourseYear"));
     }
+    // function that generates QR
+    private void generateAndDisplayQRCode() {
+        try {
+            String data = "{"
+                    + "\"name\":\"" + DisplayName.getText().toString() + "\","
+                    + "\"studentNumber\":\"" + DisplayStudentNumber.getText().toString() + "\","
+                    + "\"email\":\"" + DisplayEmail.getText().toString() + "\","
+                    + "\"course\":\"" + DisplayCourseYear.getText().toString() + "\""
+                    + "}";
+
+            QRCodeGenerator qrCodeGenerator = QRCodeGenerator.getInstance();
+            Bitmap qrCodeBitmap = qrCodeGenerator.generateQRCode(data);
+
+            qrCodeImageView.setImageBitmap(qrCodeBitmap);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+    }
 
     // function to return to main page
     public void returnMainActivity(View view){
         startActivity(new Intent(CreateQRCode.this , MainActivity.class));
     }
 
-    // need to add qr file handling and display, downloading qr, and other stuff
 }

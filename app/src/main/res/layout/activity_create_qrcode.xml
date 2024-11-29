@@ -58,7 +58,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
         app:layout_constraintVertical_bias="0.0">
-
+        <!-- Added for QR Code -->
+        <ImageView
+            android:id="@+id/qrCodeImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:contentDescription="Generated QR Code"
+            android:scaleType="centerInside" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
