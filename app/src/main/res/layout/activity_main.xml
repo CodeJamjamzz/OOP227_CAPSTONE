@@ -10,19 +10,22 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="324dp"
-        android:layout_height="44dp"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif"
-        android:text="WELCOME TO BRAND NAME"
+        android:text="WELCOME TO REGIT"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="0.051" />
+        app:layout_constraintVertical_bias="0.031" />
 
     <TextView
         android:id="@+id/textView2"
@@ -32,7 +35,7 @@
         android:fontFamily="sans-serif-condensed"
         android:text="Select an option to continue"
         android:textColor="@color/white"
-        android:textSize="15sp"
+        android:textSize="18sp"
 
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,13 +43,14 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.025" />
 
     <Button
         android:id="@+id/adminDashboard"
         android:layout_width="290dp"
         android:layout_height="60dp"
         android:background="@drawable/yellow_button"
+        android:elevation="30dp"
 
         android:padding="10dp"
         android:text="@string/admin_dashboard"
@@ -59,13 +63,14 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.174" />
+        app:layout_constraintVertical_bias="0.112" />
 
     <Button
         android:id="@+id/createAccount"
         android:layout_width="290dp"
         android:layout_height="60dp"
         android:layout_marginTop="13dp"
+        android:elevation="30dp"
 
         android:background="@drawable/yellow_button"
         android:onClick="createAccountActivity"
@@ -80,7 +85,7 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/adminDashboard"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintVertical_bias="0.025" />
 
     <TextView
         android:id="@+id/textView3"
@@ -123,7 +128,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.168"
+        app:layout_constraintVertical_bias="0.142"
         app:srcCompat="@drawable/logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
