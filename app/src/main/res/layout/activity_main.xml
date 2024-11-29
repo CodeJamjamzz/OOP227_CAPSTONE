@@ -48,6 +48,7 @@
         android:layout_height="60dp"
         android:background="@drawable/yellow_button"
 
+        android:onClick="adminDashboardActivity"
         android:padding="10dp"
         android:text="@string/admin_dashboard"
         android:textColor="#00712D"
