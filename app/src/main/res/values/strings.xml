@@ -8,9 +8,11 @@
     <string name="nameExample">(e.g. Lastname, Firstname Middle inital.)</string>
     <string name="studentEmail">Email:</string>
     <string name="studentnumberHeader">Student Number:</string>
-    <string name="courseHeader">Course/Yearlevel:</string>
+    <string name="courseHeader">Program/Yearlevel:</string>
     <string name="qrheader">ACCOUNT QR CODE</string>
+    <string name="download">Save to gallery</string>
     <string name="accountinfo">ACCOUNT INFORMATION</string>
+
     <string name="PrivacyNoticeBody">
         The information you provide will be used exclusively to enhance the success of the organization\'s future events.
         This data will help us improve planning, communication, and event experiences. Your information will not be shared with third parties or used for any unrelated purposes.

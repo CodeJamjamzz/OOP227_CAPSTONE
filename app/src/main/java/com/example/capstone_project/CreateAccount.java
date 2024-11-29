@@ -129,7 +129,7 @@ public class CreateAccount extends AppCompatActivity {
                     InputedCourseYear.setError(null);
                     isCourseValid = true;
                 } else {
-                    InputedCourseYear.setError("Invalid course. Use uppercase letters like BSCS, BSN, BSMBA.");
+                    InputedCourseYear.setError("Invalid course. Follow the format like BSCS, BSN, BSMBA.");
                     isCourseValid = false;
                 }
             }
@@ -172,7 +172,7 @@ public class CreateAccount extends AppCompatActivity {
             return false; // empty or null
         }
         // Regex to allow uppercase letters (e.g., BSCS, BSN, BSMBA)
-        return InputedCourseYear.matches("^[A-Z]{2,}-[1-4]$"); // invalid course format
+        return InputedCourseYear.matches("^[A-Z]{2,} - [1-4]$"); // invalid course format
     }
 
     public void getInformationCreateAccount(Intent nextActivity){
