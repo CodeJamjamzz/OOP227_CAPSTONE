@@ -37,7 +37,9 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.gson)
+    implementation(libs.zxing.core)
+    implementation(libs.zxing.android.embedded)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

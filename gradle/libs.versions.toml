@@ -10,6 +10,9 @@ activity = "1.9.3"
 constraintlayout = "2.2.0"
 
 [libraries]
+gson = { group = "com.google.code.gson", name = "gson", version = "2.8.9" }
+zxing-core = { group = "com.google.zxing", name = "core", version = "3.5.2" }
+zxing-android-embedded = { group = "com.journeyapps", name = "zxing-android-embedded", version = "4.3.0" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-database = { module = "com.google.firebase:firebase-database" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
