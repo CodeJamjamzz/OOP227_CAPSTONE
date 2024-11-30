@@ -25,6 +25,9 @@
             android:name=".AdminDashboard"
             android:exported="false" />
         <activity
+            android:name=".EventDetails"
+            android:exported="false" />
+        <activity
             android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
