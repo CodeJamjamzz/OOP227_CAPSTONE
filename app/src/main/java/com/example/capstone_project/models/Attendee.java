@@ -8,7 +8,9 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Attendee implements Parcelable {
+public class
+
+Attendee implements Parcelable {
     private String name;
     private String idNumber;
     private String email;
