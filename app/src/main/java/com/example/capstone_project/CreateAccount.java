@@ -43,11 +43,6 @@ public class CreateAccount extends AppCompatActivity {
         InputedEmail = findViewById(R.id.inputEmail);
         InputedCourseYear = findViewById(R.id.inputCourseYear);
 
-        RealTimeValidate(InputedName, "name");
-        RealTimeValidate(InputedStudentNumber, "studentNumber");
-        RealTimeValidate(InputedEmail, "email");
-        RealTimeValidate(InputedCourseYear, "course");
-    }
         View rootView = findViewById(android.R.id.content);
         final boolean[] isKeyboardOpen = {false};
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -77,32 +72,11 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
-        // TextWatcher to check if text is valid after user inputs each field
-        InputedName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // way gamit
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // way gamit
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String inputName = s.toString().trim();
-
-                // Validate name
-                if (isValidName(inputName)) {
-                    InputedName.setError(null);
-                    isNameValid = true;
-                } else {
-                    InputedName.setError("Invalid name. Use 2-50 letters, spaces, hyphens, or apostrophes.");
-                    isNameValid = false;
-                }
-            }
-        });
+        RealTimeValidate(InputedName, "name");
+        RealTimeValidate(InputedStudentNumber, "studentNumber");
+        RealTimeValidate(InputedEmail, "email");
+        RealTimeValidate(InputedCourseYear, "course");
+    }
 
     // function to validate each input in real time
     public void RealTimeValidate(EditText text, String type){
@@ -161,7 +135,7 @@ public class CreateAccount extends AppCompatActivity {
         nextActivity.putExtra("InputedCourseYear", CourseYear);
     }
 
-    // create account button; need to add qr generation and input verification
+    // create account button; final checkpoint if it has any invalid inputs.
     public void createQRCodeActivity(View view){
         if (!isNameValid) {
             Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
