@@ -2,7 +2,7 @@ package com.example.capstone_project.FirebaseController;
 
 
 //import android.util.Log;
-//
+
 //import androidx.annotation.NonNull;
 
 import com.example.capstone_project.models.UserAccount;
