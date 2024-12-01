@@ -23,7 +23,7 @@ public class Event implements Parcelable {
     private String description;
     private String category;
     private double ticketPrice;
-    private List<Attendee> attendants;
+private List<Attendee> attendees;
 
     public Event(String name, LocalDateTime startDate, LocalDateTime endDate, String venue, int audienceLimit, String description, String category, double ticketPrice) {
         this.name = name;
@@ -34,7 +34,7 @@ public class Event implements Parcelable {
         this.description = description;
         this.category = category;
         this.ticketPrice = ticketPrice;
-        attendants = new ArrayList<>();
+        attendees = new ArrayList<>();
         this.eventId = UUID.randomUUID().toString();
     }
 
@@ -74,8 +74,8 @@ public class Event implements Parcelable {
         return ticketPrice;
     }
 
-    public List<Attendee> getAttendants() {
-        return attendants;
+    public List<Attendee> getAttendees() {
+        return attendees;
     }
 
     // Parcelable-specific stuff
@@ -98,8 +98,8 @@ public class Event implements Parcelable {
         category = in.readString();
         ticketPrice = in.readDouble();
 
-        attendants = new ArrayList<>();
-        in.readList(attendants, Attendee.class.getClassLoader());
+        attendees = new ArrayList<>();
+        in.readList(attendees, Attendee.class.getClassLoader());
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -133,6 +133,6 @@ public class Event implements Parcelable {
         dest.writeString(description);
         dest.writeString(category);
         dest.writeDouble(ticketPrice);
-        dest.writeList(attendants);
+        dest.writeList(attendees);
     }
 }
