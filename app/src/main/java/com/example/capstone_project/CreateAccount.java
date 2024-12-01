@@ -1,10 +1,12 @@
 package com.example.capstone_project;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.text.TextWatcher;
 import android.text.Editable;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -38,6 +40,35 @@ public class CreateAccount extends AppCompatActivity {
         InputedStudentNumber = findViewById(R.id.inputStudentNumber);
         InputedEmail = findViewById(R.id.inputEmail);
         InputedCourseYear = findViewById(R.id.inputCourseYear);
+
+        View rootView = findViewById(android.R.id.content);
+        final boolean[] isKeyboardOpen = {false};
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect areawindow = new Rect();
+                rootView.getWindowVisibleDisplayFrame(areawindow);
+                int screenHeight = rootView.getRootView().getHeight();
+                int mykeypadHeight = screenHeight - areawindow.bottom;
+
+                // Check if the keyboard is visible
+                if (mykeypadHeight > screenHeight * 0.05) {
+                    if (!isKeyboardOpen[0]) {
+                        // Keyboard has just opened
+                        isKeyboardOpen[0] = true;
+                        int scrollAmount = InputedCourseYear.getBottom() - areawindow.bottom + 70;
+                        if (scrollAmount > 0) {
+                            rootView.scrollBy(0, scrollAmount);  // Scroll only when keyboard appears
+                        }
+                    }
+                } else {
+                    if (isKeyboardOpen[0]) {
+                        isKeyboardOpen[0] = false;
+                        rootView.scrollTo(0, 0);  // Reset scroll position when keyboard is hidden
+                    }
+                }
+            }
+        });
 
         // TextWatcher to check if text is valid after user inputs each field
         InputedName.addTextChangedListener(new TextWatcher() {
