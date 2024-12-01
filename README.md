@@ -54,16 +54,16 @@ The primary goal of RegIt is to revolutionize event registration processes by in
 
 Design Patterns Used:
 
-Singleton Pattern
+Singleton Creational Design Pattern
 
 QRCodeGenerator Class: Ensures that only one QR code is generated per user, maintaining uniqueness and preventing duplication.
 EventServiceManager Class: Manages all events and attendees using a single shared instance, reducing overhead and ensuring consistent event handling throughout the system.
 
-Builder Pattern
-\
+Builder Creational Design Pattern
+
 Event Class: Allows flexible creation of Event objects by enabling the omission of optional fields. For example, if the event venue is not finalized, it can be left blank and marked as "To be announced" (TBA), offering flexibility for incomplete information during event planning.
 
-Abstract Factory Pattern
+Abstract Factory Creational Design Pattern
 
 Attendee Class: Supports the creation of two types of attendees: Regular and VIP. This pattern streamlines the registration process by ensuring efficient and consistent attendee creation, allowing for future extensibility and easier management of attendee types.
 
