@@ -4,7 +4,8 @@ RegIt – QR Code-Based Event Registration and Management System
 
 Figma: 
 https://www.figma.com/design/rp07a9QJX8UqlpdMU4U4TD/Capstone?node-id=0-1&t=Vm6zcFJn4uRQTgu9-1
-
+Class Diagram:
+https://lucid.app/lucidchart/59aadb00-35b2-4540-82e2-3cbe8858e335/edit?invitationId=inv_33673637-acf1-48ba-b3ea-faf7053048f4&fbclid=IwZXh0bgNhZW0CMTEAAR0xfiTdkHPSL44FXmbIo95U2XfGb4g_JW2s4bpA81364KX14_p6TgKNfQU_aem_mtnW283TWKrhedhrg8jfWA&page=0_0#
 
 Project Overview:
 
@@ -39,3 +40,5 @@ Objective:
 
 The primary goal of RegIt is to revolutionize event registration processes by integrating QR code technology, ensuring faster, more efficient, and accurate event management while providing valuable insights to organizers. This project aims to demonstrate how technology can improve operational efficiency, reduce administrative burden, and enhance the overall event experience.
 
+Added Design Patterns
+- Singleton: In creating a QR code (Only 1 per User)
