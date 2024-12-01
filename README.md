@@ -1,10 +1,15 @@
 Project Title: 
 RegIt – QR Code-Based Event Registration and Management System
-
+Group: Hackstreet Boys 
+Members:
+Jared Sheohn Acebes
+James Ewican
+Jervin Ryle Milleza
+Jamiel Kyne Pinca
 
 Figma: 
 https://www.figma.com/design/rp07a9QJX8UqlpdMU4U4TD/Capstone?node-id=0-1&t=Vm6zcFJn4uRQTgu9-1
-Class Diagram:
+Class Diagram - Initial:
 https://lucid.app/lucidchart/59aadb00-35b2-4540-82e2-3cbe8858e335/edit?invitationId=inv_33673637-acf1-48ba-b3ea-faf7053048f4&fbclid=IwZXh0bgNhZW0CMTEAAR0xfiTdkHPSL44FXmbIo95U2XfGb4g_JW2s4bpA81364KX14_p6TgKNfQU_aem_mtnW283TWKrhedhrg8jfWA&page=0_0#
 
 Project Overview:
