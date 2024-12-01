@@ -52,6 +52,7 @@
         android:background="@drawable/yellow_button"
         android:elevation="30dp"
 
+        android:onClick="adminDashboardActivity"
         android:padding="10dp"
         android:text="@string/admin_dashboard"
         android:textColor="#00712D"

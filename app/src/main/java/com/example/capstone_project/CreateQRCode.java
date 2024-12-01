@@ -1,19 +1,17 @@
 package com.example.capstone_project;
 
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.graphics.Bitmap;
 import android.widget.TextView;
 import android.widget.ImageView;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.zxing.WriterException;
@@ -31,9 +29,11 @@ public class CreateQRCode extends AppCompatActivity {
     // open activity_create_qrcode.xml
 
     //different textView for the display
-    TextView DisplayName, DisplayStudentNumber, DisplayEmail, DisplayCourseYear;
+    TextView DisplayName;
+    TextView DisplayStudentNumber;
+    TextView DisplayEmail;
+    TextView DisplayCourseYear;
     ImageView qrCodeImageView;
-    Button saveToGalleryButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,6 @@ public class CreateQRCode extends AppCompatActivity {
         DisplayEmail = findViewById(R.id.outputEmailDisplay);
         DisplayCourseYear = findViewById(R.id.outputCourseYearDisplay);
         qrCodeImageView = findViewById(R.id.qrCodeImageView);
-        saveToGalleryButton = findViewById(R.id.savetoGallery);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -56,7 +55,6 @@ public class CreateQRCode extends AppCompatActivity {
 
         DisplayInfo();
         generateAndDisplayQRCode();
-        saveToGalleryButton.setOnClickListener(v -> saveQRCodeToGallery());
     }
 
     public void DisplayInfo(){
@@ -115,6 +113,14 @@ public class CreateQRCode extends AppCompatActivity {
         }
     }
 
+    public void saveQRCodeActivity(View view){
+        saveQRCodeToGallery();
+    }
+
+    public void editInformationActivity(View view){
+        Intent intent = new Intent(CreateQRCode.this, CreateAccount.class);
+        startActivity(intent);
+    }
     // function to return to main page
     public void returnMainActivity(View view){
         startActivity(new Intent(CreateQRCode.this , MainActivity.class));

@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
     // opens activity_main.xml
     TextView createAccount;
+    TextView adminDashboard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,10 +28,15 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        createAccount = (TextView) findViewById(R.id.createAccount);
+        createAccount = findViewById(R.id.createAccount);
+        adminDashboard = findViewById(R.id.adminDashboard);
     }
 
     public void createAccountActivity(View view){
         startActivity(new Intent(MainActivity.this, CreateAccount.class));
+    }
+
+    public void adminDashboardActivity(View view) {
+        startActivity(new Intent(MainActivity.this, AdminDashboard.class));
     }
 }
