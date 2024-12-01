@@ -17,7 +17,7 @@ public class QRCodeGenerator {
     private Bitmap encodeAsBitmap(String data) throws WriterException{
 
         try {
-            com.google.zxing.common.BitMatrix result = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, 512, 512);
+            com.google.zxing.common.BitMatrix result = new MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE, 1024, 1024);
             int width = result.getWidth();
             int height = result.getHeight();
             Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
