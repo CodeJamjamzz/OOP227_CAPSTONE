@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity {
     // opens activity_main.xml
     TextView createAccount;
+    TextView adminDashboard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        createAccount = (TextView) findViewById(R.id.createAccount);
+        createAccount = findViewById(R.id.createAccount);
+        adminDashboard = findViewById(R.id.adminDashboard);
 
         // https://firebase.google.com/docs/database/android/start#java_1
         /* test firebase connectivity
@@ -42,5 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void createAccountActivity(View view){
         startActivity(new Intent(MainActivity.this, CreateAccount.class));
+    }
+
+    public void adminDashboardActivity(View view) {
+        startActivity(new Intent(MainActivity.this, AdminDashboard.class));
     }
 }

@@ -63,6 +63,7 @@
             android:id="@+id/qrCodeImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:adjustViewBounds="true"
             android:layout_gravity="center"
             android:contentDescription="Generated QR Code"
             android:scaleType="centerInside" />
@@ -218,6 +219,7 @@
         android:background="@drawable/green_background"
         android:drawableStart="@drawable/download_icon"
         android:elevation="30dp"
+        android:onClick="saveQRCodeActivity"
 
         android:paddingStart="15dp"
         android:paddingRight="2dp"
@@ -240,11 +242,11 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="64dp"
         android:background="@drawable/green_outline"
+
         android:drawableStart="@drawable/edit_icon"
         android:elevation="30dp"
-
+        android:onClick="editInformationActivity"
         android:paddingStart="15dp"
         android:paddingRight="2dp"
         android:text="Edit Information"
@@ -256,6 +258,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/savetoGallery"
         app:layout_constraintTop_toBottomOf="@+id/qrcodeDisplay"
-        app:layout_constraintVertical_bias="0.625" />
+        app:layout_constraintVertical_bias="0.07" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

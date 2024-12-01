@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/peachwhite"
+    android:padding="@dimen/padding_medium">
+
+    <TextView
+        android:id="@+id/eventDetailName"
+        style="@style/dashboard_heading_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Event Name"/>
+
+    <TextView
+        android:id="@+id/textView14"
+        style="@style/dashboard_eventDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Starts in: "
+        app:layout_constraintTop_toBottomOf="@id/eventDetailName"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/eventDetailStartDate"
+        style="@style/dashboard_eventDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/textView14"
+        app:layout_constraintTop_toBottomOf="@+id/eventDetailName"
+        android:text="DATE"/>
+
+    <TextView
+        android:id="@+id/eventDetailDescription"
+        style="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Event Description"
+        app:layout_constraintTop_toBottomOf="@id/textView14"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/attendant_status_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/eventDetailDescription"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:cardBackgroundColor="@color/green"
+        app:cardCornerRadius="20dp"
+        app:contentPadding="@dimen/padding_medium">
+
+        <TextView
+            android:id="@+id/textView15"
+            style="@style/eventDetails_attendantStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Attendant Status"
+            android:layout_marginBottom="@dimen/margin_large"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:contentDescription="TODO: Lib for graph"
+            android:src="@drawable/logo"
+            app:layout_constraintTop_toBottomOf="@id/textView15" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        app:contentPadding="@dimen/padding_medium"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintTop_toBottomOf="@id/attendant_status_view">
+
+        <TextView
+            android:id="@+id/textView16"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Organized By: "/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:maxHeight="75dp"
+            android:src="@drawable/logo"
+            android:layout_marginTop="@dimen/margin_large"
+            app:layout_constraintTop_toBottomOf="@id/textView16"
+            android:contentDescription="Organizer Banner"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/eventDetails_registerAttendant_button"
+        style="@style/eventDetails_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/green_button"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="REGISTER ATTENDANT"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toTopOf="@+id/eventDetails_verifyAttendant_button"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/eventDetails_verifyAttendant_button"
+        style="@style/eventDetails_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/green_button"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="VERIFY ATTENDANT"
+        android:textColor="@color/yellow"
+        app:layout_constraintBottom_toTopOf="@+id/eventDetails_editDetails_button"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/eventDetails_editDetails_button"
+        style="@style/eventDetails_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_button"
+        android:layout_marginTop="8dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="EDIT DETAILS"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
