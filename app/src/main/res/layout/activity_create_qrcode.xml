@@ -246,6 +246,7 @@
 
         android:drawableStart="@drawable/edit_icon"
         android:elevation="30dp"
+        android:onClick="editInformationActivity"
         android:paddingStart="15dp"
         android:paddingRight="2dp"
         android:text="Edit Information"

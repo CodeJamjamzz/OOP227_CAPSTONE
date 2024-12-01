@@ -116,6 +116,11 @@ public class CreateQRCode extends AppCompatActivity {
     public void saveQRCodeActivity(View view){
         saveQRCodeToGallery();
     }
+
+    public void editInformationActivity(View view){
+        Intent intent = new Intent(CreateQRCode.this, CreateAccount.class);
+        startActivity(intent);
+    }
     // function to return to main page
     public void returnMainActivity(View view){
         startActivity(new Intent(CreateQRCode.this , MainActivity.class));
