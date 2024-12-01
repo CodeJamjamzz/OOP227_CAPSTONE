@@ -4,9 +4,13 @@ RegIt – QR Code-Based Event Registration and Management System
 Group: Hackstreet Boys 
 
 Members:
+
 Jared Sheohn Acebes
+
 James Ewican
+
 Jervin Ryle Milleza
+
 Jamiel Kyne Pinca
 
 Figma: 
