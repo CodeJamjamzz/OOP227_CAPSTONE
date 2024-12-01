@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.capstone_project.utils.InputValidator;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -39,142 +41,56 @@ public class CreateAccount extends AppCompatActivity {
         InputedEmail = findViewById(R.id.inputEmail);
         InputedCourseYear = findViewById(R.id.inputCourseYear);
 
-        // TextWatcher to check if text is valid after user inputs each field
-        InputedName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // way gamit
-            }
+        RealTimeValidate(InputedName, "name");
+        RealTimeValidate(InputedStudentNumber, "studentNumber");
+        RealTimeValidate(InputedEmail, "email");
+        RealTimeValidate(InputedCourseYear, "course");
+    }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // way gamit
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String inputName = s.toString().trim();
-
-                // Validate name
-                if (isValidName(inputName)) {
-                    InputedName.setError(null);
-                    isNameValid = true;
-                } else {
-                    InputedName.setError("Invalid name. Use 2-50 letters, spaces, hyphens, or apostrophes.");
-                    isNameValid = false;
-                }
-            }
-        });
-
-// Check student number, must be  in the format of xx-xxxx-xx
-        InputedStudentNumber.addTextChangedListener(new TextWatcher() {
+    // function to validate each input in real time
+    public void RealTimeValidate(EditText text, String type){
+        text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
             @Override
             public void afterTextChanged(Editable s) {
-                String studentNumber = s.toString().trim();
-
-                // Validate student number format (xx-xxxx-xxx)
-                if (isValidStudentNumber(studentNumber)) {
-                    InputedStudentNumber.setError(null);
-                    isStudentNumberValid = true;
-                } else {
-                    InputedStudentNumber.setError("Invalid student number. Use the format xx-xxxx-xxx.");
-                    isStudentNumberValid = false;
+                String input = s.toString().trim();
+                boolean isValid = false;
+                String errorMessage = "";
+                // validate input
+                switch (type) {
+                    case "name":
+                        isValid = InputValidator.isValidName(input);
+                        errorMessage = "Invalid name. Use 2-50 letters, spaces, hyphens, or apostrophes.";
+                        isNameValid = isValid;
+                        break;
+                    case "studentNumber":
+                        isValid = InputValidator.isValidStudentNumber(input);
+                        errorMessage = "Invalid student number. Use the format xx-xxxx-xxx.";
+                        isStudentNumberValid = isValid;
+                        break;
+                    case "email":
+                        isValid = InputValidator.isValidEmail(input);
+                        errorMessage = "Invalid email format.";
+                        isEmailValid = isValid;
+                        break;
+                    case "course":
+                        isValid = InputValidator.isValidCourse(input);
+                        errorMessage = "Invalid course. Follow the format like BSCS, BSN, BSMBA.";
+                        isCourseValid = isValid;
+                        break;
                 }
-            }
-        });
-
-// Check if email kay valid format
-        InputedEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String email = s.toString().trim();
-
-                // Validate email format
-                if (isValidEmail(email)) {
-                    InputedEmail.setError(null);
-                    isEmailValid = true;
+                // error message
+                if (isValid) {
+                    text.setError(null);
                 } else {
-                    InputedEmail.setError("Invalid email format.");
-                    isEmailValid = false;
-                }
-            }
-        });
-
-// Check if course is valid
-        InputedCourseYear.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String course = s.toString().trim();
-
-                // Validate course input (e.g., BSCS, BSN, BSMBA)
-                if (isValidCourse(course)) {
-                    InputedCourseYear.setError(null);
-                    isCourseValid = true;
-                } else {
-                    InputedCourseYear.setError("Invalid course. Follow the format like BSCS, BSN, BSMBA.");
-                    isCourseValid = false;
+                    text.setError(errorMessage);
                 }
             }
         });
     }
-    // valid name checker
-    public boolean isValidName(String InputedName) {
-        if (InputedName == null || InputedName.trim().isEmpty()) {
-            return false; // empty or null
-        }
-        if (InputedName.length() < 2 || InputedName.length() > 50) {
-            return false; // length out of bounds
-        }
-        // Regex for allowing letters, spaces, apostrophes, and hyphens
-        return InputedName.matches("^[a-zA-Z\\s'-,.]+$"); // invalid characters
-    }
-
-    // valid student number checker
-    public boolean isValidStudentNumber(String InputedStudentNumber) {
-        if (InputedStudentNumber == null || InputedStudentNumber.trim().isEmpty()) {
-            return false; // empty or null
-        }
-        // Regex for xx-xxxx-xxx format (numbers only)
-        return InputedStudentNumber.matches("^\\d{2}-\\d{4}-\\d{3}$"); // invalid format
-    }
-
-    // valid email checker
-    public boolean isValidEmail(String InputedEmail) {
-        if (InputedEmail == null || InputedEmail.trim().isEmpty()) {
-            return false; // empty or null
-        }
-        // Regex for a basic email format
-        String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-        return InputedEmail.matches(emailPattern); // check if it matches the pattern
-    }
-
-    // valid course checker (BSCS, BSN, BSMBA, etc.)
-    public boolean isValidCourse(String InputedCourseYear) {
-        if (InputedCourseYear == null || InputedCourseYear.trim().isEmpty()) {
-            return false; // empty or null
-        }
-        // Regex to allow uppercase letters (e.g., BSCS, BSN, BSMBA)
-        return InputedCourseYear.matches("^[A-Z]{2,} - [1-4]$"); // invalid course format
-    }
-
     public void getInformationCreateAccount(Intent nextActivity){
 
         String Name = InputedName.getText().toString();
@@ -188,28 +104,24 @@ public class CreateAccount extends AppCompatActivity {
         nextActivity.putExtra("InputedCourseYear", CourseYear);
     }
 
-    // create account button; need to add qr generation and input verification
+    // create account button; final checkpoint if it has any invalid inputs.
     public void createQRCodeActivity(View view){
         if (!isNameValid) {
             Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (!isStudentNumberValid) {
             Toast.makeText(this, "Please enter a valid student number", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (!isEmailValid) {
             Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (!isCourseValid) {
             Toast.makeText(this, "Please enter a valid course", Toast.LENGTH_SHORT).show();
             return;
         }
-
         Intent CreateQrCode = new Intent(CreateAccount.this, CreateQRCode.class);
         getInformationCreateAccount(CreateQrCode);
         startActivity(CreateQrCode);
