@@ -3,6 +3,10 @@ package com.example.capstone_project.models;
 import java.util.ArrayList;
 import java.util.List;
 
+// UserAccount information is stored in JSON in the database, the object is only used and created
+// through the firebaseController so that it could be used within the app.
+// It is also used to make it easier to pass the data to firebase by storing & passing as an obj.
+
 public class UserAccount {
 
     private String accountID;
@@ -21,7 +25,6 @@ public class UserAccount {
     }
 
     public UserAccount(String accountID, String accountName, String accountEmail, String accountPassword) {
-        // processing of account password (it should be hashed) is to be done in the FB-Controller
 
         setAccountID(accountID);
         setAccountEmail(accountEmail);
@@ -74,4 +77,14 @@ public class UserAccount {
         this.accountEventsAttending.add(eventID); // Method to add an event
     }
 
+    @Override
+    public String toString() {
+        return "UserAccount{" +
+                "accountID='" + accountID + '\'' +
+                ", accountName='" + accountName + '\'' +
+                ", accountEmail='" + accountEmail + '\'' +
+                ", accountPassword='" + accountPassword + '\'' +
+                ", accountEventsAttending=" + accountEventsAttending +
+                '}';
+    }
 }
