@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.capstone_project.utils.QRCodeGenerator;
 import com.google.zxing.WriterException;
 
 import androidx.activity.EdgeToEdge;
@@ -123,7 +124,7 @@ public class CreateQRCode extends AppCompatActivity {
     }
     // function to return to main page
     public void returnMainActivity(View view){
-        startActivity(new Intent(CreateQRCode.this , MainActivity.class));
+        startActivity(new Intent(CreateQRCode.this , MainMenu.class));
     }
 
 }

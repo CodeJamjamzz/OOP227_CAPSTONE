@@ -15,7 +15,7 @@ public class EventBuilder implements Builder {
 
     @Override
     public EventBuilder setEventName(String eventName) {
-        if (!eventName.equals("")) {
+        if (!eventName.isEmpty()) {
             event.setName(eventName);
         }
         return this;

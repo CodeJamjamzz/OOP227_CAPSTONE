@@ -3,6 +3,7 @@ package com.example.capstone_project.utils;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class EventServiceManager {
     private EventServiceManager() {
         // Load events from database here ig
         events = new ArrayList<>();
+        createEvent();
     }
 
     public static EventServiceManager getInstance() {
@@ -24,7 +26,8 @@ public class EventServiceManager {
 
     public void createEvent() {
         EventBuilder builder = new EventBuilder();
-        Event event = builder.setEventName().setVenue().setStartDateTime().setEndDateTime().setAudienceLimit().setDescription().build();
+        // TODO: pass event details from EventForms here
+        Event event = builder.setEventName("").setVenue("").setStartDateTime(LocalDateTime.now()).setEndDateTime(LocalDateTime.now()).setAudienceLimit(0).setDescription("").build();
         events.add(event);
     }
 
@@ -39,6 +42,10 @@ public class EventServiceManager {
             }
         }
         return null;
+    }
+
+    public Event[] getEvents() {
+        return events.toArray(new Event[0]);
     }
 
     public boolean verifyAttendee(String eventId, String attendeeId) {
