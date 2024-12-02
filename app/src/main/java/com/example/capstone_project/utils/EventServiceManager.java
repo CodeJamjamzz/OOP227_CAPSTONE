@@ -9,12 +9,11 @@ import java.util.List;
 
 public class EventServiceManager {
     private static EventServiceManager instance;
-    private List<Event> events;
+    private static List<Event> events;
 
     private EventServiceManager() {
         // Load events from database here ig
         events = new ArrayList<>();
-        createEvent();
     }
 
     public static EventServiceManager getInstance() {
@@ -24,10 +23,17 @@ public class EventServiceManager {
         return instance;
     }
 
-    public void createEvent() {
+    public void createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, int audienceLimit) {
         EventBuilder builder = new EventBuilder();
         // TODO: pass event details from EventForms here
-        Event event = builder.setEventName("").setVenue("").setStartDateTime(LocalDateTime.now()).setEndDateTime(LocalDateTime.now()).setAudienceLimit(0).setDescription("").build();
+        Event event = builder
+                .setEventName(name)
+                .setVenue(venue)
+                .setStartDateTime(startDate)
+                .setEndDateTime(endDate)
+                .setAudienceLimit(audienceLimit)
+                .setDescription(description)
+                .build();
         events.add(event);
     }
 

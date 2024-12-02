@@ -11,6 +11,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.capstone_project.utils.EventServiceManager;
+
+import java.time.LocalDateTime;
+
 // java code for activity_main.xml screen the first one
 public class MainMenu extends AppCompatActivity {
     // opens activity_main.xml
@@ -29,6 +33,11 @@ public class MainMenu extends AppCompatActivity {
 
         createAccount = findViewById(R.id.createAccount);
         adminDashboard = findViewById(R.id.adminDashboard);
+
+        // TODO: load events from database here using EventServiceManager
+        LocalDateTime testStart = LocalDateTime.now().plusDays(1);
+        LocalDateTime testEnd = LocalDateTime.now().plusDays(3);
+        EventServiceManager.getInstance().createEvent("CCS Akwe", "Find new friends!", "CIT-U Gym", testStart, testEnd, 0);
     }
 
     public void createAccountActivity(View view){
