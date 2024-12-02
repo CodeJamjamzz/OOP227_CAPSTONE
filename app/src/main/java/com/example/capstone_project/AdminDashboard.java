@@ -25,6 +25,7 @@ public class AdminDashboard extends AppCompatActivity {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM);
     private UpcomingEventAdapter upcomingEventAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private CardView latestEvent;
     private TextView latestEventTitle;
     private TextView latestEventDescription;
     private TextView latestEventStartDate;
@@ -34,8 +35,6 @@ public class AdminDashboard extends AppCompatActivity {
 //    Event event2 = new Event("CCS Akwe", testStart, testEnd, "CIT-U", 0,"Find new friends!", "CCS", 249.0);
 //    Event event3 = new Event("Founder's Day", testStart, testEnd, "CIT-U", 0, "Honor our origins.", "General", 0.0);
 //    Event event4 = new Event("Final Examination", testStart, testEnd, "CIT-U", 0, "It's the final countdown", "General", 0);
-
-    Event event1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +47,7 @@ public class AdminDashboard extends AppCompatActivity {
 
         upcomingEventAdapter = new UpcomingEventAdapter(events);
         layoutManager = new LinearLayoutManager(this);
+        latestEvent = findViewById(R.id.latestEvent);
         latestEventTitle = findViewById(R.id.latestEventTitle);
         latestEventDescription = findViewById(R.id.latestEventDescription);
         latestEventStartDate = findViewById(R.id.latestEventStartDate);
@@ -55,14 +55,21 @@ public class AdminDashboard extends AppCompatActivity {
 
         if (events.length == 0) {
             // TODO: no events view
-        } else if (events.length == 1) {
-            latestEventTitle.setText(events[0].getName());
-            latestEventDescription.setText(events[0].getDescription());
-            latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
+            return;
         }
+        latestEventTitle.setText(events[0].getName());
+        latestEventDescription.setText(events[0].getDescription());
+        latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
+
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(upcomingEventAdapter);
+
+        latestEvent.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), EventDetails.class);
+            intent.putExtra("SELECTED_EVENT", events[0]);
+            v.getContext().startActivity(intent);
+        });
 
         addEvent.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), EventForms.class);

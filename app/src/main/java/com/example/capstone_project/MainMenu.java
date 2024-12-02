@@ -38,6 +38,7 @@ public class MainMenu extends AppCompatActivity {
         LocalDateTime testStart = LocalDateTime.now().plusDays(1);
         LocalDateTime testEnd = LocalDateTime.now().plusDays(3);
         EventServiceManager.getInstance().createEvent("CCS Akwe", "Find new friends!", "CIT-U Gym", testStart, testEnd, 0);
+        EventServiceManager.getInstance().createEvent("Food Bazaar", "Try our delicious meals!", "CIT-U RTL Quadrangle", testStart, testEnd, 0);
     }
 
     public void createAccountActivity(View view){
