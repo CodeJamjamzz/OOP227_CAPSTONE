@@ -1,5 +1,6 @@
 package com.example.capstone_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,16 +10,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.capstone_project.models.Event;
 import com.example.capstone_project.utils.UpcomingEventAdapter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDateTime;
 
 public class AdminDashboard extends AppCompatActivity {
-    UpcomingEventAdapter upcomingEventAdapter;
-    RecyclerView.LayoutManager layoutManager;
-    CardView latestEvent;
+    private UpcomingEventAdapter upcomingEventAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private CardView latestEvent;
+    private FloatingActionButton addEvent;
 
-    LocalDateTime testStart = LocalDateTime.now().plusDays(1);
-    LocalDateTime testEnd = LocalDateTime.now().plusDays(3);
+    private LocalDateTime testStart = LocalDateTime.now().plusDays(1);
+    private LocalDateTime testEnd = LocalDateTime.now().plusDays(3);
 
     Event event1 = new Event("CSS Tutorials", testStart, testEnd, "CIT-U", 0,"Master the Java language and code your way to success!", "CCS", 0.0);
     Event event2 = new Event("CCS Akwe", testStart, testEnd, "CIT-U", 0,"Find new friends!", "CCS", 249.0);
@@ -36,9 +39,15 @@ public class AdminDashboard extends AppCompatActivity {
         upcomingEventAdapter = new UpcomingEventAdapter(events);
         layoutManager = new LinearLayoutManager(this);
         latestEvent = findViewById(R.id.latestEvent);
+        addEvent = findViewById(R.id.addEvent);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(upcomingEventAdapter);
+
+        addEvent.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), EventForms.class);
+            v.getContext().startActivity(intent);
+        });
     }
 }
 

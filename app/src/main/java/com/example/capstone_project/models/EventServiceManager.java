@@ -3,18 +3,18 @@ package com.example.capstone_project.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventManager {
-    private static EventManager instance;
+public class EventServiceManager {
+    private static EventServiceManager instance;
     private List<Event> events;
 
-    private EventManager() {
+    private EventServiceManager() {
         // Load events from database here ig
         events = new ArrayList<>();
     }
 
-    public static EventManager getInstance() {
+    public static EventServiceManager getInstance() {
         if (instance == null) {
-            instance = new EventManager();
+            instance = new EventServiceManager();
         }
         return instance;
     }
