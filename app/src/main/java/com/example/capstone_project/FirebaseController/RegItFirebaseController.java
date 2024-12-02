@@ -1,16 +1,18 @@
-package com.example.capstone_project.FirebaseController;
+package com.example.capstone_project.firebaseController;
 
 
-//import android.util.Log;
+import static com.example.capstone_project.utils.PasswordEncryptor.hashPassword;
 
-//import androidx.annotation.NonNull;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.example.capstone_project.models.UserAccount;
-//import com.google.firebase.database.DataSnapshot;
-//import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-//import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
@@ -47,7 +49,6 @@ public class RegItFirebaseController {
     private final DatabaseReference regItUserAccountListDB;
     private final DatabaseReference regItEventsListDB;
 
-    // TODO: sensitive information, please remove before committing
     public RegItFirebaseController() {
         // create only one instance of the firebase database
         FirebaseDatabase regItFirebaseDatabase = FirebaseDatabase.getInstance("DB_URL");
@@ -58,10 +59,10 @@ public class RegItFirebaseController {
     // Firebase Account Creation Method
     public void createNewUser(String StudentNumber, String name, String email, String password) {
         // TODO: Hash the password for security
-        // String hashedPassword = hashPassword(password);
+        String hashedPassword = hashPassword(password);
 
         // creates a UserObject
-        UserAccount user = new UserAccount(StudentNumber, name, email, password /* hashedPassword */);
+        UserAccount user = new UserAccount(StudentNumber, name, email, hashedPassword);
 
         // passes the data in the userObject to JSON
         regItUserAccountListDB.child(StudentNumber).setValue(user).addOnCompleteListener(task -> {
@@ -78,27 +79,45 @@ public class RegItFirebaseController {
     }
 
     // Firebase Account Access Method
-    // TODO: Add password matching before returning user
-    // Review this tomorrow i don't understand anything
-    // TODO: uncomment it out before working on it
-    /*
-    public void getUser(String StudentNumber, String password) {
+    // TODO: Add password matching before getting user
+    public void getUser(String StudentNumber) {
+        DatabaseReference curAccount = regItUserAccountListDB.child(StudentNumber);
 
-        // TODO: add the make it listen to a specific node cuz im sleepy doing tomorrow
-        ValueEventListener userAccountListener = new ValueEventListener() {
+        curAccount.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserAccount currentUser = snapshot.getValue(UserAccount.class);
+                if (snapshot.exists()) {
+                    UserAccount userData = snapshot.getValue(UserAccount.class);
+                    if (userData != null) {
+                        // Successfully retrieved the user data
+                        Log.d("User  Data", userData.toString());
+                        // Add UI logic to display the user data
+                    } else {
+                        Log.d("User  Data", "User  data is null");
+                    }
+                } else {
+                    Log.d("User  Data", "No user found with the given ID");
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // TODO: search what the fuck this does
-                Log.w("User not Found error", error.toException());
+                // Handle possible errors
+                Log.w("User  Data", "loadUser :onCancelled", error.toException());
             }
-        };
-
+        });
     }
-    */
+
+    // Firebase Store Event Method
+
+
+
+    // Firebase Event Access Method
+
+    // Firebase Add Attendee Method
+
+    // Firebase Remove Attendee Method
+
+    // Firebase Edit Attendee Method
 
 }

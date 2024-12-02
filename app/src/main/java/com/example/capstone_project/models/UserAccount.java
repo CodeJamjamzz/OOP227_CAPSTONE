@@ -74,4 +74,14 @@ public class UserAccount {
         this.accountEventsAttending.add(eventID); // Method to add an event
     }
 
+    @Override
+    public String toString() {
+        return "UserAccount{" +
+                "accountID='" + accountID + '\'' +
+                ", accountName='" + accountName + '\'' +
+                ", accountEmail='" + accountEmail + '\'' +
+                ", accountPassword='" + accountPassword + '\'' +
+                ", accountEventsAttending=" + accountEventsAttending +
+                '}';
+    }
 }
