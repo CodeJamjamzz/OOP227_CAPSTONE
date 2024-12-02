@@ -3,6 +3,7 @@ package com.example.capstone_project;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,9 @@ public class VerifyAttendee extends AppCompatActivity {
     private BarcodeScanner scanner;
     private ProcessCameraProvider cameraProvider;
     private ImageAnalysis imageAnalysis;
+    private TextView attendeeStatus;
+    private TextView attendeeName;
+    private TextView attendeeType;
 
     private static final String TAG = "QRScanner";
     private static final int REQUEST_CODE_PERMISSIONS = 10;
@@ -51,6 +55,9 @@ public class VerifyAttendee extends AppCompatActivity {
         eventId = getIntent().getStringExtra("EVENT_ID");
 
         previewView = findViewById(R.id.viewFinder);
+        attendeeStatus = findViewById(R.id.verifyAttendantStatus);
+        attendeeName = findViewById(R.id.attendeeName);
+        attendeeType = findViewById(R.id.attendeeType);
 
         if (allPermissionsGranted()) {
             startCamera();
@@ -106,7 +113,9 @@ public class VerifyAttendee extends AppCompatActivity {
                                         }
                                     }
                                 })
-                                .addOnCompleteListener(task -> image.close());
+                                .addOnCompleteListener(task -> {
+                                    image.close();
+                                });
                     }
                 });
 
@@ -146,21 +155,32 @@ public class VerifyAttendee extends AppCompatActivity {
 
     private void resumeScanning() {
         isScanning = true;
+//        attendeeStatus.setBackgroundResource(R.drawable.yellow_button);
+//        attendeeStatus.setText(R.string.waiting_for_scan);
+//        previewView.setBackground(null);
     }
 
     private void processScanResults(String attendeeId) {
+        // TODO: crashes (usually if attendant not in event)
         // Verify attendee logic
-        EventServiceManager em = EventServiceManager.getInstance();
-        try {
-            if (em.verifyAttendee(eventId, attendeeId)) {
-                // Change status state
-            } else {
-                // Also change status state (attendee not in event)
+        runOnUiThread(()-> {
+            try {
+                previewView.setBackground(ContextCompat.getDrawable(this, R.drawable.scan_success));
+                if (EventServiceManager.getInstance().verifyAttendee(eventId, attendeeId)) {
+                    Log.d("QRScanner", "Attendee verified");
+                    attendeeStatus.setBackground(ContextCompat.getDrawable(this, R.drawable.white_button));
+                    attendeeStatus.setText(R.string.attendee_verified);
+                    attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getName());
+                } else {
+                    Log.d("QRScanner", "Attendee verification failed");
+                    attendeeStatus.setBackground(ContextCompat.getDrawable(this, R.drawable.red_button));
+                    attendeeStatus.setText(R.string.attendee_verifail);
+                }
+            } catch (IllegalStateException e) {
+                Log.e("QRScanner", "Invalid event state", e);
             }
-        } catch (IllegalStateException e) {
-            // Event somehow invalid idk why, do something
-        }
-
+        });
+        resumeScanning();
     }
 
     @Override

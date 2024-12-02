@@ -42,7 +42,7 @@ public class AdminDashboard extends AppCompatActivity {
         setContentView(R.layout.activity_admin_dashboard);
         RecyclerView recyclerView = findViewById(R.id.upcoming_events_cardList);
 
-        // TODO: Load existing events here, currently hardcoded
+        // Existing events are loaded here
         Event[] events = EventServiceManager.getInstance().getEvents();
 
         upcomingEventAdapter = new UpcomingEventAdapter(events);
