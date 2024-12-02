@@ -38,5 +38,15 @@
         Scan the attendant’s ticket by placing the
         QR code within the viewfinder</string>
 
+    <!-- Event Forms strings-->
+    <string name="eventFormsHeader">CREATE EVENT FORMS</string>
+    <string name="eventName">Event Name:</string>
+    <string name="eventDescription">Desciption:</string>
+    <string name="eventVenue">Venue :</string>
+    <string name="eventDate">Date :</string>
+    <string name="eventAudienceLimit">Limit :</string>
+    <string name="eventStart">Start :</string>
+    <string name="eventEnd">End :</string>
+    <string name="eventCreate">Create Event</string>
 </resources>
 
