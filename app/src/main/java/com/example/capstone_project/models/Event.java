@@ -23,19 +23,18 @@ public class Event implements Parcelable {
     private String description;
     private String category;
     private double ticketPrice;
-private List<Attendee> attendees;
+    private List<Attendee> attendees;
 
-    public Event(String name, LocalDateTime startDate, LocalDateTime endDate, String venue, int audienceLimit, String description, String category, double ticketPrice) {
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.venue = venue;
-        this.audienceLimit = audienceLimit;
-        this.description = description;
-        this.category = category;
-        this.ticketPrice = ticketPrice;
-        attendees = new ArrayList<>();
+    public Event() {
+        startDate = null;
+        endDate = null;
+        venue = "TBA";
+        audienceLimit = 0;
+        description = "TBA";
+        category = null;
+        ticketPrice = 0.0;
         this.eventId = UUID.randomUUID().toString();
+        this.attendees = new ArrayList<>();
     }
 
     public String getName() {
@@ -76,6 +75,42 @@ private List<Attendee> attendees;
 
     public List<Attendee> getAttendees() {
         return attendees;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+
+    public void setAudienceLimit(int audienceLimit) {
+        this.audienceLimit = audienceLimit;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setTicketPrice(double ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
+
+    public void setAttendees(List<Attendee> attendees) {
+        this.attendees = attendees;
     }
 
     // Parcelable-specific stuff

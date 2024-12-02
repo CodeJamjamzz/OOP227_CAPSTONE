@@ -48,5 +48,6 @@
     <string name="eventStart">Start :</string>
     <string name="eventEnd">End :</string>
     <string name="eventCreate">Create Event</string>
+    <string name="tba">TBA</string>
 </resources>
 

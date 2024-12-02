@@ -116,7 +116,5 @@ public class EventForms extends AppCompatActivity {
         });
     }
 
-//    public void addEvent(){
-//
-//    }
+
 }

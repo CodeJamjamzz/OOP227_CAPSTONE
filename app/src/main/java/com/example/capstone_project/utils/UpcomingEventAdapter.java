@@ -85,7 +85,11 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
         // contents of the view with that element
         viewHolder.position = viewHolder.getAdapterPosition();
         viewHolder.getEventTitle().setText(localDataSet[position].getName());
-        viewHolder.getEventStartDate().setText(localDataSet[position].getStartDate().format(dateTimeFormatter));
+        if (viewHolder.getEventStartDate() == null) {
+            viewHolder.getEventStartDate().setText(R.string.tba);
+        } else {
+            viewHolder.getEventStartDate().setText(localDataSet[position].getStartDate().format(dateTimeFormatter));
+        }
         viewHolder.getEventDescription().setText(localDataSet[position].getDescription());
     }
 

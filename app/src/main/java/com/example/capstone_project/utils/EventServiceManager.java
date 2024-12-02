@@ -1,4 +1,7 @@
-package com.example.capstone_project.models;
+package com.example.capstone_project.utils;
+
+import com.example.capstone_project.models.Attendee;
+import com.example.capstone_project.models.Event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +22,10 @@ public class EventServiceManager {
         return instance;
     }
 
-    public Event createEvent() {
-        return null;
+    public void createEvent() {
+        EventBuilder builder = new EventBuilder();
+        Event event = builder.setEventName().setVenue().setStartDateTime().setEndDateTime().setAudienceLimit().setDescription().build();
+        events.add(event);
     }
 
     public void registerAttendee(Event e, Attendee a) {
