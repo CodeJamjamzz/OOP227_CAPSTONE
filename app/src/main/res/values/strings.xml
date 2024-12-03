@@ -45,11 +45,13 @@
     <string name="eventName">Event Name:</string>
     <string name="eventDescription">Desciption:</string>
     <string name="eventVenue">Venue :</string>
-    <string name="eventDate">Date :</string>
+    <string name="eventStartDateHeader">Start Date :</string>
+    <string name="eventEndDate">End Date :</string>
     <string name="eventAudienceLimit">Limit :</string>
-    <string name="eventStart">Start :</string>
-    <string name="eventEnd">End :</string>
+    <string name="eventTimeStart">Time Start :</string>
+    <string name="eventTimeEnd">Time End :</string>
     <string name="eventCreate">Create Event</string>
+    <string name="eventTicket">Ticket Price :</string>
     <string name="tba">TBA</string>
 </resources>
 
