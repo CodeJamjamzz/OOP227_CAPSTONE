@@ -64,5 +64,4 @@ public class Attendee {
     public String getAttendeeEmail() {
         return null;
     }
-
 }

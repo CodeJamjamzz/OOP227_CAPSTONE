@@ -58,6 +58,7 @@ public class RegItFirebaseController {
 
     // Firebase Account Creation Method
     public void createNewUser(String StudentNumber, String name, String email, String password) {
+        // TODO: Hash the password for security
         String hashedPassword = hashPassword(password);
 
         // creates a UserObject
@@ -106,37 +107,6 @@ public class RegItFirebaseController {
             }
         });
     }
-
-    // Firebase get specific Data Method
-    /**
-     * @param
-     */
-    public <T> void getData(String StudentID, String key, final DataCallback<T> callback, Class<T> clazz) {
-        regItUserAccountListDB.child(StudentID).child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // Use the provided class type to get the value
-                    T data = dataSnapshot.getValue(clazz);
-                    callback.onSuccess(data);
-                } else {
-                    callback.onFailure("No data found for the specified key.");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                callback.onFailure(databaseError.getMessage());
-            }
-        });
-    }
-
-    // Callback interface for data retrieval
-    public interface DataCallback<T> {
-        void onSuccess(T data);
-        void onFailure(String error);
-    }
-
 
     // Firebase Store Event Method
 
