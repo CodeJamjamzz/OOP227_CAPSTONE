@@ -8,13 +8,17 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.capstone_project.models.UserAccount;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 
 // TODO: Here are the List of Stuff I need to add in the Firebase DB itself
 // improve realtime database security rule ex:
@@ -51,27 +55,27 @@ public class RegItFirebaseController {
 
     public RegItFirebaseController() {
         // create only one instance of the firebase database
-        FirebaseDatabase regItFirebaseDatabase = FirebaseDatabase.getInstance("DB_URL");
-        regItUserAccountListDB = regItFirebaseDatabase.getReference("AC_DB");
-        regItEventsListDB = regItFirebaseDatabase.getReference("EV_DB");
+        FirebaseDatabase regItFirebaseDatabase = FirebaseDatabase.getInstance("https://oop227capstone-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        regItEventsListDB = regItFirebaseDatabase.getReference("RegItEventListDatabaseSubtreeNode");
+        regItUserAccountListDB = regItFirebaseDatabase.getReference("RegItUserAccountListDatabaseSubtreeNode");
     }
 
     // Firebase Account Creation Method
-    public void createNewUser(String StudentNumber, String name, String email, String password) {
-        // TODO: Hash the password for security
-        String hashedPassword = hashPassword(password);
+    public void createNewUser(String StudentNumber, String name, String email, String courseYear, String password) {
 
+        // TODO: fix hashPassword since it keeps changing the PW, try Argon2
+        String hashedPassword = hashPassword(password);
         // creates a UserObject
-        UserAccount user = new UserAccount(StudentNumber, name, email, hashedPassword);
+        UserAccount user = new UserAccount(StudentNumber, name, email, courseYear, password);
 
         // passes the data in the userObject to JSON
         regItUserAccountListDB.child(StudentNumber).setValue(user).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 // User created successfully
-                System.out.println("User  created successfully.");
+                Log.d("User  created", "User  created successfully.");
             } else {
                 // Handle failure
-                System.err.println("Failed to create user: " + Objects.requireNonNull(task.getException()).getMessage());
+                Log.w("User  Created", "User  creation failed", task.getException());
             }
         });
 
@@ -80,33 +84,64 @@ public class RegItFirebaseController {
 
     // Firebase Account Access Method
     // TODO: Add password matching before getting user
-    public void getUser(String StudentNumber) {
-        DatabaseReference curAccount = regItUserAccountListDB.child(StudentNumber);
+    private CompletableFuture<UserAccount> fetchUserFromSource(String studentNumber) {
+        CompletableFuture<UserAccount> future = new CompletableFuture<>();
 
-        curAccount.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference userReference = regItUserAccountListDB.child(studentNumber);
+
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    UserAccount userData = snapshot.getValue(UserAccount.class);
-                    if (userData != null) {
-                        // Successfully retrieved the user data
-                        Log.d("User  Data", userData.toString());
-                        // Add UI logic to display the user data
-                    } else {
-                        Log.d("User  Data", "User  data is null");
-                    }
-                } else {
-                    Log.d("User  Data", "No user found with the given ID");
-                }
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserAccount userAccount = dataSnapshot.getValue(UserAccount.class);
+                future.complete(userAccount);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle possible errors
-                Log.w("User  Data", "loadUser :onCancelled", error.toException());
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                future.completeExceptionally(databaseError.toException());
+            }
+        });
+
+        return future;
+    }
+
+    public CompletableFuture<UserAccount> getUser(String studentNumber) {
+        return fetchUserFromSource(studentNumber);
+    }
+
+    /* HOW TO USE THE GET USER / can also be used in the getData for specific data
+    CompletableFuture<UserAccount> userFuture = db.getUser("23-2772-181");
+        userFuture.thenAccept(userAccount -> {
+            if (userAccount != null) {
+                // You can store the userAccount in a variable or pass it to other methods
+                UserAccount retrievedUser = userAccount;
+            } else {
+                Log.d("User Data", "User not found");
+            }
+        }).exceptionally(e -> {
+            System.err.println("Error fetching user: " + e.getMessage());
+            return null;
+        });
+     */
+
+    public CompletableFuture<String> fetchData(String studentNumber) {
+        return getUser(studentNumber).thenApply(userAccount -> {
+            if (userAccount != null) {
+                return userAccount.getAccountName();
+            } else {
+                return "User not found";
             }
         });
     }
+    // Firebase get data Method
+    /*   USAGE
+    fetchData("23-2772-181").thenAccept(accountName -> {
+        System.out.println("Account Name: " + accountName);
+    }).exceptionally(e -> {
+        System.err.println("Error fetching account name: " + e.getMessage());
+    });
+     */
+
 
     // Firebase Store Event Method
 
