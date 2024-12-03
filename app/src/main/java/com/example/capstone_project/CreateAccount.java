@@ -7,6 +7,7 @@ import android.view.View;
 import android.text.TextWatcher;
 import android.text.Editable;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.example.capstone_project.utils.InputValidator;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -71,13 +73,31 @@ public class CreateAccount extends AppCompatActivity {
                 }
             }
         });
-
+        showPrivacyNotice();
         RealTimeValidate(InputedName, "name");
         RealTimeValidate(InputedStudentNumber, "studentNumber");
         RealTimeValidate(InputedEmail, "email");
         RealTimeValidate(InputedCourseYear, "course");
     }
-
+    // function to show privacy notice in a popup
+    private void showPrivacyNotice() {
+        AlertDialog.Builder popup = new AlertDialog.Builder(this);
+        popup.setTitle("Privacy Notice");
+        popup.setMessage("The information you provide will be used exclusively to enhance the " +
+                        "success of the organization's future events. " +
+                        "This data will help us improve planning, " +
+                        "communication, and event experiences. " +
+                        "Your information will not be shared with third parties " +
+                        "or used for any unrelated purposes. " +
+                        "We are committed to protecting your privacy and ensuring your data is handled responsibly");
+        popup.setPositiveButton("Agree", (dialog, which) -> {
+            Toast.makeText(this, "You agreed to the Terms and Conditions", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+        popup.setCancelable(false);
+        AlertDialog dialog = popup.create();
+        dialog.show();
+    }
     // function to validate each input in real time
     public void RealTimeValidate(EditText text, String type){
         text.addTextChangedListener(new TextWatcher() {
