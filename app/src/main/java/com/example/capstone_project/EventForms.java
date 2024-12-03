@@ -8,6 +8,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import java.time.LocalTime;
+import java.time.Year;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -16,12 +18,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.capstone_project.models.Event;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class EventForms extends AppCompatActivity {
 
-    EditText EventName, EventDesription, EventVenue, EventAudienceLimit, EventDate, EventStart, EventEnd;
+    EditText EventName, EventDesription, EventVenue, EventAudienceLimit, EventDate, EventStart, EventEnd, EventDateEnd;
     int inputtedYear, inputtedMonth, inputtedDay;
     int inputtedHourStart, inputtedMinuteStart;
     int inputtedHourEnd, inputtedMinuteEnd;
@@ -37,34 +40,59 @@ public class EventForms extends AppCompatActivity {
             return insets;
         });
 
-        EventDate = findViewById(R.id.inputEventDate);
+        EventDate = findViewById(R.id.inputEventStartDate);
+        EventDateEnd = findViewById(R.id.inputEventEndDate);
         EventStart = findViewById(R.id.inputEventStart);
         EventEnd = findViewById(R.id.inputEventEnd);
 
+        EventDate.setFocusable(false);
         EventDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                inputtedYear = calendar.get(Calendar.YEAR);
-                inputtedMonth = calendar.get(Calendar.MONTH);
-                inputtedDay = calendar.get(Calendar.DAY_OF_MONTH);
+                int currentYear = calendar.get(Calendar.YEAR);
+                int currentMonth = calendar.get(Calendar.MONTH);
+                int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog dialog;
-                dialog = new DatePickerDialog(EventForms.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        inputtedYear = year;
-                        inputtedMonth = month;
-                        inputtedDay = dayOfMonth;
+                DatePickerDialog dialog = new DatePickerDialog(EventForms.this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-                        String date = inputtedMonth + "/" + inputtedDay + "/" + inputtedYear;
-                        EventDate.setText(date);
-                    }
-                }, inputtedMonth,inputtedDay,inputtedYear);
+                                String formattedDate = (month + 1) + "/" + dayOfMonth + "/" + year;
+                                EventDate.setText(formattedDate);
+                            }
+                        },
+                        currentYear, currentMonth, currentDay
+                );
                 dialog.show();
             }
         });
 
+        EventDateEnd.setFocusable(false);
+        EventDateEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int currentYear = calendar.get(Calendar.YEAR);
+                int currentMonth = calendar.get(Calendar.MONTH);
+                int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(EventForms.this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                        String formattedDate = (month + 1) + "/" + dayOfMonth + "/" + year;
+                        EventDateEnd.setText(formattedDate);
+                    }
+                },
+                        currentYear, currentMonth, currentDay
+                );
+                dialog.show();
+            }
+        });
+
+        EventStart.setFocusable(false);
         EventStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,24 +100,24 @@ public class EventForms extends AppCompatActivity {
                 inputtedHourStart = calendar.get(Calendar.HOUR_OF_DAY);
                 inputtedMinuteStart = calendar.get(Calendar.MINUTE);
 
-                TimePickerDialog dialog;
-                dialog = new TimePickerDialog(EventForms.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        inputtedHourStart = hourOfDay;
-                        inputtedMinuteStart = minute;
+                TimePickerDialog dialog = new TimePickerDialog(EventForms.this, R.style.CustomTimePickerDialog, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                inputtedHourStart = hourOfDay;
+                                inputtedMinuteStart = minute;
 
-                        if (inputtedHourStart <= 12){
-                            EventStart.setText(String.format(Locale.getDefault(), "%d:%d am", inputtedHourStart, inputtedMinuteStart));
-                        }else{
-                            EventStart.setText(String.format(Locale.getDefault(), "%d:%d pm", inputtedHourStart, inputtedMinuteStart));
-                        }
-                    }
-                }, inputtedHourStart, inputtedMinuteStart, true);
+                                LocalTime start = LocalTime.of(hourOfDay, minute);
+                                DateTimeFormatter startFormat = DateTimeFormatter.ofPattern("hh:mm a");
+                                String startTime = start.format(startFormat);
+                                EventStart.setText(startTime);
+                            }
+                        }, inputtedHourStart, inputtedMinuteStart, false);
+
                 dialog.show();
             }
         });
 
+        EventEnd.setFocusable(false);
         EventEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,20 +125,18 @@ public class EventForms extends AppCompatActivity {
                 inputtedHourEnd = calendar.get(Calendar.HOUR_OF_DAY);
                 inputtedMinuteEnd = calendar.get(Calendar.MINUTE);
 
-                TimePickerDialog dialog;
-                dialog = new TimePickerDialog(EventForms.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        inputtedHourEnd = hourOfDay;
-                        inputtedMinuteEnd = minute;
+                TimePickerDialog dialog = new TimePickerDialog(EventForms.this, R.style.CustomTimePickerDialog, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            inputtedHourEnd = hourOfDay;
+                            inputtedMinuteEnd = minute;
 
-                        if (inputtedHourEnd <= 12){
-                            EventEnd.setText(String.format(Locale.getDefault(), "%d:%d am", inputtedHourEnd, inputtedMinuteEnd));
-                        }else{
-                            EventEnd.setText(String.format(Locale.getDefault(), "%d:%d pm", inputtedHourEnd, inputtedMinuteEnd));
+                            LocalTime start = LocalTime.of(hourOfDay, minute);
+                            DateTimeFormatter startFormat = DateTimeFormatter.ofPattern("hh:mm a");
+                            String startTime = start.format(startFormat);
+                            EventEnd.setText(startTime);
                         }
-                    }
-                }, inputtedHourEnd, inputtedMinuteEnd, true);
+                    }, inputtedHourStart, inputtedMinuteStart, false);
                 dialog.show();
             }
         });
