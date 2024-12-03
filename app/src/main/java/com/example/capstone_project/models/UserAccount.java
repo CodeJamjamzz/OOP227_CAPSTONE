@@ -13,6 +13,7 @@ public class UserAccount {
     private String accountName;
     private String accountEmail;
     private String accountPassword;
+    private String accountCourseYear;
     private List<String> accountEventsAttending;
 
 
@@ -24,12 +25,13 @@ public class UserAccount {
         this.accountEventsAttending = new ArrayList<>(); // Initialize to avoid null
     }
 
-    public UserAccount(String accountID, String accountName, String accountEmail, String accountPassword) {
+    public UserAccount(String accountID, String accountName, String accountEmail, String CourseYear, String accountPassword) {
 
         setAccountID(accountID);
         setAccountEmail(accountEmail);
         setAccountName(accountName);
         setAccountPassword(accountPassword);
+        setAccountCourseYear(CourseYear);
         accountEventsAttending = new ArrayList<>();
     }
 
@@ -65,6 +67,14 @@ public class UserAccount {
         this.accountID = accountID;
     }
 
+    public String getAccountCourseYear() {
+        return accountCourseYear;
+    }
+
+    public void setAccountCourseYear(String accountCourseYear) {
+        this.accountCourseYear = accountCourseYear;
+    }
+
     public List<String> getAccountEventsAttending() {
         return new ArrayList<>(accountEventsAttending); // Return a copy to avoid external modification
     }
@@ -84,6 +94,7 @@ public class UserAccount {
                 ", accountName='" + accountName + '\'' +
                 ", accountEmail='" + accountEmail + '\'' +
                 ", accountPassword='" + accountPassword + '\'' +
+                ", accountCourseYear='" + accountCourseYear + '\'' +
                 ", accountEventsAttending=" + accountEventsAttending +
                 '}';
     }

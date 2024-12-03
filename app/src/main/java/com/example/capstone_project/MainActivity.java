@@ -2,6 +2,7 @@ package com.example.capstone_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,8 +14,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.capstone_project.firebaseController.RegItFirebaseController;
+import com.example.capstone_project.models.UserAccount;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.concurrent.CompletableFuture;
 
 // java code for activity_main.xml screen the first one
 public class MainActivity extends AppCompatActivity {
@@ -34,14 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
         createAccount = findViewById(R.id.createAccount);
         adminDashboard = findViewById(R.id.adminDashboard);
-        // RegItFirebaseController database = new RegItFirebaseController();
 
-        // https://firebase.google.com/docs/database/android/start#java_1
-        /* test firebase connectivity
-        FirebaseDatabase database = FirebaseDatabase.getInstance("database-link");
-        DatabaseReference myRef = database.getReference("message");
-        myRef.setValue("Hello, World!");
-        */
+        RegItFirebaseController db = new RegItFirebaseController();
+
+        // firebase testing
+
     }
 
     public void createAccountActivity(View view){
