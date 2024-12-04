@@ -16,4 +16,3 @@ local.properties
 .idea/deploymentTargetSelector.xml
 app/google-services.json
 appInsightsSettings.xml
-gradle.properties

@@ -1,8 +1,10 @@
 package com.example.capstone_project.firebaseController;
 
 
+import static com.example.capstone_project.utils.PasswordEncryptor.checkPassword;
 import static com.example.capstone_project.utils.PasswordEncryptor.hashPassword;
 
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -55,18 +57,18 @@ public class RegItFirebaseController {
 
     public RegItFirebaseController() {
         // create only one instance of the firebase database
-        FirebaseDatabase regItFirebaseDatabase = FirebaseDatabase.getInstance("https://oop227capstone-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        regItEventsListDB = regItFirebaseDatabase.getReference("RegItEventListDatabaseSubtreeNode");
-        regItUserAccountListDB = regItFirebaseDatabase.getReference("RegItUserAccountListDatabaseSubtreeNode");
+        FirebaseDatabase regItFirebaseDatabase = FirebaseDatabase.getInstance("DB_URL");
+        regItEventsListDB = regItFirebaseDatabase.getReference("EV_DB");
+        regItUserAccountListDB = regItFirebaseDatabase.getReference("UA_DB");
     }
 
     // Firebase Account Creation Method
     public void createNewUser(String StudentNumber, String name, String email, String courseYear, String password) {
 
-        // TODO: fix hashPassword since it keeps changing the PW, try Argon2
+        // TODO: proly just implement firebase Authenticator
         String hashedPassword = hashPassword(password);
         // creates a UserObject
-        UserAccount user = new UserAccount(StudentNumber, name, email, courseYear, password);
+        UserAccount user = new UserAccount(StudentNumber, name, email, courseYear, hashedPassword);
 
         // passes the data in the userObject to JSON
         regItUserAccountListDB.child(StudentNumber).setValue(user).addOnCompleteListener(task -> {
@@ -83,8 +85,7 @@ public class RegItFirebaseController {
     }
 
     // Firebase Account Access Method
-    // TODO: Add password matching before getting user
-    private CompletableFuture<UserAccount> fetchUserFromSource(String studentNumber) {
+    private CompletableFuture<UserAccount> fetchUserFromSource(String studentNumber, String password) {
         CompletableFuture<UserAccount> future = new CompletableFuture<>();
 
         DatabaseReference userReference = regItUserAccountListDB.child(studentNumber);
@@ -92,8 +93,17 @@ public class RegItFirebaseController {
         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserAccount userAccount = dataSnapshot.getValue(UserAccount.class);
-                future.complete(userAccount);
+                if (dataSnapshot.exists()) {
+                    UserAccount userAccount = dataSnapshot.getValue(UserAccount.class);
+                    assert userAccount != null;
+                    if (checkPassword(password, userAccount.getAccountPassword())) {
+                        future.complete(userAccount);
+                    } else {
+                        future.completeExceptionally(new Exception("Incorrect password"));
+                    }
+                } else {
+                    future.completeExceptionally(new Exception("User not found"));
+                }
             }
 
             @Override
@@ -105,34 +115,34 @@ public class RegItFirebaseController {
         return future;
     }
 
-    public CompletableFuture<UserAccount> getUser(String studentNumber) {
-        return fetchUserFromSource(studentNumber);
+    public CompletableFuture<UserAccount> getUser(String studentNumber, String password) {
+        return fetchUserFromSource(studentNumber, password);
     }
 
     /* HOW TO USE THE GET USER / can also be used in the getData for specific data
     CompletableFuture<UserAccount> userFuture = db.getUser("23-2772-181");
-        userFuture.thenAccept(userAccount -> {
-            if (userAccount != null) {
-                // You can store the userAccount in a variable or pass it to other methods
-                UserAccount retrievedUser = userAccount;
-            } else {
-                Log.d("User Data", "User not found");
-            }
-        }).exceptionally(e -> {
-            System.err.println("Error fetching user: " + e.getMessage());
-            return null;
-        });
+    userFuture.thenAccept(userAccount -> {
+        if (userAccount != null) {
+            Log.d("User Data", "User found: " + userAccount.toString());
+        } else {
+            Log.d("User Data", "User not found");
+        }
+    }).exceptionally(e -> {
+        Log.e("User Data", "Error fetching user: " + e.getMessage());
+        return null;
+    });
      */
+        // TODO: getting specific data
+//    public CompletableFuture<String> fetchData(String studentNumber) {
+//        return getUser(studentNumber).thenApply(userAccount -> {
+//            if (userAccount != null) {
+//                return userAccount.getAccountName();
+//            } else {
+//                return "User not found";
+//            }
+//        });
+//    }
 
-    public CompletableFuture<String> fetchData(String studentNumber) {
-        return getUser(studentNumber).thenApply(userAccount -> {
-            if (userAccount != null) {
-                return userAccount.getAccountName();
-            } else {
-                return "User not found";
-            }
-        });
-    }
     // Firebase get data Method
     /*   USAGE
     fetchData("23-2772-181").thenAccept(accountName -> {
