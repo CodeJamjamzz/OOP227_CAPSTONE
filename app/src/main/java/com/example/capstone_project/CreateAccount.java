@@ -25,7 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class CreateAccount extends AppCompatActivity {
     // open activity_create_account.xml
     TextView QRCodecreate;
-    EditText InputedName, InputedStudentNumber,InputedEmail, InputedCourseYear;
+    EditText InputedName, InputedStudentNumber,InputedEmail, InputedCourseYear, Password, ConfirmPassword;
     boolean isNameValid = false, isStudentNumberValid = false, isEmailValid = false, isCourseValid = false;
 
     @Override
@@ -44,6 +44,9 @@ public class CreateAccount extends AppCompatActivity {
         InputedStudentNumber = findViewById(R.id.inputStudentNumber);
         InputedEmail = findViewById(R.id.inputEmail);
         InputedCourseYear = findViewById(R.id.inputCourseYear);
+        Password = findViewById(R.id.inputPassword);
+        ConfirmPassword = findViewById(R.id.inputConfirmPassword);
+
 
         View rootView = findViewById(android.R.id.content);
         final boolean[] isKeyboardOpen = {false};
@@ -157,6 +160,8 @@ public class CreateAccount extends AppCompatActivity {
 
     // create account button; final checkpoint if it has any invalid inputs.
     public void createQRCodeActivity(View view){
+        String pass1 = Password.getText().toString();
+        String pass2 = ConfirmPassword.getText().toString();
         if (!isNameValid) {
             Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
             return;
@@ -171,6 +176,10 @@ public class CreateAccount extends AppCompatActivity {
         }
         if (!isCourseValid) {
             Toast.makeText(this, "Please enter a valid course", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!(pass1.equals(pass2))) {
+            Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent CreateQrCode = new Intent(CreateAccount.this, CreateQRCode.class);

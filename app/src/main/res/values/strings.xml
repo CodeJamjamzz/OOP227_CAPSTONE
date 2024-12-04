@@ -2,7 +2,7 @@
     <!-- Main Activity Strings -->
     <string name="app_name">Capstone_Project</string>
     <string name="admin_dashboard">Admin Dashboard</string>
-    <string name="create_account">Create Account</string>
+    <string name="create_account">Student Account</string>
 
     <!-- Create Account Strings -->
     <string name="formHeader">STUDENT ACCOUNT FORMS</string>
