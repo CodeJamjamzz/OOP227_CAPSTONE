@@ -48,6 +48,13 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.cardview)
+    implementation(libs.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
+    implementation(libs.barcode.scanning)
+    implementation(libs.play.services.tasks)
+    implementation(libs.androidx.core.ktx)
 
     // Import the Firebase BoM (Bill of Materials, specific dependency versions)
     implementation(platform(libs.firebase.bom))

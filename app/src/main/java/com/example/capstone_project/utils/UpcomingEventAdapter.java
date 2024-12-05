@@ -63,7 +63,14 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
      * by RecyclerView
      */
     public UpcomingEventAdapter(Event[] dataSet) {
+        if (dataSet.length == 1) {
+            localDataSet = new Event[0];
+            return;
+        }
         localDataSet = dataSet;
+        for (int i = 0; i < localDataSet.length - 1; i++) {
+            localDataSet[i] = localDataSet[i + 1];
+        }
     }
 
     // Create new views (invoked by the layout manager)
@@ -85,7 +92,11 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
         // contents of the view with that element
         viewHolder.position = viewHolder.getAdapterPosition();
         viewHolder.getEventTitle().setText(localDataSet[position].getName());
-        viewHolder.getEventStartDate().setText(localDataSet[position].getStartDate().format(dateTimeFormatter));
+        if (localDataSet[position].getStartDate() == null) {
+            viewHolder.getEventStartDate().setText(R.string.tba);
+        } else {
+            viewHolder.getEventStartDate().setText(localDataSet[position].getStartDate().format(dateTimeFormatter));
+        }
         viewHolder.getEventDescription().setText(localDataSet[position].getDescription());
     }
 

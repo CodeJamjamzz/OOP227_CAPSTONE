@@ -23,19 +23,18 @@ public class Event implements Parcelable {
     private String description;
     private String category;
     private double ticketPrice;
-    private List<Attendee> attendants;
+    private List<Attendee> attendees;
 
-    public Event(String name, LocalDateTime startDate, LocalDateTime endDate, String venue, int audienceLimit, String description, String category, double ticketPrice) {
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.venue = venue;
-        this.audienceLimit = audienceLimit;
-        this.description = description;
-        this.category = category;
-        this.ticketPrice = ticketPrice;
-        attendants = new ArrayList<>();
+    public Event() {
+        startDate = null;
+        endDate = null;
+        venue = "TBA";
+        audienceLimit = 0;
+        description = "TBA";
+        category = null;
+        ticketPrice = 0.0;
         this.eventId = UUID.randomUUID().toString();
+        this.attendees = new ArrayList<>();
     }
 
     public String getName() {
@@ -74,8 +73,44 @@ public class Event implements Parcelable {
         return ticketPrice;
     }
 
-    public List<Attendee> getAttendants() {
-        return attendants;
+    public List<Attendee> getAttendees() {
+        return attendees;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+
+    public void setAudienceLimit(int audienceLimit) {
+        this.audienceLimit = audienceLimit;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setTicketPrice(double ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
+
+    public void setAttendees(List<Attendee> attendees) {
+        this.attendees = attendees;
     }
 
     // Parcelable-specific stuff
@@ -98,8 +133,8 @@ public class Event implements Parcelable {
         category = in.readString();
         ticketPrice = in.readDouble();
 
-        attendants = new ArrayList<>();
-        in.readList(attendants, Attendee.class.getClassLoader());
+        attendees = new ArrayList<>();
+        in.readList(attendees, Attendee.class.getClassLoader());
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -133,6 +168,6 @@ public class Event implements Parcelable {
         dest.writeString(description);
         dest.writeString(category);
         dest.writeDouble(ticketPrice);
-        dest.writeList(attendants);
+        dest.writeList(attendees);
     }
 }

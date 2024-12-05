@@ -1,4 +1,4 @@
-package com.example.capstone_project;
+package com.example.capstone_project.utils;
 
 import android.graphics.Bitmap;
 import com.google.zxing.BarcodeFormat;
