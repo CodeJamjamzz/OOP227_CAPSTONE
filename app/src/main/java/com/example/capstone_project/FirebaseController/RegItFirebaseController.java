@@ -1,4 +1,4 @@
-package com.example.capstone_project.firebaseController;
+package com.example.capstone_project.FirebaseController;
 
 
 import static com.example.capstone_project.utils.PasswordEncryptor.checkPassword;
@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.capstone_project.models.Event;
 import com.example.capstone_project.models.UserAccount;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
@@ -21,32 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
-
-// TODO: Here are the List of Stuff I need to add in the Firebase DB itself
-// improve realtime database security rule ex:
-
-/*
-{
-  "rules": {
-    "users": {
-      "$uid": {
-        ".read": "$uid === auth.uid",
-        ".write": "$uid === auth.uid"
-      }
-    }
-  }
-}
-
-Additional Security Considerations:
-
-Password Hashing: Always hash and salt passwords before storing them in the database.
-Data Validation: Validate user input to prevent malicious data injection.
-Network Security: Use HTTPS to encrypt communication between your app and the Firebase servers.
-Authentication: Implement strong authentication mechanisms to protect user accounts.
-
-*/
-// Disallow account creation if node already exists (reason: im too sleepy let me think again tom)
-
 
 
 public class RegItFirebaseController {
@@ -82,6 +57,18 @@ public class RegItFirebaseController {
         });
 
 
+    }
+
+    public void createNewEvent(Event event) {
+        regItEventsListDB.child(event.getEventId()).setValue(event).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // User created successfully
+                Log.d("Event  created", "Event  created successfully.");
+            } else {
+                // Handle failure
+                Log.w("Event  Created", "Event  creation failed", task.getException());
+            }
+        });
     }
 
     // Firebase Account Access Method

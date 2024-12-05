@@ -1,5 +1,6 @@
 package com.example.capstone_project.utils;
 
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 
@@ -35,6 +36,9 @@ public class EventServiceManager {
                 .setDescription(description)
                 .build();
         events.add(event);
+
+        RegItFirebaseController db = new RegItFirebaseController();
+        db.createNewEvent(event);
     }
 
     public void registerAttendee(Event e, Attendee a) {
@@ -60,7 +64,7 @@ public class EventServiceManager {
             throw new IllegalStateException("Event not found!");
         }
         for (Attendee b : event.getAttendees()) {
-            if (attendeeId.equals(b.getIdNumber())) {
+            if (attendeeId.equals(b.getAttendeeIDNumber())) {
                 return true;
             }
         }
@@ -71,9 +75,10 @@ public class EventServiceManager {
         if (!events.contains(e)) {
             return;
         }
-        for (Attendee b : e.getAttendees()) {
-            b.getEventsRegistered().remove(e.getEventId());
-        }
+        // TODO: change to access attendeeAccountID then delete from UserAccount in DB
+//        for (Attendee b : e.getAttendees()) {
+//            b.getEventsRegistered().remove(e.getEventId());
+//        }
         events.remove(e);
     }
 

@@ -16,7 +16,7 @@ import com.example.capstone_project.utils.EventServiceManager;
 
 import java.time.LocalDateTime;
 
-import com.example.capstone_project.firebaseController.RegItFirebaseController;
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.example.capstone_project.models.UserAccount;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -47,9 +47,6 @@ public class MainMenu extends AppCompatActivity {
         LocalDateTime testStart = LocalDateTime.now().plusDays(1);
         LocalDateTime testEnd = LocalDateTime.now().plusDays(3);
         EventServiceManager.getInstance().createEvent("CCS Akwe", "Find new friends!", "CIT-U Gym", testStart, testEnd, 0);
-
-        RegItFirebaseController db = new RegItFirebaseController();
-
 
 
 
