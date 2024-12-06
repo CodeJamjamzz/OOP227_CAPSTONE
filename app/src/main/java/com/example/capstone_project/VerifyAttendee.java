@@ -52,7 +52,7 @@ public class VerifyAttendee extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.verify_attendee);
-        eventId = getIntent().getStringExtra("EVENT_ID");
+        eventId = getIntent().getStringExtra("SELECTED_EVENT_ID");
 
         previewView = findViewById(R.id.viewFinder);
         attendeeStatus = findViewById(R.id.verifyAttendantStatus);

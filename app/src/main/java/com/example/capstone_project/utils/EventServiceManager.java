@@ -27,7 +27,7 @@ public class EventServiceManager {
         return instance;
     }
 
-    public String createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, int audienceLimit) {
+    public String createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, double ticketPrice, int audienceLimit) {
         EventBuilder builder = new EventBuilder();
         // TODO: pass event details from EventForms here
         Event event = builder
@@ -37,6 +37,7 @@ public class EventServiceManager {
                 .setEndDateTime(endDate)
                 .setAudienceLimit(audienceLimit)
                 .setDescription(description)
+                .setTicketPrice(ticketPrice)
                 .build();
         events.add(event);
         return event.getEventId();
