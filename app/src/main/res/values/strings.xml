@@ -30,7 +30,7 @@
     <!--  Verify Attendee Strings  -->
     <string name="waiting_for_scan">WAITING FOR SCAN</string>
     <string name="status">Status:</string>
-    <string name="type_of_admission">Type of Admission:</string>
+    <string name="type_of_admission">Type of\nAdmission:</string>
     <string name="name">Name:</string>
     <string name="attendant_details">Attendee Details:</string>
     <string name="attendant_verification">Attendee Verification</string>
