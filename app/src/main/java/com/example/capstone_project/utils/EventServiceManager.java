@@ -93,5 +93,25 @@ public class EventServiceManager {
         events.remove(e);
     }
 
+    public String[] getAttendeeNames(String eventId) {
+        Event event = null;
+        for (Event e : events) {
+            if (e.getEventId().equals(eventId)) {
+                event = e;
+                break;
+            }
+        }
+
+        if (event == null) {
+            return null;
+        }
+
+        String[] attendees = new String[event.getAttendees().size()];
+        int i = 0;
+        for (Attendee a : event.getAttendees()) {
+            attendees[i] = a.getName();
+        }
+        return attendees;
+    }
 }
 
