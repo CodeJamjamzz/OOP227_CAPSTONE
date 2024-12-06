@@ -52,6 +52,12 @@ public class EventBuilder implements Builder {
     }
 
     @Override
+    public EventBuilder setTicketPrice(double ticketPrice) {
+        event.setTicketPrice(ticketPrice);
+        return this;
+    }
+
+    @Override
     public Event build() {
         return event;
     }
