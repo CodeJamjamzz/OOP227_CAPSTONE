@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.capstone_project.utils.InputValidator;
+
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -172,12 +175,33 @@ public class EventForms extends AppCompatActivity {
             String eventName = EventName.getText().toString();
             String eventDescription = EventDescription.getText().toString();
             String eventVenue = EventVenue.getText().toString();
-            double eventPrice = Double.parseDouble(EventTicketPrice.getText().toString());
-            LocalDateTime eventStart = LocalDateTime.parse(String.format("%s %s", EventDate.getText().toString(), EventStart.getText().toString()), dateTimeFormatter);
-            LocalDateTime eventEnd = LocalDateTime.parse(String.format("%s %s", EventDateEnd.getText().toString(), EventEnd.getText().toString()), dateTimeFormatter);
+
+            double eventPrice;
+            try {
+                eventPrice = Double.parseDouble(EventTicketPrice.getText().toString());
+            } catch (NumberFormatException e) {
+                eventPrice = Integer.parseInt(EventTicketPrice.getText().toString());
+            }
+
+            LocalDateTime eventStart;
+            try {
+                eventStart = LocalDateTime.parse(String.format("%s %s", EventDate.getText().toString(),
+                                                                        EventStart.getText().toString()), dateTimeFormatter);
+            } catch (DateTimeException e) {
+                eventStart = null;
+            }
+
+            LocalDateTime eventEnd;
+            try {
+                eventEnd = LocalDateTime.parse(String.format("%s %s", EventDateEnd.getText().toString(),
+                                                                      EventEnd.getText().toString()), dateTimeFormatter);
+            } catch (DateTimeException e) {
+                eventEnd = null;
+            }
+
             int eventLimit = Integer.parseInt(EventAudienceLimit.getText().toString());
             EventServiceManager.getInstance().createEvent(eventName, eventDescription, eventVenue, eventStart, eventEnd, eventLimit);
-            startActivity(new Intent(EventForms.this , AdminDashboard.class));
+            finish();
         });
     }
 
