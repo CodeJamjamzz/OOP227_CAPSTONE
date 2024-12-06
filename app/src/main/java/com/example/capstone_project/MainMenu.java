@@ -45,11 +45,11 @@ public class MainMenu extends AppCompatActivity {
         LocalDateTime testStart = LocalDateTime.now().plusDays(1);
         LocalDateTime testEnd = LocalDateTime.now().plusDays(3);
 
-        String id1 = EventServiceManager.getInstance().createEvent("CCS Akwe", "Find new friends!", "CIT-U Gym", testStart, testEnd, 0);
-        String id2 = EventServiceManager.getInstance().createEvent("Food Bazaar", "Try our delicious meals!", "CIT-U RTL Quadrangle", testStart, testEnd, 0);
-        EventServiceManager.getInstance().registerAttendee(id1, testPerson1);
-        EventServiceManager.getInstance().registerAttendee(id2, testPerson2);
-        EventServiceManager.getInstance().registerAttendee(id1, testPerson3);
+//        String id1 = EventServiceManager.getInstance().createEvent("CCS Akwe", "Find new friends!", "CIT-U Gym", testStart, testEnd, 0);
+////        String id2 = EventServiceManager.getInstance().createEvent("Food Bazaar", "Try our delicious meals!", "CIT-U RTL Quadrangle", testStart, testEnd, 0);
+//        EventServiceManager.getInstance().registerAttendee(id1, testPerson1);
+////        EventServiceManager.getInstance().registerAttendee(id2, testPerson2);
+//        EventServiceManager.getInstance().registerAttendee(id1, testPerson3);
     }
 
     public void createAccountActivity(View view){

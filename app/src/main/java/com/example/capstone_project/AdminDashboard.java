@@ -24,20 +24,7 @@ import java.util.Arrays;
 
 public class AdminDashboard extends AppCompatActivity {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM);
-    private UpcomingEventAdapter upcomingEventAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private CardView latestEvent;
-    private TextView latestEventTitle;
-    private TextView latestEventDescription;
-    private TextView latestEventStartDate;
-    private TextView noEventsText;
-    private TextView noUpcomingEventText;
-    private FloatingActionButton addEvent;
-
-//    Event event1 = new Event("CSS Tutorials", testStart, testEnd, "CIT-U", 0,"Master the Java language and code your way to success!", "CCS", 0.0);
-//    Event event2 = new Event("CCS Akwe", testStart, testEnd, "CIT-U", 0,"Find new friends!", "CCS", 249.0);
-//    Event event3 = new Event("Founder's Day", testStart, testEnd, "CIT-U", 0, "Honor our origins.", "General", 0.0);
-//    Event event4 = new Event("Final Examination", testStart, testEnd, "CIT-U", 0, "It's the final countdown", "General", 0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,34 +35,20 @@ public class AdminDashboard extends AppCompatActivity {
         // Existing events are loaded here
         Event[] events = EventServiceManager.getInstance().getEvents();
 
-        upcomingEventAdapter = new UpcomingEventAdapter(events);
+        UpcomingEventAdapter upcomingEventAdapter = new UpcomingEventAdapter(events);
         layoutManager = new LinearLayoutManager(this);
-        latestEvent = findViewById(R.id.latestEvent);
-        latestEventTitle = findViewById(R.id.latestEventTitle);
-        latestEventDescription = findViewById(R.id.latestEventDescription);
-        latestEventStartDate = findViewById(R.id.latestEventStartDate);
-        noEventsText = findViewById(R.id.noEventsText);
-        noUpcomingEventText = findViewById(R.id.noUpcomingEventText);
-        addEvent = findViewById(R.id.addEvent);
+        CardView latestEvent = findViewById(R.id.latestEvent);
+        TextView latestEventTitle = findViewById(R.id.latestEventTitle);
+        TextView latestEventDescription = findViewById(R.id.latestEventDescription);
+        TextView latestEventStartDate = findViewById(R.id.latestEventStartDate);
+        TextView noEventsText = findViewById(R.id.noEventsText);
+        TextView noUpcomingEventText = findViewById(R.id.noUpcomingEventText);
+        FloatingActionButton addEvent = findViewById(R.id.addEvent);
 
-        if (events.length == 0) {
-            latestEvent.setVisibility(View.GONE);
-        } else if (events.length == 1) {
-            latestEvent.setVisibility(View.VISIBLE);
-            latestEventTitle.setText(events[0].getName());
-            latestEventDescription.setText(events[0].getDescription());
-            latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
-            noEventsText.setVisibility(View.GONE);
-        } else {
-            latestEvent.setVisibility(View.VISIBLE);
-            latestEventTitle.setText(events[0].getName());
-            latestEventDescription.setText(events[0].getDescription());
-            latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
-            noUpcomingEventText.setVisibility(View.GONE);
-        }
-
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(upcomingEventAdapter);
+        addEvent.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), EventForms.class);
+            v.getContext().startActivity(intent);
+        });
 
         latestEvent.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), EventDetails.class);
@@ -83,10 +56,25 @@ public class AdminDashboard extends AppCompatActivity {
             v.getContext().startActivity(intent);
         });
 
-        addEvent.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), EventForms.class);
-            v.getContext().startActivity(intent);
-        });
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(upcomingEventAdapter);
+
+        if (events.length == 0) {
+            latestEvent.setVisibility(View.GONE);
+            noEventsText.setVisibility(View.VISIBLE);
+            noUpcomingEventText.setVisibility(View.VISIBLE);
+            return;  // early return to avoid IndexOutOfBoundsException
+        } else if (events.length == 1) {
+            latestEvent.setVisibility(View.VISIBLE);
+            noEventsText.setVisibility(View.GONE);
+        } else {
+            latestEvent.setVisibility(View.VISIBLE);
+            noUpcomingEventText.setVisibility(View.GONE);
+        }
+
+        latestEventTitle.setText(events[0].getName());
+        latestEventDescription.setText(events[0].getDescription());
+        latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
     }
 }
 
