@@ -3,6 +3,7 @@
     <style name="Base.Theme.Capstone_Project" parent="Theme.Design.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorAccent">@color/green</item>
+        <item name="backgroundColor">@color/green</item>
     </style>
 
     <style name="Theme.Capstone_Project" parent="Base.Theme.Capstone_Project" />

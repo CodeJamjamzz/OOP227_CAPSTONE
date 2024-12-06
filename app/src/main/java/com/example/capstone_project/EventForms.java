@@ -2,32 +2,36 @@ package com.example.capstone_project;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Year;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.capstone_project.models.Event;
+import com.example.capstone_project.utils.EventServiceManager;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class EventForms extends AppCompatActivity {
 
-    EditText EventName, EventDesription, EventVenue, EventAudienceLimit, EventDate, EventStart, EventEnd, EventDateEnd;
-    int inputtedYear, inputtedMonth, inputtedDay;
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/d/yyyy hh:mm a");
+    EditText EventName, EventDescription, EventVenue, EventAudienceLimit, EventDate, EventStart,
+             EventEnd, EventDateEnd, EventTicketPrice;
     int inputtedHourStart, inputtedMinuteStart;
     int inputtedHourEnd, inputtedMinuteEnd;
+    Button createEventButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +44,16 @@ public class EventForms extends AppCompatActivity {
             return insets;
         });
 
+        EventName = findViewById(R.id.inputEventName);
+        EventDescription = findViewById(R.id.inputEventDescription);
+        EventVenue = findViewById(R.id.inputEventVenue);
+        EventTicketPrice = findViewById(R.id.inputEventTicket);
+        EventAudienceLimit = findViewById(R.id.inputEventLimit);
         EventDate = findViewById(R.id.inputEventStartDate);
         EventDateEnd = findViewById(R.id.inputEventEndDate);
         EventStart = findViewById(R.id.inputEventStart);
         EventEnd = findViewById(R.id.inputEventEnd);
+        createEventButton = findViewById(R.id.CreateEvent);
 
         EventDate.setFocusable(false);
         EventDate.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +149,19 @@ public class EventForms extends AppCompatActivity {
                     }, inputtedHourStart, inputtedMinuteStart, false);
                 dialog.show();
             }
+        });
+
+        // TODO: input validation to prevent crashing
+        createEventButton.setOnClickListener(v -> {
+            String eventName = EventName.getText().toString();
+            String eventDescription = EventDescription.getText().toString();
+            String eventVenue = EventVenue.getText().toString();
+            double eventPrice = Double.parseDouble(EventTicketPrice.getText().toString());
+            LocalDateTime eventStart = LocalDateTime.parse(String.format("%s %s", EventDate.getText().toString(), EventStart.getText().toString()), dateTimeFormatter);
+            LocalDateTime eventEnd = LocalDateTime.parse(String.format("%s %s", EventDateEnd.getText().toString(), EventEnd.getText().toString()), dateTimeFormatter);
+            int eventLimit = Integer.parseInt(EventAudienceLimit.getText().toString());
+            EventServiceManager.getInstance().createEvent(eventName, eventDescription, eventVenue, eventStart, eventEnd, eventLimit);
+            startActivity(new Intent(EventForms.this , AdminDashboard.class));
         });
     }
 
