@@ -79,7 +79,7 @@
 
                 <TextView
                     android:id="@+id/textView22"
-                    app:layout_constraintWidth_percent="0.7"
+                    app:layout_constraintWidth_percent="0.6"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_marginTop="@dimen/margin_small"
@@ -93,15 +93,17 @@
                 <TextView
                     android:id="@+id/eventDetails_attendeesRegistered"
                     style="@style/eventDetails_attendeeStatusData"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding_medium"
                     app:layout_constraintStart_toEndOf="@id/textView22"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/textView22"
                     android:text="hey test"/>
 
                 <TextView
                     android:id="@+id/textView20"
-                    app:layout_constraintWidth_percent="0.7"
+                    app:layout_constraintWidth_percent="0.6"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_marginTop="@dimen/margin_small"
@@ -115,15 +117,17 @@
                 <TextView
                     android:id="@+id/eventDetails_remainingSlots"
                     style="@style/eventDetails_attendeeStatusData"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding_medium"
                     app:layout_constraintStart_toEndOf="@id/textView20"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/textView20"
                     android:text="hey test"/>
 
                 <TextView
                     android:id="@+id/textView21"
-                    app:layout_constraintWidth_percent="0.7"
+                    app:layout_constraintWidth_percent="0.6"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_marginTop="@dimen/margin_small"
@@ -137,9 +141,11 @@
                 <TextView
                     android:id="@+id/eventDetails_totalRevenue"
                     style="@style/eventDetails_attendeeStatusData"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding_medium"
                     app:layout_constraintStart_toEndOf="@id/textView21"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/textView21"
                     android:text="hey test"/>
             </androidx.constraintlayout.widget.ConstraintLayout>

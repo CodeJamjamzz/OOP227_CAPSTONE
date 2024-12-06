@@ -28,7 +28,10 @@ public class EventDetails extends AppCompatActivity {
         TextView eventTitle = findViewById(R.id.eventDetailName);
         TextView eventDescription = findViewById(R.id.eventDetailDescription);
         TextView eventStartDate = findViewById(R.id.eventDetailStartDate);
-        TextView verifyAttendantButton = findViewById(R.id.eventDetails_verifyAttendant_button);
+        TextView verifyAttendeeButton = findViewById(R.id.eventDetails_verifyAttendant_button);
+        TextView numAttendeesRegistered = findViewById(R.id.eventDetails_attendeesRegistered);
+        TextView numRemainingSlots = findViewById(R.id.eventDetails_remainingSlots);
+        TextView numTotalRevenue = findViewById(R.id.eventDetails_totalRevenue);
         TextView noAttendeeText = findViewById(R.id.eventDetails_noAttendeeText);
         RecyclerView attendeeList = findViewById(R.id.eventDetails_attendeeListView);
 
@@ -41,18 +44,28 @@ public class EventDetails extends AppCompatActivity {
 
         eventStartDate.setText(event.getStartDate().format(dateTimeFormatter));
 
-        verifyAttendantButton.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), VerifyAttendee.class);
-            intent.putExtra("EVENT_ID", event.getEventId());
-            v.getContext().startActivity(intent);
-        });
+        numAttendeesRegistered.setText(String.format("%d", attendeeListArray.length));
+
+        if (event.getAudienceLimit() == 0) {
+            numRemainingSlots.setText("∞");
+        } else {
+            numRemainingSlots.setText(String.format("%d", event.getAudienceLimit() - attendeeListArray.length));
+        }
+
+        numTotalRevenue.setText(String.format("%.2f", event.getTicketPrice()));
 
         if (attendeeListArray.length != 0) {
-            noAttendeeText.setVisibility(View.INVISIBLE);
+            noAttendeeText.setVisibility(View.GONE);
         }
 
         AttendeeListAdapter attendeeListAdapter = new AttendeeListAdapter(attendeeListArray);
         attendeeList.setLayoutManager(new LinearLayoutManager(this));
         attendeeList.setAdapter(attendeeListAdapter);
+
+        verifyAttendeeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), VerifyAttendee.class);
+            intent.putExtra("EVENT_ID", event.getEventId());
+            v.getContext().startActivity(intent);
+        });
     }
 }

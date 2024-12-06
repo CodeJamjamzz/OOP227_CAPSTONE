@@ -110,6 +110,7 @@ public class EventServiceManager {
         int i = 0;
         for (Attendee a : event.getAttendees()) {
             attendees[i] = a.getName();
+            i++;
         }
         return attendees;
     }
