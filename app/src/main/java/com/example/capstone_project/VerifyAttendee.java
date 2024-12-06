@@ -161,7 +161,7 @@ public class VerifyAttendee extends AppCompatActivity {
     }
 
     private void processScanResults(String attendeeId) {
-        // TODO: crashes (usually if attendant not in event)
+        // TODO: fix crashes (usually if attendant not in event)
         // Verify attendee logic
         runOnUiThread(()-> {
             try {

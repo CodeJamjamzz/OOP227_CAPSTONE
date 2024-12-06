@@ -2,6 +2,7 @@ package com.example.capstone_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,8 @@ public class AdminDashboard extends AppCompatActivity {
     private TextView latestEventTitle;
     private TextView latestEventDescription;
     private TextView latestEventStartDate;
+    private TextView noEventsText;
+    private TextView noUpcomingEventText;
     private FloatingActionButton addEvent;
 
 //    Event event1 = new Event("CSS Tutorials", testStart, testEnd, "CIT-U", 0,"Master the Java language and code your way to success!", "CCS", 0.0);
@@ -51,16 +54,25 @@ public class AdminDashboard extends AppCompatActivity {
         latestEventTitle = findViewById(R.id.latestEventTitle);
         latestEventDescription = findViewById(R.id.latestEventDescription);
         latestEventStartDate = findViewById(R.id.latestEventStartDate);
+        noEventsText = findViewById(R.id.noEventsText);
+        noUpcomingEventText = findViewById(R.id.noUpcomingEventText);
         addEvent = findViewById(R.id.addEvent);
 
         if (events.length == 0) {
-            // TODO: no events view
-            return;
+            latestEvent.setVisibility(View.GONE);
+        } else if (events.length == 1) {
+            latestEvent.setVisibility(View.VISIBLE);
+            latestEventTitle.setText(events[0].getName());
+            latestEventDescription.setText(events[0].getDescription());
+            latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
+            noEventsText.setVisibility(View.GONE);
+        } else {
+            latestEvent.setVisibility(View.VISIBLE);
+            latestEventTitle.setText(events[0].getName());
+            latestEventDescription.setText(events[0].getDescription());
+            latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
+            noUpcomingEventText.setVisibility(View.GONE);
         }
-        latestEventTitle.setText(events[0].getName());
-        latestEventDescription.setText(events[0].getDescription());
-        latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
-
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(upcomingEventAdapter);
