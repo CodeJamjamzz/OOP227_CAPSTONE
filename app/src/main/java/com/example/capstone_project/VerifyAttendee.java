@@ -51,7 +51,7 @@ public class VerifyAttendee extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.verify_attendant);
+        setContentView(R.layout.verify_attendee);
         eventId = getIntent().getStringExtra("EVENT_ID");
 
         previewView = findViewById(R.id.viewFinder);
