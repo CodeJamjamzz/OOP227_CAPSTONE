@@ -56,7 +56,7 @@ public class AdminDashboard extends AppCompatActivity {
 
         latestEvent.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), EventDetails.class);
-            intent.putExtra("SELECTED_EVENT", events[0]);
+            intent.putExtra("SELECTED_EVENT_ID", events[0].getEventId());
             v.getContext().startActivity(intent);
         });
 
@@ -87,7 +87,11 @@ public class AdminDashboard extends AppCompatActivity {
 
         latestEventTitle.setText(events[0].getName());
         latestEventDescription.setText(events[0].getDescription());
-        latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
+        if (events[0].getStartDate() != null) {
+            latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
+        } else {
+            latestEventStartDate.setText(R.string.tba);
+        }
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(upcomingEventAdapter);

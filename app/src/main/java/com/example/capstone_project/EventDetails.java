@@ -36,14 +36,18 @@ public class EventDetails extends AppCompatActivity {
         TextView noAttendeeText = findViewById(R.id.eventDetails_noAttendeeText);
         RecyclerView attendeeList = findViewById(R.id.eventDetails_attendeeListView);
 
-        event = getIntent().getParcelableExtra("SELECTED_EVENT");
+        event = EventServiceManager.getInstance().getEventFromId(getIntent().getStringExtra("SELECTED_EVENT_ID"));
         String[] attendeeListArray = EventServiceManager.getInstance().getAttendeeNames(event.getEventId());
 
         eventTitle.setText(event.getName());
 
         eventDescription.setText(event.getDescription());
 
-        eventStartDate.setText(event.getStartDate().format(dateTimeFormatter));
+        if (event.getStartDate() != null) {
+            eventStartDate.setText(event.getStartDate().format(dateTimeFormatter));
+        } else {
+            eventStartDate.setText(R.string.tba);
+        }
 
         numAttendeesRegistered.setText(String.format("%d", attendeeListArray.length));
 
