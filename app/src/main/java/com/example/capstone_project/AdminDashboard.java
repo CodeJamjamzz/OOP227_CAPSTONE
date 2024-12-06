@@ -25,24 +25,28 @@ import java.util.Arrays;
 public class AdminDashboard extends AppCompatActivity {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM);
     private RecyclerView.LayoutManager layoutManager;
+    private CardView latestEvent;
+    private TextView latestEventTitle;
+    private TextView latestEventDescription;
+    private TextView latestEventStartDate;
+    private TextView noEventsText;
+    private TextView noUpcomingEventText;
+    private RecyclerView recyclerView;
+    private Event[] events;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
-        RecyclerView recyclerView = findViewById(R.id.upcoming_events_cardList);
+        recyclerView = findViewById(R.id.upcoming_events_cardList);
 
-        // Existing events are loaded here
-        Event[] events = EventServiceManager.getInstance().getEvents();
-
-        UpcomingEventAdapter upcomingEventAdapter = new UpcomingEventAdapter(events);
         layoutManager = new LinearLayoutManager(this);
-        CardView latestEvent = findViewById(R.id.latestEvent);
-        TextView latestEventTitle = findViewById(R.id.latestEventTitle);
-        TextView latestEventDescription = findViewById(R.id.latestEventDescription);
-        TextView latestEventStartDate = findViewById(R.id.latestEventStartDate);
-        TextView noEventsText = findViewById(R.id.noEventsText);
-        TextView noUpcomingEventText = findViewById(R.id.noUpcomingEventText);
+        latestEvent = findViewById(R.id.latestEvent);
+        latestEventTitle = findViewById(R.id.latestEventTitle);
+        latestEventDescription = findViewById(R.id.latestEventDescription);
+        latestEventStartDate = findViewById(R.id.latestEventStartDate);
+        noEventsText = findViewById(R.id.noEventsText);
+        noUpcomingEventText = findViewById(R.id.noUpcomingEventText);
         FloatingActionButton addEvent = findViewById(R.id.addEvent);
 
         addEvent.setOnClickListener(v -> {
@@ -56,9 +60,16 @@ public class AdminDashboard extends AppCompatActivity {
             v.getContext().startActivity(intent);
         });
 
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(upcomingEventAdapter);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Existing events are loaded here
+        events = EventServiceManager.getInstance().getEvents();
+
+        UpcomingEventAdapter upcomingEventAdapter = new UpcomingEventAdapter(events);
         if (events.length == 0) {
             latestEvent.setVisibility(View.GONE);
             noEventsText.setVisibility(View.VISIBLE);
@@ -67,14 +78,19 @@ public class AdminDashboard extends AppCompatActivity {
         } else if (events.length == 1) {
             latestEvent.setVisibility(View.VISIBLE);
             noEventsText.setVisibility(View.GONE);
+            noUpcomingEventText.setVisibility(View.VISIBLE);
         } else {
             latestEvent.setVisibility(View.VISIBLE);
+            noEventsText.setVisibility(View.GONE);
             noUpcomingEventText.setVisibility(View.GONE);
         }
 
         latestEventTitle.setText(events[0].getName());
         latestEventDescription.setText(events[0].getDescription());
         latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(upcomingEventAdapter);
     }
 }
 

@@ -29,6 +29,7 @@ public class EventDetails extends AppCompatActivity {
         TextView eventDescription = findViewById(R.id.eventDetailDescription);
         TextView eventStartDate = findViewById(R.id.eventDetailStartDate);
         TextView verifyAttendeeButton = findViewById(R.id.eventDetails_verifyAttendant_button);
+        TextView deleteEventButton = findViewById(R.id.eventDetails_deleteEvent_button);
         TextView numAttendeesRegistered = findViewById(R.id.eventDetails_attendeesRegistered);
         TextView numRemainingSlots = findViewById(R.id.eventDetails_remainingSlots);
         TextView numTotalRevenue = findViewById(R.id.eventDetails_totalRevenue);
@@ -66,6 +67,12 @@ public class EventDetails extends AppCompatActivity {
             Intent intent = new Intent(v.getContext(), VerifyAttendee.class);
             intent.putExtra("EVENT_ID", event.getEventId());
             v.getContext().startActivity(intent);
+        });
+
+        deleteEventButton.setOnClickListener(n -> {
+            // TODO: should probably add confirmation to delete
+            EventServiceManager.getInstance().deleteEvent(event.getEventId());
+            finish();
         });
     }
 }

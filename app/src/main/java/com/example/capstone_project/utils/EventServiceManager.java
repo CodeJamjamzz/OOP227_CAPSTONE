@@ -1,5 +1,7 @@
 package com.example.capstone_project.utils;
 
+import android.util.Log;
+
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 
@@ -8,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventServiceManager {
+    private String TAG = "EventServiceManager";
     private static EventServiceManager instance;
+    // TODO: make Comparator for Event to sort by start date
     private static List<Event> events;
 
     private EventServiceManager() {
@@ -83,8 +87,10 @@ public class EventServiceManager {
         return false;
     }
 
-    public void deleteEvent(Event e) {
-        if (!events.contains(e)) {
+    public void deleteEvent(String eventId) {
+        Event e = getEventFromId(eventId);
+        if (e == null) {
+            Log.d(TAG, "Delete Event Error: Event not in list!");
             return;
         }
         for (Attendee b : e.getAttendees()) {
