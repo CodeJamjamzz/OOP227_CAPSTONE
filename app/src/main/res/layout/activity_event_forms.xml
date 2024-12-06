@@ -13,18 +13,17 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:text="@string/eventFormsHeader"
         android:textColor="@color/green"
 
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.02" />
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <!--Name Section-->
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
@@ -36,12 +35,10 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.014" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/inputEventName"
@@ -57,13 +54,12 @@
         android:paddingRight="10dp"
         android:singleLine="true"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10"
-        app:layout_constraintVertical_bias="0.001" />
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
+    <!--Description Section-->
     <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
@@ -75,12 +71,10 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputEventName"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/inputEventName" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/inputEventDescription"
@@ -94,17 +88,16 @@
         android:hint="Desciption"
         android:inputType="textMultiLine"
         android:minLines="5"
-        android:paddingTop="5dp"
         android:paddingLeft="10dp"
+        android:paddingTop="5dp"
         android:scrollbars="vertical"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
+    <!--Venue Section-->
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
@@ -116,12 +109,10 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputEventDescription"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/inputEventDescription" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/inputEventVenue"
@@ -137,14 +128,12 @@
         android:paddingRight="10dp"
         android:singleLine="true"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/inputEventDescription"
-        app:layout_constraintVertical_bias="0.002" />
+        app:layout_constraintTop_toBottomOf="@+id/inputEventDescription" />
 
-
+    <!--Date Start Section-->
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
@@ -155,12 +144,8 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/inputEventStartDate"
@@ -177,13 +162,12 @@
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/inputEventTicket"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/inputEventTicket" />
 
+    <!--End Date Section-->
     <TextView
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
@@ -194,12 +178,8 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/inputEventStartDate"
-        app:layout_constraintTop_toBottomOf="@+id/textView20"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/inputEventEndDate"
@@ -216,13 +196,12 @@
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView17"
-        app:layout_constraintTop_toBottomOf="@+id/inputEventLimit"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/inputEventLimit" />
 
+    <!--Time Start Section-->
     <TextView
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
@@ -233,10 +212,8 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/inputEventStart"
@@ -251,13 +228,12 @@
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView15"
-        app:layout_constraintTop_toBottomOf="@+id/inputEventStartDate"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/inputEventStartDate" />
 
+    <!--Time End Section-->
     <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
@@ -268,12 +244,8 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/inputEventStart"
-        app:layout_constraintTop_toBottomOf="@+id/textView17"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/inputEventEnd"
@@ -295,7 +267,7 @@
         app:layout_constraintTop_toBottomOf="@+id/inputEventEndDate"
         app:layout_constraintVertical_bias="0.0" />
 
-
+    <!--Price Section-->
     <TextView
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
@@ -306,12 +278,8 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/inputEventTicket"
@@ -319,57 +287,49 @@
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="170dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/inputfield_outline"
-        android:hint="###"
+        android:hint="0"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintEnd_toStartOf="@+id/textView20"
         app:layout_constraintStart_toEndOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/inputEventVenue"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/inputEventVenue" />
 
-
+    <!--Limit Section-->
     <TextView
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/eventAudienceLimit"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/inputEventTicket"
-        app:layout_constraintTop_toBottomOf="@+id/inputEventVenue"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toStartOf="@+id/inputEventLimit"
+        app:layout_constraintTop_toBottomOf="@+id/inputEventVenue" />
+
+    <!--Button-->
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/inputEventLimit"
-        android:layout_width="0dp"
+        android:layout_width="110dp"
         android:layout_height="48dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/inputfield_outline"
-        android:hint="###"
+        android:hint="0"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView20"
-        app:layout_constraintTop_toBottomOf="@+id/inputEventVenue"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/inputEventVenue" />
 
     <Button
         android:id="@+id/CreateEvent"

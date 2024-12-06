@@ -40,4 +40,22 @@ public class InputValidator {
         // allows minimum of 2 letters + 1 number format
         return InputedCourseYear.matches("^[A-Z]{2,} - [1-4]$");
     }
+
+    // valid Ticket Price checker
+    public static boolean isValidEventTicketPrice(String InputedTicketPrice){
+        // Already initalized to 0 even the input tag is empty as this is not required.
+        return InputedTicketPrice.matches("^$|^\\d+$");
+    }
+
+    // valid Audience Limit checker
+    public static boolean isValidEventAudienceLimit(String InputedAudienceLimit){
+        return InputedAudienceLimit.matches("^$|^\\d+$");
+    }
+
+    public static boolean isValidEventName(String InputedEventName){
+        if(InputedEventName == null || InputedEventName.trim().isEmpty()){
+            return false;
+        }
+        return true;
+    }
 }

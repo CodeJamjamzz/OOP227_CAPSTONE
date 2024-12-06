@@ -4,12 +4,16 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.example.capstone_project.utils.InputValidator;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -31,6 +35,7 @@ public class EventForms extends AppCompatActivity {
              EventEnd, EventDateEnd, EventTicketPrice;
     int inputtedHourStart, inputtedMinuteStart;
     int inputtedHourEnd, inputtedMinuteEnd;
+    boolean InputEventNameValidator = false , InputEventTicketPriceValidator = false, InputEventAudienceLimitValidator = false;
     Button createEventButton;
 
     @Override
@@ -54,6 +59,10 @@ public class EventForms extends AppCompatActivity {
         EventStart = findViewById(R.id.inputEventStart);
         EventEnd = findViewById(R.id.inputEventEnd);
         createEventButton = findViewById(R.id.CreateEvent);
+
+        inputValidation(EventName, "EventName");
+        inputValidation(EventAudienceLimit, "EventLimit");
+        inputValidation(EventTicketPrice, "EventPrice");
 
         EventDate.setFocusable(false);
         EventDate.setOnClickListener(new View.OnClickListener() {
@@ -153,6 +162,13 @@ public class EventForms extends AppCompatActivity {
 
         // TODO: input validation to prevent crashing
         createEventButton.setOnClickListener(v -> {
+            if(!InputEventNameValidator){
+                Toast.makeText(this, "Please input a valid event name", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(!InputEventTicketPriceValidator){EventTicketPrice.setText("0");}
+            if(!InputEventAudienceLimitValidator){EventAudienceLimit.setText("0");}
+
             String eventName = EventName.getText().toString();
             String eventDescription = EventDescription.getText().toString();
             String eventVenue = EventVenue.getText().toString();
@@ -165,5 +181,54 @@ public class EventForms extends AppCompatActivity {
         });
     }
 
+    public void inputValidation(EditText text, String category){
+        text.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                return;
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                return;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String input = s.toString().trim();
+                String errorMessage = "";
+                boolean isValid = false;
+
+                switch (category){
+                    case "EventName":
+                        isValid = InputValidator.isValidEventName(input);
+                        errorMessage = "Invalid event input. Event name cannot be empty.";
+                        InputEventNameValidator = isValid;
+                        break;
+                    case "EventPrice":
+                        isValid = InputValidator.isValidEventTicketPrice(input);
+                        errorMessage = "Invalid event price. Please input numbers only.";
+                        InputEventTicketPriceValidator = isValid;
+                        if(s.toString().trim().isEmpty()) InputEventTicketPriceValidator = false;
+                        break;
+                    case "EventLimit":
+                        isValid = InputValidator.isValidEventAudienceLimit(input);
+                        errorMessage = "Invalid event limit. Please input numbers only.";
+                        InputEventAudienceLimitValidator = isValid;
+                        if(s.toString().trim().isEmpty()) InputEventAudienceLimitValidator = false;
+                        break;
+                }
+
+                if(!isValid){
+                    text.setError(errorMessage);
+                    return;
+                } else {
+                    text.setError(null);
+                    return;
+                }
+            }
+        });
+
+    }
 
 }
