@@ -58,6 +58,17 @@ public class EventServiceManager {
         return false;
     }
 
+    public boolean unRegisterAttendee(String eventId, String attendeeId) {
+        Event event = getEventFromId(eventId);
+        for (Attendee a : event.getAttendees()) {
+            if (a.getIdNumber().equals(attendeeId)) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Event getEventFromId(String eventId) {
         for (Event e : events) {
             if (e.getEventId().equals(eventId)) {
@@ -74,6 +85,15 @@ public class EventServiceManager {
             }
         }
         return null;
+    }
+
+    public String getAttendeeFromName(String eventId, String attendeeName) {
+        for (Attendee a : getEventFromId(eventId).getAttendees()) {
+            if (a.getName().equals(attendeeName)) {
+                return a.getName();
+            }
+        }
+        return "";
     }
 
     public Event[] getEvents() {

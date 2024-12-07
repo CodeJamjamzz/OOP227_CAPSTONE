@@ -24,9 +24,13 @@ public class EventDetails extends AppCompatActivity {
     private TextView eventTitle;
     private TextView eventDescription;
     private TextView eventStartDate;
+
+    private TextView registerAttendeeButton;
+    private TextView unregisterAttendeeButton;
     private TextView verifyAttendeeButton;
     private TextView editDetailsButton;
     private TextView deleteEventButton;
+
     private TextView numAttendeesRegistered;
     private TextView numRemainingSlots;
     private TextView numTotalRevenue;
@@ -34,6 +38,7 @@ public class EventDetails extends AppCompatActivity {
     private RecyclerView attendeeList;
 
     private Event event;
+    private String[] attendeeListArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +48,13 @@ public class EventDetails extends AppCompatActivity {
         eventTitle = findViewById(R.id.eventDetailName);
         eventDescription = findViewById(R.id.eventDetailDescription);
         eventStartDate = findViewById(R.id.eventDetailStartDate);
+
+        registerAttendeeButton = findViewById(R.id.eventDetails_registerAttendant_button);
+        unregisterAttendeeButton = findViewById(R.id.eventDetails_unRegisterAttendant_button);
         verifyAttendeeButton = findViewById(R.id.eventDetails_verifyAttendant_button);
         editDetailsButton = findViewById(R.id.eventDetails_editDetails_button);
         deleteEventButton = findViewById(R.id.eventDetails_deleteEvent_button);
+
         numAttendeesRegistered = findViewById(R.id.eventDetails_attendeesRegistered);
         numRemainingSlots = findViewById(R.id.eventDetails_remainingSlots);
         numTotalRevenue = findViewById(R.id.eventDetails_totalRevenue);
@@ -53,6 +62,13 @@ public class EventDetails extends AppCompatActivity {
         attendeeList = findViewById(R.id.eventDetails_attendeeListView);
 
         // TODO: register and unregister attendee
+
+        unregisterAttendeeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), UnregisterAttendee.class);
+            intent.putExtra("SELECTED_EVENT_ID", event.getEventId());
+            intent.putExtra("ATTENDEES", attendeeListArray);
+            v.getContext().startActivity(intent);
+        });
 
         verifyAttendeeButton.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), VerifyAttendee.class);
@@ -63,6 +79,7 @@ public class EventDetails extends AppCompatActivity {
         editDetailsButton.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), EventForms.class);
             intent.putExtra("SELECTED_EVENT_ID", event.getEventId());
+            intent.putExtra("ATTENDEES", attendeeListArray);
             v.getContext().startActivity(intent);
         });
 
@@ -89,7 +106,7 @@ public class EventDetails extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         event = EventServiceManager.getInstance().getEventFromId(getIntent().getStringExtra("SELECTED_EVENT_ID"));
-        String[] attendeeListArray = EventServiceManager.getInstance().getAttendeeNames(event.getEventId());
+        attendeeListArray = EventServiceManager.getInstance().getAttendeeNames(event.getEventId());
 
         eventTitle.setText(event.getName());
 
@@ -115,7 +132,7 @@ public class EventDetails extends AppCompatActivity {
             noAttendeeText.setVisibility(View.GONE);
         }
 
-        AttendeeListAdapter attendeeListAdapter = new AttendeeListAdapter(attendeeListArray);
+        AttendeeListAdapter attendeeListAdapter = new AttendeeListAdapter(event.getEventId(), attendeeListArray, 0);
         attendeeList.setLayoutManager(new LinearLayoutManager(this));
         attendeeList.setAdapter(attendeeListAdapter);
     }
