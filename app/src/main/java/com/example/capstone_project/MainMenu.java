@@ -2,8 +2,16 @@ package com.example.capstone_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.utils.EventServiceManager;
+import com.example.capstone_project.utils.InputValidator;
 
 import java.time.LocalDateTime;
 
@@ -51,9 +60,82 @@ public class MainMenu extends AppCompatActivity {
         EventServiceManager.getInstance().registerAttendee(id2, testPerson2);
         EventServiceManager.getInstance().registerAttendee(id1, testPerson3);
     }
+    boolean isValid = false;
+    public void RealTimeValidate(EditText text, String type){
+        text.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                String input = s.toString().trim();
+                if (input.isEmpty()) {
+                    text.setError(null);
+                    isValid = false; // or reset as needed based on your logic
+                    return;
+                }
+                isValid = InputValidator.isValidStudentNumber(input);
+                if (isValid) {
+                    text.setError(null);
+                } else {
+                    text.setError("Invalid student number. Use the format xx-xxxx-xxx.");
+                }
+            }
+        });
+    }
 
+    // Method to show the popup dialog
+    public void showStudentNumberPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter Student Number");
+        // layout
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 20, 50, 20); // padding
+        // field for the student number
+        final EditText input = new EditText(this);
+        input.setHint("e.g. 22-2097-673");
+        // centering
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 20, 0, 60); // padding
+        input.setLayoutParams(params);
+        // adding to layout
+        layout.addView(input);
+        // adding to popup
+        builder.setView(layout);
+        // validating sn
+        RealTimeValidate(input, "student number");
+        // confirm behavior
+        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String studentNumber = input.getText().toString().trim();
+                if (isValid) {
+                    // TODO: Add if statement to check if it is in firebase
+                    // if in firebase go straight to CreateQRCode activity
+                    // else go to CreateAccount activity
+                    startActivity(new Intent(MainMenu.this, CreateAccount.class));
+                } else {
+                    Toast.makeText(MainMenu.this, "Please enter a valid student number", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        // cancel behavior
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        // Show the popup
+        builder.show();
+    }
     public void createAccountActivity(View view){
-        startActivity(new Intent(MainMenu.this, CreateAccount.class));
+        showStudentNumberPopup();
     }
 
     public void adminDashboardActivity(View view) {

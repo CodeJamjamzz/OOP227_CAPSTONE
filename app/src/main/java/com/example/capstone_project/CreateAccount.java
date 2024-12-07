@@ -7,7 +7,6 @@ import android.view.View;
 import android.text.TextWatcher;
 import android.text.Editable;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -50,42 +49,59 @@ public class CreateAccount extends AppCompatActivity {
 
         View rootView = findViewById(android.R.id.content);
         final boolean[] isKeyboardOpen = {false};
-        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect areawindow = new Rect();
-                rootView.getWindowVisibleDisplayFrame(areawindow);
-                int screenHeight = rootView.getRootView().getHeight();
-                int mykeypadHeight = screenHeight - areawindow.bottom;
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect areawindow = new Rect();
+            rootView.getWindowVisibleDisplayFrame(areawindow);
+            int screenHeight = rootView.getRootView().getHeight();
+            int mykeypadHeight = screenHeight - areawindow.bottom;
 
-                // Check if the keyboard is visible
-                if (mykeypadHeight > screenHeight * 0.05) {
-                    if (!isKeyboardOpen[0]) {
-                        // Keyboard has just opened
-                        isKeyboardOpen[0] = true;
-                        int scrollAmount = InputedCourseYear.getBottom() - areawindow.bottom + 70;
-                        if (Password.isFocused()) {
-                            scrollAmount = Password.getBottom() - areawindow.bottom + 70;
-                        } else if (ConfirmPassword.isFocused()) {
-                            scrollAmount = ConfirmPassword.getBottom() - areawindow.bottom + 70;
-                        }
-                        if (scrollAmount > 0) {
-                            rootView.scrollBy(0, scrollAmount);  // Scroll only when keyboard appears
-                        }
-                    }
-                } else {
-                    if (isKeyboardOpen[0]) {
-                        isKeyboardOpen[0] = false;
-                        rootView.scrollTo(0, 0);  // Reset scroll position when keyboard is hidden
-                    }
+            // Check if the keyboard is visible
+            if (mykeypadHeight > screenHeight * 0.05) {
+                if (!isKeyboardOpen[0]) {
+                    // Keyboard has just opened
+                    isKeyboardOpen[0] = true;
+                    scrollToFocusedView(rootView, areawindow);
+                }
+            } else {
+                if (isKeyboardOpen[0]) {
+                    isKeyboardOpen[0] = false;
+                    rootView.scrollTo(0, 0);  // Reset scroll position when keyboard is hidden
                 }
             }
         });
+        addFocusChangeListener(Password, rootView);
+        addFocusChangeListener(ConfirmPassword, rootView);
+
         showPrivacyNotice();
         RealTimeValidate(InputedName, "name");
         RealTimeValidate(InputedStudentNumber, "studentNumber");
         RealTimeValidate(InputedEmail, "email");
         RealTimeValidate(InputedCourseYear, "course");
+    }
+    //helper for keyboard scrolling
+    private void scrollToFocusedView(View rootView, Rect areawindow) {
+        View focusedView = getCurrentFocus();
+        if (focusedView != null) {
+            int scrollAmount = focusedView.getBottom() - areawindow.bottom + 70;
+            if (scrollAmount > 0) {
+                rootView.scrollBy(0, scrollAmount);
+            }
+        }
+    }
+    //another helper
+    private void addFocusChangeListener(EditText editText, View rootView) {
+        editText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                rootView.post(() -> {
+                    //  reset to 0 0
+                    rootView.scrollTo(0, 0);
+                    //  scrolling to view
+                    Rect areawindow = new Rect();
+                    rootView.getWindowVisibleDisplayFrame(areawindow);
+                    scrollToFocusedView(rootView, areawindow);
+                });
+            }
+        });
     }
     // function to show privacy notice in a popup
     private void showPrivacyNotice() {
@@ -106,6 +122,22 @@ public class CreateAccount extends AppCompatActivity {
         AlertDialog dialog = popup.create();
         dialog.show();
     }
+    // helper
+    private void resetFlag(String type){
+        switch (type) {
+            case "name":
+                isNameValid = false;
+            case "studentNumber":
+                isStudentNumberValid = false;
+                break;
+            case "email":
+                isEmailValid = false;
+                break;
+            case "course":
+                isCourseValid = false;
+                break;
+        }
+    }
     // function to validate each input in real time
     public void RealTimeValidate(EditText text, String type){
         text.addTextChangedListener(new TextWatcher() {
@@ -116,6 +148,11 @@ public class CreateAccount extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String input = s.toString().trim();
+                if (input.isEmpty()) {
+                    text.setError(null);
+                    resetFlag(type);
+                    return;
+                }
                 boolean isValid = false;
                 String errorMessage = "";
                 // validate input
@@ -137,7 +174,7 @@ public class CreateAccount extends AppCompatActivity {
                         break;
                     case "course":
                         isValid = InputValidator.isValidCourse(input);
-                        errorMessage = "Invalid course. Follow the format like BSCS, BSN, BSMBA.";
+                        errorMessage = "Invalid course. Follow the format like BSCS - 2, BSN - 1, BSMBA - 3.";
                         isCourseValid = isValid;
                         break;
                 }
