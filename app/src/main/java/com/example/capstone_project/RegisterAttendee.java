@@ -1,11 +1,15 @@
 package com.example.capstone_project;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.view.PreviewView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.capstone_project.models.Attendee;
@@ -19,6 +23,10 @@ public class RegisterAttendee extends AppCompatActivity {
     private TextView header;
     private TextView attendeeStatus;
     private TextView attendeeName;
+
+    private static final String TAG = "RegisterAttendee";
+    private static final int REQUEST_CODE_PERMISSIONS = 10;
+    private static final String[] REQUIRED_PERMISSIONS = new String[]{android.Manifest.permission.CAMERA};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +43,11 @@ public class RegisterAttendee extends AppCompatActivity {
 
         header.setText("Register Attendee");
 
-        startQRScanner();
+        if (allPermissionsGranted()) {
+            startQRScanner();
+        } else {
+            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
+        }
     }
 
     private void startQRScanner() {
@@ -71,5 +83,32 @@ public class RegisterAttendee extends AppCompatActivity {
                 // Optional: Add any UI updates when scanning is resumed
             }
         });
+    }
+
+    private boolean allPermissionsGranted() {
+        for (String permission : REQUIRED_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(getBaseContext(), permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (allPermissionsGranted()) {
+                startQRScanner();
+            } else {
+                Toast.makeText(this,
+                                "Permissions not granted by the user.",
+                                Toast.LENGTH_SHORT)
+                        .show();
+                finish();
+            }
+        }
     }
 }

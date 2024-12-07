@@ -22,11 +22,9 @@ public class VerifyAttendee extends AppCompatActivity {
     private TextView attendeeStatus;
     private TextView attendeeName;
 
-    private static final String TAG = "QRScanner";
+    private static final String TAG = "VerifyAttendee";
     private static final int REQUEST_CODE_PERMISSIONS = 10;
     private static final String[] REQUIRED_PERMISSIONS = new String[]{android.Manifest.permission.CAMERA};
-
-    private boolean isScanning = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +60,7 @@ public class VerifyAttendee extends AppCompatActivity {
                         attendeeStatus.setText(R.string.attendee_verifail);
                     }
                 } catch (IllegalStateException e) {
-                    Log.e("QRScanner", "Invalid event state", e);
+                    Log.e(TAG, "Invalid event state", e);
                 }
                 qrCodeScanner.resumeScanning(this);
             }
@@ -89,17 +87,6 @@ public class VerifyAttendee extends AppCompatActivity {
         return true;
     }
 
-    private void pauseScanning() {
-        isScanning = false;
-    }
-
-    private void resumeScanning() {
-        isScanning = true;
-//        attendeeStatus.setBackgroundResource(R.drawable.yellow_button);
-//        attendeeStatus.setText(R.string.waiting_for_scan);
-//        previewView.setBackground(null);
-    }
-
     private void processScanResults(String attendeeId) {
         // TODO: fix crashes (usually if attendant not in event)
         // Verify attendee logic
@@ -107,13 +94,13 @@ public class VerifyAttendee extends AppCompatActivity {
             try {
                 previewView.setBackground(ContextCompat.getDrawable(this, R.drawable.scan_success));
                 if (EventServiceManager.getInstance().verifyAttendee(eventId, attendeeId)) {
-                    Log.d("QRScanner", "Attendee verified");
+                    Log.d(TAG, "Attendee verified");
                     attendeeStatus.setBackground(ContextCompat.getDrawable(this, R.drawable.white_button));
                     attendeeStatus.setTextColor(ContextCompat.getColor(this,R.color.white));
                     attendeeStatus.setText(R.string.attendee_verified);
                     attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getName());
                 } else {
-                    Log.d("QRScanner", "Attendee verification failed");
+                    Log.d(TAG, "Attendee verification failed");
                     attendeeStatus.setBackground(ContextCompat.getDrawable(this, R.drawable.red_button));
                     attendeeStatus.setTextColor(ContextCompat.getColor(this,R.color.white));
                     attendeeStatus.setText(R.string.attendee_verifail);
@@ -122,24 +109,6 @@ public class VerifyAttendee extends AppCompatActivity {
                 Log.e("QRScanner", "Invalid event state", e);
             }
         });
-        resumeScanning();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                startQRScanner();
-            } else {
-                Toast.makeText(this,
-                                "Permissions not granted by the user.",
-                                Toast.LENGTH_SHORT)
-                        .show();
-                finish();
-            }
-        }
     }
 
     @Override
