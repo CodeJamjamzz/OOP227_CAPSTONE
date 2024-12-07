@@ -46,21 +46,106 @@
             android:layout_marginBottom="12dp"
             android:minWidth="24dp"
             android:text="Date"
-            app:layout_constraintBottom_toTopOf="@+id/header_image"
+            app:layout_constraintBottom_toTopOf="@+id/latestEvent_status"
             app:layout_constraintStart_toEndOf="@+id/subhead"
             app:layout_constraintTop_toBottomOf="@id/latestEventTitle"
             app:layout_constraintVertical_bias="0.0" />
 
-        <ImageView
-            android:id="@+id/header_image"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/latestEvent_status"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subhead" />
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/latestEventStartDate"
+            android:layout_marginTop="@dimen/margin_small"
+            app:cardBackgroundColor="@color/green"
+            app:cardCornerRadius="20dp"
+            app:contentPadding="@dimen/padding_medium">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/textView15"
+                    style="@style/eventDetails_attendantStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Attendee Status"
+                    android:layout_marginBottom="@dimen/margin_large"/>
+
+                <TextView
+                    android:id="@+id/textView22"
+                    app:layout_constraintWidth_percent="0.6"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:paddingLeft="@dimen/padding_medium"
+                    style="@style/eventDetails_attendeeStatusDetails"
+                    android:text="Attendees Registered: "
+                    app:layout_constraintTop_toBottomOf="@id/textView15"
+                    app:layout_constraintStart_toStartOf="@id/textView15"
+                    android:layout_marginBottom="@dimen/margin_medium" />
+
+                <TextView
+                    android:id="@+id/adminDashboard_attendeesRegistered"
+                    style="@style/eventDetails_attendeeStatusData"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding_medium"
+                    app:layout_constraintStart_toEndOf="@id/textView22"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/textView22"
+                    android:text="hey test"/>
+
+                <TextView
+                    android:id="@+id/textView20"
+                    app:layout_constraintWidth_percent="0.6"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:paddingLeft="@dimen/padding_medium"
+                    style="@style/eventDetails_attendeeStatusDetails"
+                    android:text="Remaining Slots: "
+                    app:layout_constraintTop_toBottomOf="@id/textView22"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    app:layout_constraintStart_toStartOf="@id/textView15"/>
+
+                <TextView
+                    android:id="@+id/adminDashboard_remainingSlots"
+                    style="@style/eventDetails_attendeeStatusData"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding_medium"
+                    app:layout_constraintStart_toEndOf="@id/textView20"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/textView20"
+                    android:text="hey test"/>
+
+                <TextView
+                    android:id="@+id/textView21"
+                    app:layout_constraintWidth_percent="0.6"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:paddingLeft="@dimen/padding_medium"
+                    style="@style/eventDetails_attendeeStatusDetails"
+                    android:text="Total Revenue: "
+                    app:layout_constraintTop_toBottomOf="@id/textView20"
+                    app:layout_constraintStart_toStartOf="@id/textView15"
+                    android:layout_marginBottom="@dimen/margin_medium"/>
+
+                <TextView
+                    android:id="@+id/adminDashboard_totalRevenue"
+                    style="@style/eventDetails_attendeeStatusData"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding_medium"
+                    app:layout_constraintStart_toEndOf="@id/textView21"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/textView21"
+                    android:text="hey test"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/latestEventDescription"
@@ -72,6 +157,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header_image" />
+            app:layout_constraintTop_toBottomOf="@id/latestEvent_status" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
