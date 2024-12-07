@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,12 +21,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.capstone_project.models.Attendee;
-import com.example.capstone_project.utils.EventServiceManager;
 import com.example.capstone_project.utils.InputValidator;
 import com.google.firebase.database.DatabaseReference;
-
-import java.time.LocalDateTime;
 
 // java code for activity_main.xml screen the first one
 public class MainMenu extends AppCompatActivity {
@@ -88,7 +85,6 @@ public class MainMenu extends AppCompatActivity {
             }
         });
     }
-
     // Method to show the popup dialog
     public void showStudentNumberPopup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -136,9 +132,8 @@ public class MainMenu extends AppCompatActivity {
         databaseRef.child(studentNumber).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().exists()) {
-                    // Student number exists, navigate to CreateQRCode activity
-                    Intent intent = new Intent(MainMenu.this, CreateQRCode.class);
-                    startActivity(intent);
+                    // Student number exists, ask for pass
+                    showPasswordPopup(studentNumber);
                 } else {
                     // Student number not found, navigate to CreateAccount activity
                     Intent intent = new Intent(MainMenu.this, CreateAccount.class);
@@ -149,6 +144,52 @@ public class MainMenu extends AppCompatActivity {
                 Toast.makeText(MainMenu.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    public void showPasswordPopup(String studentNumber) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter Password");
+
+        // Layout
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 20, 50, 20); // padding
+
+        // Password field
+        final EditText input = new EditText(this);
+        input.setHint("Enter your password");
+        input.setTransformationMethod(PasswordTransformationMethod.getInstance()); // to hide password
+        // Centring
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 20, 0, 60); // padding
+        input.setLayoutParams(params);
+
+        // Adding to layout
+        layout.addView(input);
+        // Adding to popup
+        builder.setView(layout);
+
+        // Confirm behavior
+        builder.setPositiveButton("Submit", (dialog, which) -> {
+            String password = input.getText().toString().trim();
+            if (!password.isEmpty()) {
+                // todo get and verify password
+                // todo if password is wrong toast error
+                // todo if password is correct go to createqrcode activity
+                //dummy
+                 Toast.makeText(MainMenu.this, "yey u have password", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainMenu.this, "Please enter a password", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Cancel behavior
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        // Show the popup
+        builder.show();
     }
     public void createAccountActivity(View view){
         showStudentNumberPopup();
