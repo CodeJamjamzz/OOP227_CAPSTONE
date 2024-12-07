@@ -47,6 +47,25 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <Button
+        android:id="@+id/unregisterAttendee_confirmUnregistrationsButton"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/green_background"
+        android:elevation="30dp"
+        android:padding="10dp"
+        android:text="CONFIRM UNREGISTRATIONS"
+        android:textColor="@color/yellow"
+
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.932" />
+
     <TextView
         android:id="@+id/unregisterAttendee_noAttendeesText"
         android:layout_width="match_parent"

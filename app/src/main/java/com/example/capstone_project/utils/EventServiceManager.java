@@ -62,21 +62,31 @@ public class EventServiceManager {
     public boolean registerAttendee(String eventId, Attendee a) {
         for (Event e : events) {
             if (e.getEventId().equals(eventId)) {
+                Log.d(TAG, "Event found, adding attendee...");
                 e.getAttendees().add(a);
                 return true;
             }
         }
+        Log.d(TAG, "Event was not found!");
         return false;
     }
 
     public boolean unRegisterAttendee(String eventId, String attendeeId) {
         Event event = getEventFromId(eventId);
+
+        if (event == null) {
+            Log.d(TAG, "Event was not found!");
+            return false;
+        }
+
         for (Attendee a : event.getAttendees()) {
             if (a.getAttendeeIDNumber().equals(attendeeId)) {
-
+                Log.d(TAG, "Attendee found. Unregistering...");
+                event.getAttendees().remove(a);
                 return true;
             }
         }
+        Log.d(TAG, "Attendee was not found!");
         return false;
     }
 
@@ -99,10 +109,10 @@ public class EventServiceManager {
         return null;
     }
 
-    public String getAttendeeFromName(String eventId, String attendeeName) {
+    public String getAttendeeIdFromName(String eventId, String attendeeName) {
         for (Attendee a : getEventFromId(eventId).getAttendees()) {
             if (a.getAttendeeName().equals(attendeeName)) {
-                return a.getAttendeeName();
+                return a.getAttendeeIDNumber();
             }
         }
         return "";
