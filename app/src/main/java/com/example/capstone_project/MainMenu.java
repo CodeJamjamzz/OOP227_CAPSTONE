@@ -34,6 +34,7 @@ public class MainMenu extends AppCompatActivity {
     // opens activity_main.xml
     TextView createAccount;
     TextView adminDashboard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,7 +191,7 @@ public class MainMenu extends AppCompatActivity {
                         if (task.getResult().exists()) {
                             String storedPassword = task.getResult().getValue(String.class);
                             if(checkPassword(password, storedPassword)){
-                                goToQRCode(CreateQrCode, studentNumber);
+                                goToQRCode(CreateQrCode, studentNumber, password);
                             }else{
                                 Toast.makeText(MainMenu.this, "Incorrect password", Toast.LENGTH_SHORT).show();
                             }
@@ -211,7 +212,7 @@ public class MainMenu extends AppCompatActivity {
         // Show the popup
         builder.show();
     }
-    public void goToQRCode(Intent nextActivity,String studentNumber){
+    public void goToQRCode(Intent nextActivity,String studentNumber, String password){
         DatabaseReference databaseRef = FirebaseDatabase.getInstance()
                 .getReference("RegItUserAccountListDatabaseSubtreeNode");
         databaseRef.child(studentNumber).get().addOnCompleteListener(task -> {
@@ -227,7 +228,7 @@ public class MainMenu extends AppCompatActivity {
                 nextActivity.putExtra("InputedStudentNumber", accountID);
                 nextActivity.putExtra("InputedEmail", accountEmail);
                 nextActivity.putExtra("InputedCourseYear", accountCourseYear);
-
+                nextActivity.putExtra("Password", password);
                 // Start the next activity
                 startActivity(nextActivity);
             } else {
