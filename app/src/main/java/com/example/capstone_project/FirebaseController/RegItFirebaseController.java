@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 
 import com.example.capstone_project.models.Event;
 import com.example.capstone_project.models.UserAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,7 +19,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -173,9 +178,6 @@ public class RegItFirebaseController {
         return fetchEventFromSource(eventID);
     }
 
-
-
-
     public List<Event> getEventsfromDB() {
         List<Event> eventList = new ArrayList<>();
         regItEventsListDB.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -222,6 +224,24 @@ public class RegItFirebaseController {
     });
      */
 
+    // Event Deletion Method
+    public void deleteEventFromDB(String eventId) {
+        //TODO: remove Attendee from DB before deleting event
+
+        DatabaseReference eventRef = regItEventsListDB.child(eventId);
+        eventRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("Firebase", "Event deleted successfully");
+                    // Handle successful deletion, e.g., update UI or show a message
+                } else {
+                    Log.e("Firebase", "Error deleting event: " + Objects.requireNonNull(task.getException()).getMessage());
+                    // Handle the error, e.g., show an error message to the user
+                }
+            }
+        });
+    }
 
     // Firebase Add Attendee Method
 

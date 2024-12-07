@@ -8,6 +8,7 @@ import com.example.capstone_project.models.Event;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -23,9 +24,10 @@ public class EventServiceManager {
     private EventServiceManager() {
         // Load events from database here ig
         events = db.getEventsfromDB();
+        sortEvents();
     }
 
-    private void sortEvents() {
+    private static void sortEvents() {
         events.sort(new EventComparator());
     }
 
@@ -33,6 +35,7 @@ public class EventServiceManager {
         if (instance == null) {
             instance = new EventServiceManager();
         }
+        sortEvents();
         return instance;
     }
 
@@ -69,7 +72,7 @@ public class EventServiceManager {
     public boolean unRegisterAttendee(String eventId, String attendeeId) {
         Event event = getEventFromId(eventId);
         for (Attendee a : event.getAttendees()) {
-            if (a.getIdNumber().equals(attendeeId)) {
+            if (a.getAttendeeIDNumber().equals(attendeeId)) {
 
                 return true;
             }
@@ -78,15 +81,12 @@ public class EventServiceManager {
     }
 
     public Event getEventFromId(String eventId) {
-        CompletableFuture<Event> eventFuture = db.getEvent(eventId);
-
-        try {
-            return eventFuture.get(); // This will block until the future completes
-        } catch (InterruptedException | ExecutionException e) {
-            // Handle the exception appropriately, e.g., log the error and return null
-            Log.e("EventServiceManager", "Error fetching event: " + e.getMessage());
-            return null;
+        for (Event e : events) {
+            if (e.getEventId().equals(eventId)) {
+                return e;
+            }
         }
+        return null;
     }
 
     public Attendee getAttendeeFromId(String eventId, String attendeeId) {
@@ -137,6 +137,8 @@ public class EventServiceManager {
 //        for (Attendee b : e.getAttendees()) {
 //            b.getEventsRegistered().remove(e.getEventId());
 //        }
+        // TODO: deleteEvents will delete EventID from userAccount first
+        db.deleteEventFromDB(eventId);
         events.remove(e);
     }
 

@@ -69,12 +69,13 @@ public class CreateQRCode extends AppCompatActivity {
     private void generateAndDisplayQRCode() {
         try {
             // TODO: probably change it to just display studentID
-            String data = "{"
-                    + "\"name\":\"" + DisplayName.getText().toString() + "\","
-                    + "\"studentNumber\":\"" + DisplayStudentNumber.getText().toString() + "\","
-                    + "\"email\":\"" + DisplayEmail.getText().toString() + "\","
-                    + "\"course\":\"" + DisplayCourseYear.getText().toString() + "\""
-                    + "}";
+//            String data = "{"
+//                    + "\"name\":\"" + DisplayName.getText().toString() + "\","
+//                    + "\"studentNumber\":\"" + DisplayStudentNumber.getText().toString() + "\","
+//                    + "\"email\":\"" + DisplayEmail.getText().toString() + "\","
+//                    + "\"course\":\"" + DisplayCourseYear.getText().toString() + "\""
+//                    + "}";
+            String data = DisplayStudentNumber.getText().toString();
 
             QRCodeGenerator qrCodeGenerator = QRCodeGenerator.getInstance();
             Bitmap qrCodeBitmap = qrCodeGenerator.generateQRCode(data);

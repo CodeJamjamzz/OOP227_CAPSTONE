@@ -10,7 +10,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
+import com.example.capstone_project.utils.EventServiceManager;
+
 public class SplashScreen extends AppCompatActivity {
+
+    RegItFirebaseController db = RegItFirebaseController.getInstance();
+    EventServiceManager evManager = EventServiceManager.getInstance();
 
     // its just the splash screen
     @Override
