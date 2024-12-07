@@ -196,41 +196,24 @@ public class MainMenu extends AppCompatActivity {
         builder.setPositiveButton("Submit", (dialog, which) -> {
             String password = input.getText().toString().trim();
             CompletableFuture<UserAccount> userFuture = db.getUser(studentNumber, password);
-            userFuture.thenAccept(userAccount -> {
-                Intent nextActivity = new Intent(MainMenu.this, CreateQRCode.class);
-                nextActivity.putExtra("InputedName", userAccount.getAccountName());
-                nextActivity.putExtra("InputedStudentNumber", userAccount.getAccountID());
-                nextActivity.putExtra("InputedEmail", userAccount.getAccountEmail());
-                nextActivity.putExtra("InputedCourseYear", userAccount.getAccountCourseYear());
-                startActivity(nextActivity);
-                Toast.makeText(MainMenu.this, "yey u have password", Toast.LENGTH_SHORT).show();
-            }).exceptionally(e -> {
-                Toast.makeText(MainMenu.this, "Password is Wrong Lmao", Toast.LENGTH_SHORT).show();
-                return null;
-            });
-            if (!password.isEmpty()) {
-                DatabaseReference databaseRef = FirebaseDatabase.getInstance()
-                        .getReference("RegItUserAccountListDatabaseSubtreeNode");
-
-                databaseRef.child(studentNumber).child("accountPassword").get().addOnCompleteListener(task -> {
-                    Intent CreateQrCode = new Intent(MainMenu.this, CreateQRCode.class);
-                    if (task.isSuccessful()) {
-                        if (task.getResult().exists()) {
-                            String storedPassword = task.getResult().getValue(String.class);
-                            if(checkPassword(password, storedPassword)){
-                                goToQRCode(CreateQrCode, studentNumber);
-                            }else{
-                                Toast.makeText(MainMenu.this, "Incorrect password", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    } else {
-                        // Handle potential errors
-                        Toast.makeText(MainMenu.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+            if(!password.isEmpty()) {
+                userFuture.thenAccept(userAccount -> {
+                    Intent nextActivity = new Intent(MainMenu.this, CreateQRCode.class);
+                    nextActivity.putExtra("InputedName", userAccount.getAccountName());
+                    nextActivity.putExtra("InputedStudentNumber", userAccount.getAccountID());
+                    nextActivity.putExtra("InputedEmail", userAccount.getAccountEmail());
+                    nextActivity.putExtra("InputedCourseYear", userAccount.getAccountCourseYear());
+                    startActivity(nextActivity);
+                    Toast.makeText(MainMenu.this, "Welcome back!", Toast.LENGTH_SHORT).show();
+                }).exceptionally(e -> {
+                    // TODO: trim out the java lang exception from message
+                    Toast.makeText(MainMenu.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    return null;
                 });
             } else {
                 Toast.makeText(MainMenu.this, "Please enter a password", Toast.LENGTH_SHORT).show();
             }
+
         });
 
         // Cancel behavior

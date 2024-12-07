@@ -43,14 +43,14 @@ public class RegisterAttendee extends AppCompatActivity {
             @Override
             public void onQRCodeScanned(String attendeeId) {
                 try {
-                    // TODO: get account details here
-                    Attendee a = new Attendee("John Smith", attendeeId, "john.smith@cit.edu", "BSCS - 2");
+                    // TODO: get account details here & add email maybe
+                    Attendee a = new Attendee("John Smith", attendeeId, "BSCS", 2);
 
                     previewView.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.scan_success));
                     if (EventServiceManager.getInstance().registerAttendee(eventId, a)) {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.white_button));
                         attendeeStatus.setText(R.string.attendee_registered);
-                        attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getName());
+                        attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getAttendeeName());
                     } else {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.red_button));
                         attendeeStatus.setText(R.string.attendee_register_error);

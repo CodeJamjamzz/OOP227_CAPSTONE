@@ -56,7 +56,7 @@ public class VerifyAttendee extends AppCompatActivity {
                     if (EventServiceManager.getInstance().verifyAttendee(eventId, attendeeId)) {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.white_button));
                         attendeeStatus.setText(R.string.attendee_verified);
-                        attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getName());
+                        attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getAttendeeName());
                     } else {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.red_button));
                         attendeeStatus.setText(R.string.attendee_verifail);
