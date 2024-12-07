@@ -14,7 +14,9 @@ import java.util.concurrent.ExecutionException;
 
 // Singleton
 public class EventServiceManager {
+    private String TAG = "EventServiceManager";
     private static EventServiceManager instance;
+    // TODO: make Comparator for Event to sort by start date
     private static List<Event> events;
     private final RegItFirebaseController db = RegItFirebaseController.getInstance();
 
@@ -40,6 +42,7 @@ public class EventServiceManager {
                 .setEndDateTime(endDate)
                 .setAudienceLimit(audienceLimit)
                 .setDescription(description)
+                .setTicketPrice(ticketPrice)
                 .build();
         events.add(event);
 
@@ -98,8 +101,10 @@ public class EventServiceManager {
         return false;
     }
 
-    public void deleteEvent(Event e) {
-        if (!events.contains(e)) {
+    public void deleteEvent(String eventId) {
+        Event e = getEventFromId(eventId);
+        if (e == null) {
+            Log.d(TAG, "Delete Event Error: Event not in list!");
             return;
         }
         // TODO: change to access attendeeAccountID then delete from UserAccount in DB
@@ -110,5 +115,26 @@ public class EventServiceManager {
         events.remove(e);
     }
 
+    public String[] getAttendeeNames(String eventId) {
+        Event event = null;
+        for (Event e : events) {
+            if (e.getEventId().equals(eventId)) {
+                event = e;
+                break;
+            }
+        }
+
+        if (event == null) {
+            return null;
+        }
+
+        String[] attendees = new String[event.getAttendees().size()];
+        int i = 0;
+        for (Attendee a : event.getAttendees()) {
+            attendees[i] = a.getName();
+            i++;
+        }
+        return attendees;
+    }
 }
 

@@ -9,5 +9,6 @@ public interface Builder {
     Builder setVenue(String venue);
     Builder setAudienceLimit(int audienceLimit);
     Builder setDescription(String description);
+    Builder setTicketPrice(double ticketPrice);
     Event build();
 }

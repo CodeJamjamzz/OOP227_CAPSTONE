@@ -27,15 +27,15 @@
     <string name="upcoming_events">UPCOMING EVENTS</string>
     <string name="list_of_events">LIST OF EVENTS</string>
 
-    <!--  Verify Attendant Strings  -->
+    <!--  Verify Attendee Strings  -->
     <string name="waiting_for_scan">WAITING FOR SCAN</string>
     <string name="status">Status:</string>
-    <string name="type_of_admission">Type of Admission:</string>
+    <string name="type_of_admission">Type of\nAdmission:</string>
     <string name="name">Name:</string>
-    <string name="attendant_details">Attendant Details:</string>
-    <string name="attendant_verification">Attendant Verification</string>
+    <string name="attendant_details">Attendee Details:</string>
+    <string name="attendant_verification">Attendee Verification</string>
     <string name="attendant_verification_tip">
-        Scan the attendant’s ticket by placing the
+        Scan the attendee’s ticket by placing the
         QR code within the viewfinder</string>
     <string name="attendee_verified">ATTENDEE IN EVENT</string>
     <string name="attendee_verifail">NOT IN EVENT</string>
@@ -53,5 +53,7 @@
     <string name="eventCreate">Create Event</string>
     <string name="eventTicket">Ticket Price :</string>
     <string name="tba">TBA</string>
+    <string name="attendee_placeholder">Attendee</string>
+    <string name="confirmEdit">CONFIRM EDIT</string>
 </resources>
 

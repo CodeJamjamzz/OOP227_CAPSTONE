@@ -2,7 +2,6 @@ package com.example.capstone_project;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,7 +12,10 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.capstone_project.models.Event;
 import com.example.capstone_project.utils.InputValidator;
+
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -37,6 +39,9 @@ public class EventForms extends AppCompatActivity {
     int inputtedHourEnd, inputtedMinuteEnd;
     boolean InputEventNameValidator = false , InputEventTicketPriceValidator = false, InputEventAudienceLimitValidator = false;
     Button createEventButton;
+
+    private Event event;
+    boolean editMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +165,28 @@ public class EventForms extends AppCompatActivity {
             }
         });
 
+        String eventId = getIntent().getStringExtra("SELECTED_EVENT_ID");
+        if (eventId != null) {
+            if (!eventId.isEmpty()) {
+                event = EventServiceManager.getInstance().getEventFromId(eventId);
+                EventName.setText(event.getName());
+                EventDescription.setText(event.getDescription());
+                EventVenue.setText(event.getVenue());
+                EventTicketPrice.setText(String.format("%.2f", event.getTicketPrice()));
+                EventAudienceLimit.setText(String.format("%d", event.getAudienceLimit()));
+                createEventButton.setText(R.string.confirmEdit);
+                if (event.getStartDate() != null) {
+                    EventDate.setText(event.getStartDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+                    EventStart.setText(event.getStartDate().format(DateTimeFormatter.ofPattern("hh:mm a")));
+                }
+                if (event.getEndDate() != null) {
+                    EventDateEnd.setText(event.getEndDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+                    EventEnd.setText(event.getEndDate().format(DateTimeFormatter.ofPattern("hh:mm a")));
+                }
+                editMode = true;
+            }
+        }
+
         // TODO: input validation to prevent crashing
         createEventButton.setOnClickListener(v -> {
             if(!InputEventNameValidator){
@@ -170,14 +197,54 @@ public class EventForms extends AppCompatActivity {
             if(!InputEventAudienceLimitValidator){EventAudienceLimit.setText("0");}
 
             String eventName = EventName.getText().toString();
+
             String eventDescription = EventDescription.getText().toString();
+            if (eventDescription.isEmpty()) {
+                eventDescription = "No description";
+            }
+
             String eventVenue = EventVenue.getText().toString();
-            double eventPrice = Double.parseDouble(EventTicketPrice.getText().toString());
-            LocalDateTime eventStart = LocalDateTime.parse(String.format("%s %s", EventDate.getText().toString(), EventStart.getText().toString()), dateTimeFormatter);
-            LocalDateTime eventEnd = LocalDateTime.parse(String.format("%s %s", EventDateEnd.getText().toString(), EventEnd.getText().toString()), dateTimeFormatter);
+
+            double eventPrice;
+            try {
+                eventPrice = Double.parseDouble(EventTicketPrice.getText().toString());
+            } catch (NumberFormatException e) {
+                eventPrice = Integer.parseInt(EventTicketPrice.getText().toString());
+            }
+
+            LocalDateTime eventStart;
+            try {
+                eventStart = LocalDateTime.parse(String.format("%s %s", EventDate.getText().toString(),
+                                                                        EventStart.getText().toString()), dateTimeFormatter);
+            } catch (DateTimeException e) {
+                eventStart = null;
+            }
+
+            LocalDateTime eventEnd;
+            try {
+                eventEnd = LocalDateTime.parse(String.format("%s %s", EventDateEnd.getText().toString(),
+                                                                      EventEnd.getText().toString()), dateTimeFormatter);
+            } catch (DateTimeException e) {
+                eventEnd = null;
+            }
+
             int eventLimit = Integer.parseInt(EventAudienceLimit.getText().toString());
-            EventServiceManager.getInstance().createEvent(eventName, eventDescription, eventVenue, eventStart, eventEnd, eventLimit);
-            startActivity(new Intent(EventForms.this , AdminDashboard.class));
+            if (!editMode) {
+                EventServiceManager.getInstance().createEvent( eventName,  eventDescription,
+                                                               eventVenue, eventStart,
+                                                               eventEnd,   eventPrice,
+                                                               eventLimit                   );
+            } else {
+                event.setName(eventName);
+                event.setDescription(eventDescription);
+                event.setVenue(eventVenue);
+                event.setStartDate(eventStart);
+                event.setEndDate(eventEnd);
+                event.setTicketPrice(eventPrice);
+                event.setAudienceLimit(eventLimit);
+            }
+
+            finish();
         });
     }
 

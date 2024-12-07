@@ -51,8 +51,8 @@ public class VerifyAttendee extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.verify_attendant);
-        eventId = getIntent().getStringExtra("EVENT_ID");
+        setContentView(R.layout.verify_attendee);
+        eventId = getIntent().getStringExtra("SELECTED_EVENT_ID");
 
         previewView = findViewById(R.id.viewFinder);
         attendeeStatus = findViewById(R.id.verifyAttendantStatus);
@@ -161,7 +161,7 @@ public class VerifyAttendee extends AppCompatActivity {
     }
 
     private void processScanResults(String attendeeId) {
-        // TODO: crashes (usually if attendant not in event)
+        // TODO: fix crashes (usually if attendant not in event)
         // Verify attendee logic
         runOnUiThread(()-> {
             try {
