@@ -37,6 +37,8 @@
     <string name="attendant_verification_tip">
         Scan the attendant’s ticket by placing the
         QR code within the viewfinder</string>
+    <string name="attendee_verified">ATTENDEE IN EVENT</string>
+    <string name="attendee_verifail">NOT IN EVENT</string>
 
     <!-- Event Forms strings-->
     <string name="eventFormsHeader">CREATE EVENT FORMS</string>

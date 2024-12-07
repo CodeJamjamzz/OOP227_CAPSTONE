@@ -64,6 +64,11 @@ public class CreateAccount extends AppCompatActivity {
                         // Keyboard has just opened
                         isKeyboardOpen[0] = true;
                         int scrollAmount = InputedCourseYear.getBottom() - areawindow.bottom + 70;
+                        if (Password.isFocused()) {
+                            scrollAmount = Password.getBottom() - areawindow.bottom + 70;
+                        } else if (ConfirmPassword.isFocused()) {
+                            scrollAmount = ConfirmPassword.getBottom() - areawindow.bottom + 70;
+                        }
                         if (scrollAmount > 0) {
                             rootView.scrollBy(0, scrollAmount);  // Scroll only when keyboard appears
                         }

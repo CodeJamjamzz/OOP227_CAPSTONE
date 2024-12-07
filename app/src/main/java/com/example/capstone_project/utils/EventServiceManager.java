@@ -24,7 +24,7 @@ public class EventServiceManager {
         return instance;
     }
 
-    public void createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, int audienceLimit) {
+    public String createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, int audienceLimit) {
         EventBuilder builder = new EventBuilder();
         // TODO: pass event details from EventForms here
         Event event = builder
@@ -39,16 +39,34 @@ public class EventServiceManager {
 
         RegItFirebaseController db = new RegItFirebaseController();
         db.createNewEvent(event);
+
+        return event.getEventId();
     }
 
-    public void registerAttendee(Event e, Attendee a) {
-        e.getAttendees().add(a);
+    public boolean registerAttendee(String eventId, Attendee a) {
+        for (Event e : events) {
+            if (e.getEventId().equals(eventId)) {
+                e.getAttendees().add(a);
+                return true;
+            }
+        }
+        return false;
     }
 
     public Event getEventFromId(String eventId) {
         for (Event e : events) {
             if (e.getEventId().equals(eventId)) {
                 return e;
+            }
+        }
+        return null;
+    }
+
+    public Attendee getAttendeeFromId(String eventId, String attendeeId) {
+        for (Attendee a : getEventFromId(eventId).getAttendees()) {
+            // TODO: connect with firebase
+            if (a.getAttendeeIDNumber().equals(attendeeId)) {
+                return a;
             }
         }
         return null;
@@ -64,6 +82,7 @@ public class EventServiceManager {
             throw new IllegalStateException("Event not found!");
         }
         for (Attendee b : event.getAttendees()) {
+            // TODO: add firebase connections in Attendee getters
             if (attendeeId.equals(b.getAttendeeIDNumber())) {
                 return true;
             }
@@ -76,6 +95,7 @@ public class EventServiceManager {
             return;
         }
         // TODO: change to access attendeeAccountID then delete from UserAccount in DB
+        // attendee -> userAccount
 //        for (Attendee b : e.getAttendees()) {
 //            b.getEventsRegistered().remove(e.getEventId());
 //        }

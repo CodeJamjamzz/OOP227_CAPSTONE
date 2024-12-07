@@ -15,6 +15,7 @@ import com.example.capstone_project.models.Event;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Arrays;
 
 public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdapter.ViewHolder> {
 
@@ -63,14 +64,10 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
      * by RecyclerView
      */
     public UpcomingEventAdapter(Event[] dataSet) {
-        if (dataSet.length == 1) {
-            localDataSet = new Event[0];
-            return;
-        }
-        localDataSet = dataSet;
-        for (int i = 0; i < localDataSet.length - 1; i++) {
-            localDataSet[i] = localDataSet[i + 1];
-        }
+        localDataSet = (dataSet.length > 1)
+                ? Arrays.copyOfRange(dataSet, 1, dataSet.length)
+                : new Event[0];
+
     }
 
     // Create new views (invoked by the layout manager)
