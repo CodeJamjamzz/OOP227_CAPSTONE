@@ -6,12 +6,7 @@ import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 // Singleton
 public class EventServiceManager {
@@ -58,16 +53,17 @@ public class EventServiceManager {
         sortEvents();
     }
 
-    public boolean registerAttendee(String eventId, Attendee a) {
+    public boolean registerAttendee(String eventId, String attendeeID, String attendeeName) {
         for (Event e : events) {
             if (e.getEventId().equals(eventId)) {
                 Log.d(TAG, "Event found, adding attendee...");
-                for (Attendee a1 : e.getAttendees()) {
-                    if (a1.getIdNumber().equals(a.getIdNumber())) {
+                for (Attendee a : e.getAttendees()) {
+                    if (a.getUserAccountID().equals(attendeeID)) {
                         Log.d(TAG, "Attendee already in event! Skipped");
                         return false;
                     }
                 }
+                Attendee a = new Attendee(attendeeID, attendeeName);
                 e.getAttendees().add(a);
                 return true;
              }
@@ -116,7 +112,7 @@ public class EventServiceManager {
 
     public String getAttendeeIdFromName(String eventId, String attendeeName) {
         for (Attendee a : getEventFromId(eventId).getAttendees()) {
-            if (a.getAttendeeName().equals(attendeeName)) {
+            if (a.getUserAccountName().equals(attendeeName)) {
                 return a.getUserAccountID();
             }
         }
@@ -173,7 +169,7 @@ public class EventServiceManager {
         String[] attendees = new String[event.getAttendees().size()];
         int i = 0;
         for (Attendee a : event.getAttendees()) {
-            attendees[i] = a.getAttendeeName();
+            attendees[i] = a.getUserAccountName();
             i++;
         }
         return attendees;

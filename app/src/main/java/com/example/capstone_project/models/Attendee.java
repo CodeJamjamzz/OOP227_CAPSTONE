@@ -31,14 +31,9 @@ public class Attendee {
     public void setUserAccountName(String userAccountName) { this.userAccountName = userAccountName; }
 
     // TODO: getting UserAccount Information getters
-    // private String accountName;
     // private String accountEmail;
 
-    public String getAttendeeName() {
-        return null;
-    }
-
-    public String getAttendeeEmail() {
-        return null;
-    }
+//    public String getAttendeeEmail() {
+//        return null;
+//    }
 }
