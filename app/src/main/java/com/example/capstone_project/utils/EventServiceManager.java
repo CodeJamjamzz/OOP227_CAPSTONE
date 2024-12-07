@@ -22,7 +22,7 @@ public class EventServiceManager {
 
     private EventServiceManager() {
         // Load events from database here ig
-        events = new ArrayList<>();
+        events = db.getEventsfromDB();
     }
 
     public static EventServiceManager getInstance() {

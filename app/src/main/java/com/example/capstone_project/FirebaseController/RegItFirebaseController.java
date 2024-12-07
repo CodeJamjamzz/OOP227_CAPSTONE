@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -172,6 +174,32 @@ public class RegItFirebaseController {
     }
 
 
+
+
+    public List<Event> getEventsfromDB() {
+        List<Event> eventList = new ArrayList<>();
+        regItEventsListDB.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                        Event user = userSnapshot.getValue(Event.class);
+                        // Add user to a list or perform other actions
+                        eventList.add(user);
+                    }
+                } else {
+                    // Handle the case where no users exist
+                    Log.d("Firebase", "No users found");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Firebase", "Failed to fetch users: " + error.getMessage());
+            }
+        });
+        return eventList;
+    }
 
     /* Use the user obtained within here
 
