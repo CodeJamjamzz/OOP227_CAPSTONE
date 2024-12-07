@@ -32,7 +32,7 @@ public class EventServiceManager {
         return instance;
     }
 
-    public void createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, int audienceLimit) {
+    public void createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, double ticketPrice, int audienceLimit) {
         EventBuilder builder = new EventBuilder();
         // TODO: pass event details from EventForms here
         Event event = builder
@@ -131,7 +131,7 @@ public class EventServiceManager {
         String[] attendees = new String[event.getAttendees().size()];
         int i = 0;
         for (Attendee a : event.getAttendees()) {
-            attendees[i] = a.getName();
+            attendees[i] = a.getAttendeeName();
             i++;
         }
         return attendees;
