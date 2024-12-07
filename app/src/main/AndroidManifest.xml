@@ -35,6 +35,12 @@
             android:name=".EventDetails"
             android:exported="false" />
         <activity
+            android:name=".RegisterAttendee"
+            android:exported="false"/>
+        <activity
+            android:name=".UnregisterAttendee"
+            android:exported="false"/>
+        <activity
             android:name=".VerifyAttendee"
             android:exported="false" />
         <activity

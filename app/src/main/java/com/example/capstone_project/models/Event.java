@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Event implements Parcelable {
+public class Event {
     private String name;
     private final String eventId; // eventID must not be changeable
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private String startDate;
+    private String endDate;
     private String venue;
     private int audienceLimit;
     private String description;
@@ -45,11 +45,9 @@ public class Event implements Parcelable {
         return eventId;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
+    public String getStartDate() { return startDate; }
 
-    public LocalDateTime getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
@@ -81,11 +79,9 @@ public class Event implements Parcelable {
         this.name = name;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
+    public void setStartDate(String startDate) { this.startDate = startDate; }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -111,64 +107,6 @@ public class Event implements Parcelable {
 
     public void setAttendees(List<Attendee> attendees) {
         this.attendees = attendees;
-    }
-
-    // Parcelable-specific stuff
-    protected Event(Parcel in) {
-        name = in.readString();
-        eventId = in.readString();
-
-        // Read LocalDateTime as long timestamps
-        long startDateTimestamp = in.readLong();
-        startDate = startDateTimestamp == -1 ? null :
-                LocalDateTime.ofInstant(Instant.ofEpochMilli(startDateTimestamp), ZoneOffset.UTC);
-
-        long endDateTimestamp = in.readLong();
-        endDate = endDateTimestamp == -1 ? null :
-                LocalDateTime.ofInstant(Instant.ofEpochMilli(endDateTimestamp), ZoneOffset.UTC);
-
-        venue = in.readString();
-        audienceLimit = in.readInt();
-        description = in.readString();
-        category = in.readString();
-        ticketPrice = in.readDouble();
-
-        attendees = new ArrayList<>();
-        in.readList(attendees, Attendee.class.getClassLoader());
-    }
-
-    public static final Creator<Event> CREATOR = new Creator<Event>() {
-        @Override
-        public Event createFromParcel(Parcel in) {
-            return new Event(in);
-        }
-
-        @Override
-        public Event[] newArray(int size) {
-            return new Event[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(eventId);
-
-        // Write LocalDateTime as long timestamps
-        dest.writeLong(startDate.toInstant(ZoneOffset.UTC).toEpochMilli());
-        dest.writeLong(endDate.toInstant(ZoneOffset.UTC).toEpochMilli());
-
-        dest.writeString(venue);
-        dest.writeInt(audienceLimit);
-        dest.writeString(description);
-        dest.writeString(category);
-        dest.writeDouble(ticketPrice);
-        dest.writeList(attendees);
     }
 
     @NonNull

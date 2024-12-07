@@ -2,6 +2,8 @@ package com.example.capstone_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,58 +25,80 @@ import java.util.Arrays;
 
 public class AdminDashboard extends AppCompatActivity {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM);
-    private UpcomingEventAdapter upcomingEventAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private CardView latestEvent;
     private TextView latestEventTitle;
     private TextView latestEventDescription;
     private TextView latestEventStartDate;
-    private FloatingActionButton addEvent;
-
-//    Event event1 = new Event("CSS Tutorials", testStart, testEnd, "CIT-U", 0,"Master the Java language and code your way to success!", "CCS", 0.0);
-//    Event event2 = new Event("CCS Akwe", testStart, testEnd, "CIT-U", 0,"Find new friends!", "CCS", 249.0);
-//    Event event3 = new Event("Founder's Day", testStart, testEnd, "CIT-U", 0, "Honor our origins.", "General", 0.0);
-//    Event event4 = new Event("Final Examination", testStart, testEnd, "CIT-U", 0, "It's the final countdown", "General", 0);
+    private TextView noEventsText;
+    private TextView noUpcomingEventText;
+    private RecyclerView recyclerView;
+    private Event[] events;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
-        RecyclerView recyclerView = findViewById(R.id.upcoming_events_cardList);
+        recyclerView = findViewById(R.id.upcoming_events_cardList);
 
-        // Existing events are loaded here
-        Event[] events = EventServiceManager.getInstance().getEvents();
-
-        upcomingEventAdapter = new UpcomingEventAdapter(events);
         layoutManager = new LinearLayoutManager(this);
         latestEvent = findViewById(R.id.latestEvent);
         latestEventTitle = findViewById(R.id.latestEventTitle);
         latestEventDescription = findViewById(R.id.latestEventDescription);
         latestEventStartDate = findViewById(R.id.latestEventStartDate);
-        addEvent = findViewById(R.id.addEvent);
-
-        if (events.length == 0) {
-            // TODO: no events view
-            return;
-        }
-        latestEventTitle.setText(events[0].getName());
-        latestEventDescription.setText(events[0].getDescription());
-        latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
-
-
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(upcomingEventAdapter);
-
-        latestEvent.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), EventDetails.class);
-            intent.putExtra("SELECTED_EVENT", events[0]);
-            v.getContext().startActivity(intent);
-        });
+        noEventsText = findViewById(R.id.noEventsText);
+        noUpcomingEventText = findViewById(R.id.noUpcomingEventText);
+        FloatingActionButton addEvent = findViewById(R.id.addEvent);
+        events = EventServiceManager.getInstance().getEvents();
 
         addEvent.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), EventForms.class);
             v.getContext().startActivity(intent);
         });
+
+        latestEvent.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), EventDetails.class);
+            Log.d("Selection", "Selecting Event with ID " + events[0].getEventId());
+            intent.putExtra("SELECTED_EVENT_ID", events[0].getEventId());
+            Log.d("Intent", intent.toString());
+            v.getContext().startActivity(intent);
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Existing events are loaded here
+        events = EventServiceManager.getInstance().getEvents();
+
+        UpcomingEventAdapter upcomingEventAdapter = new UpcomingEventAdapter(events);
+        if (events.length == 0) {
+            latestEvent.setVisibility(View.GONE);
+            noEventsText.setVisibility(View.VISIBLE);
+            noUpcomingEventText.setVisibility(View.VISIBLE);
+            return;  // early return to avoid IndexOutOfBoundsException
+        } else if (events.length == 1) {
+            latestEvent.setVisibility(View.VISIBLE);
+            noEventsText.setVisibility(View.GONE);
+            noUpcomingEventText.setVisibility(View.VISIBLE);
+        } else {
+            latestEvent.setVisibility(View.VISIBLE);
+            noEventsText.setVisibility(View.GONE);
+            noUpcomingEventText.setVisibility(View.GONE);
+        }
+
+        latestEventTitle.setText(events[0].getName());
+        latestEventDescription.setText(events[0].getDescription());
+        if (events[0].getStartDate() != null) {
+            latestEventStartDate.setText(events[0].getStartDate());
+        } else {
+            latestEventStartDate.setText(R.string.tba);
+        }
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(upcomingEventAdapter);
     }
 }
 

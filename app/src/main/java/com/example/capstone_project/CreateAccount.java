@@ -222,6 +222,7 @@ public class CreateAccount extends AppCompatActivity {
         StudentNumber = InputedStudentNumber.getText().toString();
         Email = InputedEmail.getText().toString();
         CourseYear = InputedCourseYear.getText().toString();
+
         // creating a new Account in firebase
         RegItFirebaseController.getInstance().createNewUser(StudentNumber, Name, Email, CourseYear, Password.getText().toString());
 

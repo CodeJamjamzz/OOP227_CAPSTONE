@@ -4,10 +4,11 @@ import java.time.LocalDateTime;
 
 public interface Builder {
     Builder setEventName(String eventName);
-    Builder setStartDateTime(LocalDateTime startDate);
-    Builder setEndDateTime(LocalDateTime endDate);
+    Builder setStartDateTime(String startDate);
+    Builder setEndDateTime(String endDate);
     Builder setVenue(String venue);
     Builder setAudienceLimit(int audienceLimit);
     Builder setDescription(String description);
+    Builder setTicketPrice(double ticketPrice);
     Event build();
 }

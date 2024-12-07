@@ -16,9 +16,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.capstone_project.FirebaseController.RegItFirebaseController;
+import com.example.capstone_project.models.Event;
+import com.example.capstone_project.models.UserAccount;
+import com.example.capstone_project.utils.EventServiceManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -26,6 +32,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.capstone_project.utils.InputValidator;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.concurrent.CompletableFuture;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -34,6 +43,7 @@ public class MainMenu extends AppCompatActivity {
     // opens activity_main.xml
     TextView createAccount;
     TextView adminDashboard;
+    RegItFirebaseController db = RegItFirebaseController.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +69,7 @@ public class MainMenu extends AppCompatActivity {
         Attendee testPerson3 = new Attendee("Galorio, Sydney B.", "23-4105-856", "sydney.galorio@cit.edu", "BSCS - 2");
         LocalDateTime testStart = LocalDateTime.now().plusDays(1);
         LocalDateTime testEnd = LocalDateTime.now().plusDays(3);
+//        Moved loading of events in AdminDashboard
 
         String id1 = EventServiceManager.getInstance().createEvent("CCS Akwe", "Find new friends!", "CIT-U Gym", testStart, testEnd, 0);
         String id2 = EventServiceManager.getInstance().createEvent("Food Bazaar", "Try our delicious meals!", "CIT-U RTL Quadrangle", testStart, testEnd, 0);
@@ -67,6 +78,7 @@ public class MainMenu extends AppCompatActivity {
         EventServiceManager.getInstance().registerAttendee(id1, testPerson3);
         */
     }
+
     boolean isValid = false;
     public void RealTimeValidate(EditText text){
         text.addTextChangedListener(new TextWatcher() {
