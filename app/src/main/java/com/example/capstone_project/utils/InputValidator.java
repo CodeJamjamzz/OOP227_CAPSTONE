@@ -1,6 +1,8 @@
 package com.example.capstone_project.utils;
 
 public class InputValidator {
+
+
     // valid name checker
     public static boolean isValidName(String InputedName) {
         if (InputedName == null || InputedName.trim().isEmpty()) {
@@ -53,9 +55,6 @@ public class InputValidator {
     }
 
     public static boolean isValidEventName(String InputedEventName){
-        if(InputedEventName == null || InputedEventName.trim().isEmpty()){
-            return false;
-        }
-        return true;
+        return InputedEventName != null && !InputedEventName.trim().isEmpty();
     }
 }

@@ -22,4 +22,6 @@ public class PasswordEncryptor {
         String hashedInput = hashPassword(plainTextPassword);
         return hashedInput.equals(hashedPassword);
     }
+
+    
 }
