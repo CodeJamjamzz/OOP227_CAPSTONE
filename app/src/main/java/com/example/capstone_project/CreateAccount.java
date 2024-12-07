@@ -187,13 +187,13 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
     }
+    String Name, StudentNumber, Email, CourseYear;
     public void getInformationCreateAccount(Intent nextActivity){
 
-        String Name = InputedName.getText().toString();
-        String StudentNumber = InputedStudentNumber.getText().toString();
-        String Email = InputedEmail.getText().toString();
-        String CourseYear = InputedCourseYear.getText().toString();
-
+        Name = InputedName.getText().toString();
+        StudentNumber = InputedStudentNumber.getText().toString();
+        Email = InputedEmail.getText().toString();
+        CourseYear = InputedCourseYear.getText().toString();
         // creating a new Account in firebase
         // TODO: check if account is already created maybe? ako nalang lagi i overwrite i swear
         RegItFirebaseController.getInstance().createNewUser(StudentNumber, Name, Email, CourseYear, Password.getText().toString());

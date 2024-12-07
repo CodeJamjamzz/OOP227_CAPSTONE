@@ -27,9 +27,9 @@ public class RegItFirebaseController {
     private final DatabaseReference regItUserAccountListDB;
 
     private RegItFirebaseController() {
-        FirebaseDatabase regItFirebaseDatabase = FirebaseDatabase.getInstance("");
+        FirebaseDatabase regItFirebaseDatabase = FirebaseDatabase.getInstance();
         regItEventsListDB = regItFirebaseDatabase.getReference("");
-        regItUserAccountListDB = regItFirebaseDatabase.getReference("");
+        regItUserAccountListDB = regItFirebaseDatabase.getReference("RegItUserAccountListDatabaseSubtreeNode");
     }
 
     public static RegItFirebaseController getInstance() {

@@ -65,6 +65,6 @@ dependencies {
     implementation(libs.firebase.database)
 
     // jBCRypt hasher
-    implementation("org.mindrot:jbcrypt:0.4")
+    implementation(libs.jbcrypt)
 
 }

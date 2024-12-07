@@ -50,6 +50,7 @@ public class MainMenu extends AppCompatActivity {
             TODO: load events from database here using EventServiceManager
             Hardcoded objects will be here for testing
         */
+        /*
         Attendee testPerson1 = new Attendee("Ewican, James O.", "23-4496-954", "james.ewican@cit.edu", "BSCS - 2");
         Attendee testPerson2 = new Attendee("Pinca, Jamiel Kyne R.", "23-4205-826", "jamiel.pinca@cit.edu", "BSCS - 2");
         Attendee testPerson3 = new Attendee("Galorio, Sydney B.", "23-4105-856", "sydney.galorio@cit.edu", "BSCS - 2");
@@ -61,6 +62,7 @@ public class MainMenu extends AppCompatActivity {
         EventServiceManager.getInstance().registerAttendee(id1, testPerson1);
         EventServiceManager.getInstance().registerAttendee(id2, testPerson2);
         EventServiceManager.getInstance().registerAttendee(id1, testPerson3);
+        */
     }
     boolean isValid = false;
     public void RealTimeValidate(EditText text){
