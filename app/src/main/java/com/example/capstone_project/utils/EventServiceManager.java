@@ -16,13 +16,17 @@ import java.util.concurrent.ExecutionException;
 public class EventServiceManager {
     private String TAG = "EventServiceManager";
     private static EventServiceManager instance;
-    // TODO: make Comparator for Event to sort by start date
+    // DONE: make Comparator for Event to sort by start date
     private static List<Event> events;
     private final RegItFirebaseController db = RegItFirebaseController.getInstance();
 
     private EventServiceManager() {
         // Load events from database here ig
         events = db.getEventsfromDB();
+    }
+
+    private void sortEvents() {
+        events.sort(new EventComparator());
     }
 
     public static EventServiceManager getInstance() {
@@ -34,7 +38,7 @@ public class EventServiceManager {
 
     public void createEvent(String name, String description, String venue, String startDate, String endDate, double ticketPrice, int audienceLimit) {
         EventBuilder builder = new EventBuilder();
-        // TODO: pass event details from EventForms here
+        // DONE: pass event details from EventForms here
         Event event = builder
                 .setEventName(name)
                 .setVenue(venue)
@@ -48,6 +52,7 @@ public class EventServiceManager {
 
         RegItFirebaseController.getInstance().createNewEvent(event);
 
+        sortEvents();
     }
 
     // TODO: add firebase connetion to dis
@@ -55,6 +60,17 @@ public class EventServiceManager {
         for (Event e : events) {
             if (e.getEventId().equals(eventId)) {
                 e.getAttendees().add(a);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean unRegisterAttendee(String eventId, String attendeeId) {
+        Event event = getEventFromId(eventId);
+        for (Attendee a : event.getAttendees()) {
+            if (a.getIdNumber().equals(attendeeId)) {
+
                 return true;
             }
         }
@@ -81,6 +97,15 @@ public class EventServiceManager {
             }
         }
         return null;
+    }
+
+    public String getAttendeeFromName(String eventId, String attendeeName) {
+        for (Attendee a : getEventFromId(eventId).getAttendees()) {
+            if (a.getAttendeeName().equals(attendeeName)) {
+                return a.getAttendeeName();
+            }
+        }
+        return "";
     }
 
     public Event[] getEvents() {

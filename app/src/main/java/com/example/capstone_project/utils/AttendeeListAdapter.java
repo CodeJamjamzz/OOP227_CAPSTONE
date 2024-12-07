@@ -11,7 +11,9 @@ import com.example.capstone_project.R;
 
 public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapter.ViewHolder> {
 
+    private final String eventId;
     private String[] localDataSet;
+    protected int mode;
 
     /**
      * Provide a reference to the type of views that you are using
@@ -19,17 +21,21 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
+        private final TextView unregisterButton;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
 
             textView = (TextView) view.findViewById(R.id.attendeeName);
+            unregisterButton = view.findViewById(R.id.unregisterAttendeeButton);
         }
 
         public TextView getTextView() {
             return textView;
         }
+
+        public TextView getUnregisterButton() { return unregisterButton; }
     }
 
     /**
@@ -37,9 +43,13 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
      *
      * @param dataSet String[] containing the data to populate views to be used
      * by RecyclerView
+     *
+     * mode here will determine whether to show the unregister button or not
      */
-    public AttendeeListAdapter(String[] dataSet) {
+    public AttendeeListAdapter(String eventId, String[] dataSet, int mode) {
+        this.eventId = eventId;
         localDataSet = dataSet;
+        this.mode = mode;
     }
 
     // Create new views (invoked by the layout manager)
@@ -59,6 +69,17 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         viewHolder.getTextView().setText(String.format("%d.\t\t%s", position + 1, localDataSet[position]));
+        if (mode == 0) {
+            viewHolder.getUnregisterButton().setVisibility(View.GONE);
+        } else {
+            viewHolder.getUnregisterButton().setVisibility(View.VISIBLE);
+            // TODO: confirm to unregister attendee
+            viewHolder.getUnregisterButton().setOnClickListener(v -> {
+                String attendeeId = EventServiceManager.getInstance().getAttendeeFromName(eventId, localDataSet[position]);
+                EventServiceManager.getInstance().unRegisterAttendee(eventId, attendeeId);
+            });
+        }
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)

@@ -13,4 +13,18 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/unregisterAttendeeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/red_button"
+        android:paddingStart="@dimen/padding_small"
+        android:paddingEnd="@dimen/padding_small"
+        android:text="UNREGISTER"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:layout_gravity="right"
+        android:visibility="gone"/>
 </FrameLayout>
