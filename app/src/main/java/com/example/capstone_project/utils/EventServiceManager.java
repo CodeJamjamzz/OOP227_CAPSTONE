@@ -12,12 +12,16 @@ import java.util.List;
 public class EventServiceManager {
     private String TAG = "EventServiceManager";
     private static EventServiceManager instance;
-    // TODO: make Comparator for Event to sort by start date
+    // DONE: make Comparator for Event to sort by start date
     private static List<Event> events;
 
     private EventServiceManager() {
         // Load events from database here ig
         events = new ArrayList<>();
+    }
+
+    private void sortEvents() {
+        events.sort(new EventComparator());
     }
 
     public static EventServiceManager getInstance() {
@@ -29,7 +33,7 @@ public class EventServiceManager {
 
     public String createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, double ticketPrice, int audienceLimit) {
         EventBuilder builder = new EventBuilder();
-        // TODO: pass event details from EventForms here
+        // DONE: pass event details from EventForms here
         Event event = builder
                 .setEventName(name)
                 .setVenue(venue)
@@ -40,6 +44,7 @@ public class EventServiceManager {
                 .setTicketPrice(ticketPrice)
                 .build();
         events.add(event);
+        sortEvents();
         return event.getEventId();
     }
 

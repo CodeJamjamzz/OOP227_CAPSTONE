@@ -187,7 +187,7 @@ public class EventForms extends AppCompatActivity {
             }
         }
 
-        // TODO: input validation to prevent crashing
+        // DONE: input validation to prevent crashing
         createEventButton.setOnClickListener(v -> {
             if(!InputEventNameValidator){
                 Toast.makeText(this, "Please input a valid event name", Toast.LENGTH_SHORT).show();
@@ -230,10 +230,13 @@ public class EventForms extends AppCompatActivity {
 
             int eventLimit = Integer.parseInt(EventAudienceLimit.getText().toString());
             if (!editMode) {
-                EventServiceManager.getInstance().createEvent( eventName,  eventDescription,
-                                                               eventVenue, eventStart,
-                                                               eventEnd,   eventPrice,
-                                                               eventLimit                   );
+                EventServiceManager.getInstance().createEvent( eventName,
+                                                               eventDescription,
+                                                               eventVenue,
+                                                               eventStart,
+                                                               eventEnd,
+                                                               eventPrice,
+                                                               eventLimit);
             } else {
                 event.setName(eventName);
                 event.setDescription(eventDescription);
