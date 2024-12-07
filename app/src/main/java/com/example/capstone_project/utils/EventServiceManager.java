@@ -53,18 +53,17 @@ public class EventServiceManager {
         sortEvents();
     }
 
-    public boolean registerAttendee(String eventId, String attendeeID, String attendeeName) {
+    public boolean registerAttendee(String eventId, Attendee newAttendee) {
         for (Event e : events) {
             if (e.getEventId().equals(eventId)) {
                 Log.d(TAG, "Event found, adding attendee...");
                 for (Attendee a : e.getAttendees()) {
-                    if (a.getUserAccountID().equals(attendeeID)) {
+                    if (a.getUserAccountID().equals(newAttendee.getUserAccountID())) {
                         Log.d(TAG, "Attendee already in event! Skipped");
                         return false;
                     }
                 }
-                Attendee a = new Attendee(attendeeID, attendeeName);
-                e.getAttendees().add(a);
+                e.getAttendees().add(newAttendee);
                 return true;
              }
         }

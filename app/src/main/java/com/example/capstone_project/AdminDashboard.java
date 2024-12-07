@@ -2,6 +2,7 @@ package com.example.capstone_project;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -48,6 +49,7 @@ public class AdminDashboard extends AppCompatActivity {
         noEventsText = findViewById(R.id.noEventsText);
         noUpcomingEventText = findViewById(R.id.noUpcomingEventText);
         FloatingActionButton addEvent = findViewById(R.id.addEvent);
+        events = EventServiceManager.getInstance().getEvents();
 
         addEvent.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), EventForms.class);
@@ -56,7 +58,9 @@ public class AdminDashboard extends AppCompatActivity {
 
         latestEvent.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), EventDetails.class);
+            Log.d("Selection", "Selecting Event with ID " + events[0].getEventId());
             intent.putExtra("SELECTED_EVENT_ID", events[0].getEventId());
+            Log.d("Intent", intent.toString());
             v.getContext().startActivity(intent);
         });
 

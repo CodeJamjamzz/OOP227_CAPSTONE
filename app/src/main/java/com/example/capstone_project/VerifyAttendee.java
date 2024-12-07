@@ -50,12 +50,19 @@ public class VerifyAttendee extends AppCompatActivity {
             @Override
             public void onQRCodeScanned(String attendeeId) {
                 try {
+
+                    String[] parts = attendeeId.split(" - ");
+
+                    // Access the two parts
+                    String p1 = parts[0];
+                    String p2 = parts[1];
+
                     previewView.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.scan_success));
-                    if (EventServiceManager.getInstance().verifyAttendee(eventId, attendeeId)) {
+                    if (EventServiceManager.getInstance().verifyAttendee(eventId, p1)) {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.white_button));
                         attendeeStatus.setTextColor(ContextCompat.getColor(VerifyAttendee.this, R.color.green));
                         attendeeStatus.setText(R.string.attendee_verified);
-                        attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getUserAccountName());
+//                        attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getUserAccountName());
                     } else {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.red_button));
                         attendeeStatus.setTextColor(ContextCompat.getColor(VerifyAttendee.this, R.color.white));

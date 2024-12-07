@@ -62,7 +62,6 @@ public class EventDetails extends AppCompatActivity {
         attendeeList = findViewById(R.id.eventDetails_attendeeListView);
 
         // TODO: register and unregister attendee
-
         registerAttendeeButton.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), RegisterAttendee.class);
             intent.putExtra("SELECTED_EVENT_ID", event.getEventId());

@@ -64,11 +64,14 @@ public class RegisterAttendee extends AppCompatActivity {
                     String p2 = parts[1];
 
                     previewView.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.scan_success));
-                    if (EventServiceManager.getInstance().registerAttendee(eventId, p1, p2)) {
+                    Attendee a = new Attendee(p1, p2);
+                    if (EventServiceManager.getInstance().registerAttendee(eventId, a)) {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.white_button));
                         attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.green));
                         attendeeStatus.setText(R.string.attendee_registered);
-                        attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getUserAccountID());
+                        //TODO: fix this bruh broken asf
+//                        attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getUserAccountID());
+                        finish();
                     } else {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.red_button));
                         attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.white));
