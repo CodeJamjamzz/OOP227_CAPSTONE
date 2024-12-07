@@ -4,15 +4,12 @@ package com.example.capstone_project.FirebaseController;
 import static com.example.capstone_project.utils.PasswordEncryptor.checkPassword;
 import static com.example.capstone_project.utils.PasswordEncryptor.hashPassword;
 
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.capstone_project.models.Event;
 import com.example.capstone_project.models.UserAccount;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,27 +17,37 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicReference;
 
-
+// Singleton
 public class RegItFirebaseController {
 
-
-    private final DatabaseReference regItUserAccountListDB;
+    private static RegItFirebaseController instance;
+    private FirebaseDatabase database;
     private final DatabaseReference regItEventsListDB;
+    private final DatabaseReference regItUserAccountListDB;
 
-    public RegItFirebaseController() {
-        // create only one instance of the firebase database
-        FirebaseDatabase regItFirebaseDatabase = FirebaseDatabase.getInstance("DB_URL");
-        regItEventsListDB = regItFirebaseDatabase.getReference("EV_DB");
-        regItUserAccountListDB = regItFirebaseDatabase.getReference("UA_DB");
+    private RegItFirebaseController() {
+        FirebaseDatabase regItFirebaseDatabase = FirebaseDatabase.getInstance("");
+        regItEventsListDB = regItFirebaseDatabase.getReference("");
+        regItUserAccountListDB = regItFirebaseDatabase.getReference("");
     }
 
+    public static RegItFirebaseController getInstance() {
+        if (instance == null) {
+            instance = new RegItFirebaseController();
+        }
+        return instance;
+    }
+
+    public DatabaseReference getRegItEventsListDB() { return regItEventsListDB; }
+
+    public DatabaseReference getRegItUserAccountListDB() { return regItUserAccountListDB; }
+
     // Firebase Account Creation Method
+    // Technically I can disallow account creation here if account already exists
     public void createNewUser(String StudentNumber, String name, String email, String courseYear, String password) {
 
-        // TODO: proly just implement firebase Authenticator
+        // TODO: probably just implement firebase Authenticator
         String hashedPassword = hashPassword(password);
         // creates a UserObject
         UserAccount user = new UserAccount(StudentNumber, name, email, courseYear, hashedPassword);
@@ -56,9 +63,9 @@ public class RegItFirebaseController {
             }
         });
 
-
     }
 
+    // Firebase Event creation method
     public void createNewEvent(Event event) {
         regItEventsListDB.child(event.getEventId()).setValue(event).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -106,29 +113,50 @@ public class RegItFirebaseController {
         return fetchUserFromSource(studentNumber, password);
     }
 
-    /* HOW TO USE THE GET USER / can also be used in the getData for specific data
+    // Firebase Event Access Method
+    private CompletableFuture<Event> fetchEventFromSource(String eventID) {
+        CompletableFuture<Event> future = new CompletableFuture<>();
+
+        DatabaseReference eventReference = regItEventsListDB.child(eventID);
+
+        eventReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Event curEvent = dataSnapshot.getValue(Event.class);
+                    assert curEvent != null;
+                    future.complete(curEvent);
+                } else {
+                    future.completeExceptionally(new Exception("Event does not exist"));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                future.completeExceptionally(databaseError.toException());
+            }
+        });
+
+        return future;
+    }
+
+    public CompletableFuture<Event> getEvent(String eventID) {
+        return fetchEventFromSource(eventID);
+    }
+
+
+
+    /* Use the user obtained within here
+
     CompletableFuture<UserAccount> userFuture = db.getUser("23-2772-181");
     userFuture.thenAccept(userAccount -> {
-        if (userAccount != null) {
-            Log.d("User Data", "User found: " + userAccount.toString());
-        } else {
-            Log.d("User Data", "User not found");
-        }
+        // Error checking is already done in the method so just use the new userAccount object here
     }).exceptionally(e -> {
         Log.e("User Data", "Error fetching user: " + e.getMessage());
         return null;
     });
+
      */
-        // TODO: getting specific data
-//    public CompletableFuture<String> fetchData(String studentNumber) {
-//        return getUser(studentNumber).thenApply(userAccount -> {
-//            if (userAccount != null) {
-//                return userAccount.getAccountName();
-//            } else {
-//                return "User not found";
-//            }
-//        });
-//    }
 
     // Firebase get data Method
     /*   USAGE
@@ -139,12 +167,6 @@ public class RegItFirebaseController {
     });
      */
 
-
-    // Firebase Store Event Method
-
-
-
-    // Firebase Event Access Method
 
     // Firebase Add Attendee Method
 

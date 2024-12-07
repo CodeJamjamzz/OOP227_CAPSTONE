@@ -48,23 +48,17 @@ public class MainMenu extends AppCompatActivity {
             TODO: load events from database here using EventServiceManager
             Hardcoded objects will be here for testing
         */
-        Attendee testPerson1 = new Attendee("Ewican, James O.", "23-4496-954", "james.ewican@cit.edu", "BSCS - 2");
-        Attendee testPerson2 = new Attendee("Pinca, Jamiel Kyne R.", "23-4205-826", "jamiel.pinca@cit.edu", "BSCS - 2");
-        Attendee testPerson3 = new Attendee("Galorio, Sydney B.", "23-4105-856", "sydney.galorio@cit.edu", "BSCS - 2");
+//        Attendee testPerson1 = new Attendee("Ewican, James O.", "23-4496-954", "james.ewican@cit.edu", "BSCS - 2");
+//        Attendee testPerson2 = new Attendee("Pinca, Jamiel Kyne R.", "23-4205-826", "jamiel.pinca@cit.edu", "BSCS - 2");
+//        Attendee testPerson3 = new Attendee("Galorio, Sydney B.", "23-4105-856", "sydney.galorio@cit.edu", "BSCS - 2");
         LocalDateTime testStart = LocalDateTime.now().plusDays(1);
         LocalDateTime testEnd = LocalDateTime.now().plusDays(3);
-        EventServiceManager.getInstance().createEvent("CCS Akwe", "Find new friends!", "CIT-U Gym", testStart, testEnd, 0);
 
-
-
-        // firebase testing wwa
-
-
-        String id1 = EventServiceManager.getInstance().createEvent("CCS Akwe", "Find new friends!", "CIT-U Gym", testStart, testEnd, 0);
-        String id2 = EventServiceManager.getInstance().createEvent("Food Bazaar", "Try our delicious meals!", "CIT-U RTL Quadrangle", testStart, testEnd, 0);
-        EventServiceManager.getInstance().registerAttendee(id1, testPerson1);
-        EventServiceManager.getInstance().registerAttendee(id2, testPerson2);
-        EventServiceManager.getInstance().registerAttendee(id1, testPerson3);
+//        String id1 = EventServiceManager.getInstance().createEvent("CCS Akwe", "Find new friends!", "CIT-U Gym", testStart, testEnd, 0);
+//        String id2 = EventServiceManager.getInstance().createEvent("Food Bazaar", "Try our delicious meals!", "CIT-U RTL Quadrangle", testStart, testEnd, 0);
+//        EventServiceManager.getInstance().registerAttendee(id1, testPerson1);
+//        EventServiceManager.getInstance().registerAttendee(id2, testPerson2);
+//        EventServiceManager.getInstance().registerAttendee(id1, testPerson3);
     }
 
     public void createAccountActivity(View view){

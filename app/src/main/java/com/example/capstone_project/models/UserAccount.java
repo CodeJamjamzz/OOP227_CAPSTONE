@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // UserAccount information is stored in JSON in the database, the object is only used and created
-// through the firebaseController so that it could be used within the app.
+// temporarily through the firebaseController so that it could be used within some methods in the app.
 // It is also used to make it easier to pass the data to firebase by storing & passing as an obj.
 
 public class UserAccount {
@@ -17,74 +17,77 @@ public class UserAccount {
     private List<String> accountEventsAttending;
 
 
-    // TODO: for the account list in firebase, the accountID is the key (school ID), no idea for password
-    // password can prolly be more secured if using diff DB system but for 2.0 lang hehe
+    // TODO: for the account list in firebase, the accountID is the key (school ID)
 
-    // Used by Firebase to create a JSON (it needs an empty constructor)
+    // Used by Firebase to add in DB (it needs an empty constructor)
     public UserAccount() {
         this.accountEventsAttending = new ArrayList<>(); // Initialize to avoid null
     }
 
     public UserAccount(String accountID, String accountName, String accountEmail, String CourseYear, String accountPassword) {
 
-        setAccountID(accountID);
+        setAccountCourseYear(CourseYear);
         setAccountEmail(accountEmail);
+        accountEventsAttending = new ArrayList<>();
+        setAccountID(accountID);
         setAccountName(accountName);
         setAccountPassword(accountPassword);
-        setAccountCourseYear(CourseYear);
-        accountEventsAttending = new ArrayList<>();
     }
 
-    public String getAccountPassword() {
-        return accountPassword;
-    }
-
-    public void setAccountPassword(String accountPassword) {
-        this.accountPassword = accountPassword;
-    }
-
-    public String getAccountEmail() {
-        return accountEmail;
-    }
+                                        /* SETTERS */
+    public void setAccountCourseYear(String accountCourseYear) { this.accountCourseYear = accountCourseYear; }
 
     public void setAccountEmail(String accountEmail) {
         this.accountEmail = accountEmail;
-    }
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    public String getAccountID() {
-        return accountID;
     }
 
     public void setAccountID(String accountID) {
         this.accountID = accountID;
     }
 
+    // maybe add a add and delete events Attending but maybe just in the firebase
+    public void setAccountEventsAttending(List<String> accountEventsAttending) {
+        this.accountEventsAttending = accountEventsAttending;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public void setAccountPassword(String accountPassword) { this.accountPassword = accountPassword; }
+
+                                        /* GETTERS */
     public String getAccountCourseYear() {
         return accountCourseYear;
     }
 
-    public void setAccountCourseYear(String accountCourseYear) {
-        this.accountCourseYear = accountCourseYear;
+    public String getAccountEmail() {
+        return accountEmail;
     }
 
     public List<String> getAccountEventsAttending() {
         return new ArrayList<>(accountEventsAttending); // Return a copy to avoid external modification
     }
 
-    public void setAccountEventsAttending(List<String> accountEventsAttending) {
-        this.accountEventsAttending = accountEventsAttending;
+    public String getAccountID() {
+        return accountID;
     }
 
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public String getAccountPassword() {
+        return accountPassword;
+    }
+
+                                /* Attended Events Method */
     public void addEvent(String eventID) {
         this.accountEventsAttending.add(eventID); // Method to add an event
+    }
+
+    public void removeEvent(String eventID) {
+        this.accountEventsAttending.remove(eventID);
     }
 
     @Override

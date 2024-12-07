@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
+// Attendee Object is to access userAccount information through the database
+// security checks for access are already setup there & locally
+
 public class Attendee {
     private String attendeeIDNumber;
     private String userAccountID;
@@ -25,28 +28,29 @@ public class Attendee {
         return attendeeIDNumber;
     }
 
-    public void setAttendeeIDNumber(String attendeeIDNumber) {
-        this.attendeeIDNumber = attendeeIDNumber;
-    }
-
     public String getUserAccountID() {
         return userAccountID;
-    }
-
-    public void setUserAccountID(String userAccountID) {
-        this.userAccountID = userAccountID;
     }
 
     public String getCourse() {
         return course;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
-    }
-
     public int getYear() {
         return year;
+    }
+
+    // these are all for the attendee object in the event list
+    public void setAttendeeIDNumber(String attendeeIDNumber) {
+        this.attendeeIDNumber = attendeeIDNumber;
+    }
+
+    public void setUserAccountID(String userAccountID) {
+        this.userAccountID = userAccountID;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
     }
 
     public void setYear(int year) {
