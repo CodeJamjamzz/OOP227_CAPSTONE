@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class Event implements Parcelable {
     private String name;
-    private String eventId;
+    private final String eventId; // eventID must not be changeable
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String venue;
@@ -169,5 +169,12 @@ public class Event implements Parcelable {
         dest.writeString(category);
         dest.writeDouble(ticketPrice);
         dest.writeList(attendees);
+    }
+
+    @NonNull
+    @Override
+    // name of the event object will always be its own event ID as it will always stay and be unique
+    public String toString() {
+        return eventId;
     }
 }

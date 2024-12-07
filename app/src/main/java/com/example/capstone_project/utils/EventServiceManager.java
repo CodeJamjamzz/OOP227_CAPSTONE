@@ -30,7 +30,7 @@ public class EventServiceManager {
         return instance;
     }
 
-    public String createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, int audienceLimit) {
+    public void createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, int audienceLimit) {
         EventBuilder builder = new EventBuilder();
         // TODO: pass event details from EventForms here
         Event event = builder
@@ -45,7 +45,6 @@ public class EventServiceManager {
 
         RegItFirebaseController.getInstance().createNewEvent(event);
 
-        return event.getEventId();
     }
 
     // TODO: add firebase connetion to dis
