@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,9 +14,14 @@ import android.app.AlertDialog;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
+import com.example.capstone_project.models.UserAccount;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,12 +29,17 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.capstone_project.utils.InputValidator;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.concurrent.CompletableFuture;
 
 // java code for activity_main.xml screen the first one
 public class MainMenu extends AppCompatActivity {
     // opens activity_main.xml
     TextView createAccount;
     TextView adminDashboard;
+    RegItFirebaseController db = RegItFirebaseController.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +72,7 @@ public class MainMenu extends AppCompatActivity {
         EventServiceManager.getInstance().registerAttendee(id1, testPerson3);
         */
     }
+
     boolean isValid = false;
     public void RealTimeValidate(EditText text){
         text.addTextChangedListener(new TextWatcher() {
@@ -126,25 +138,27 @@ public class MainMenu extends AppCompatActivity {
 
     // Method to check if the student number exists in Firebase
     private void checkIfStudentNumberExists(String studentNumber) {
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance()
-                .getReference("RegItUserAccountListDatabaseSubtreeNode");
-
-        databaseRef.child(studentNumber).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                if (task.getResult().exists()) {
+        DatabaseReference userReference = db.getRegItUserAccountListDB().child(studentNumber);
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
                     // Student number exists, ask for pass
                     showPasswordPopup(studentNumber);
                 } else {
                     // Student number not found, navigate to CreateAccount activity
                     Intent intent = new Intent(MainMenu.this, CreateAccount.class);
+                    intent.putExtra("studentNumber", studentNumber);
                     startActivity(intent);
                 }
-            } else {
-                // Handle potential errors
-                Toast.makeText(MainMenu.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("User", "Error checking user existence: " + error.getMessage());
             }
         });
     }
+
     public void showPasswordPopup(String studentNumber) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Enter Password");
@@ -174,15 +188,19 @@ public class MainMenu extends AppCompatActivity {
         // Confirm behavior
         builder.setPositiveButton("Submit", (dialog, which) -> {
             String password = input.getText().toString().trim();
-            if (!password.isEmpty()) {
-                // todo get and verify password
-                // todo if password is wrong toast error
-                // todo if password is correct go to createqrcode activity
-                //dummy
-                 Toast.makeText(MainMenu.this, "yey u have password", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(MainMenu.this, "Please enter a password", Toast.LENGTH_SHORT).show();
-            }
+            CompletableFuture<UserAccount> userFuture = db.getUser(studentNumber, password);
+            userFuture.thenAccept(userAccount -> {
+                Intent nextActivity = new Intent(MainMenu.this, CreateQRCode.class);
+                nextActivity.putExtra("InputedName", userAccount.getAccountName());
+                nextActivity.putExtra("InputedStudentNumber", userAccount.getAccountID());
+                nextActivity.putExtra("InputedEmail", userAccount.getAccountEmail());
+                nextActivity.putExtra("InputedCourseYear", userAccount.getAccountCourseYear());
+                startActivity(nextActivity);
+                Toast.makeText(MainMenu.this, "yey u have password", Toast.LENGTH_SHORT).show();
+            }).exceptionally(e -> {
+                Toast.makeText(MainMenu.this, "Password is Wrong Lmao", Toast.LENGTH_SHORT).show();
+                return null;
+            });
         });
 
         // Cancel behavior
@@ -191,6 +209,8 @@ public class MainMenu extends AppCompatActivity {
         // Show the popup
         builder.show();
     }
+
+
     public void createAccountActivity(View view){
         showStudentNumberPopup();
     }

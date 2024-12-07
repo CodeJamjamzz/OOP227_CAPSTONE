@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 // Singleton
 public class RegItFirebaseController {
@@ -28,7 +29,7 @@ public class RegItFirebaseController {
 
     private RegItFirebaseController() {
         FirebaseDatabase regItFirebaseDatabase = FirebaseDatabase.getInstance();
-        regItEventsListDB = regItFirebaseDatabase.getReference("");
+        regItEventsListDB = regItFirebaseDatabase.getReference("RegItEventListDatabaseSubtreeNode");
         regItUserAccountListDB = regItFirebaseDatabase.getReference("RegItUserAccountListDatabaseSubtreeNode");
     }
 
@@ -95,6 +96,32 @@ public class RegItFirebaseController {
                     } else {
                         future.completeExceptionally(new Exception("Incorrect password"));
                     }
+                } else {
+                    future.completeExceptionally(new Exception("User not found"));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                future.completeExceptionally(databaseError.toException());
+            }
+        });
+
+        return future;
+    }
+
+    private CompletableFuture<UserAccount> fetchUserFromSource(String studentNumber) {
+        CompletableFuture<UserAccount> future = new CompletableFuture<>();
+
+        DatabaseReference userReference = regItUserAccountListDB.child(studentNumber);
+
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    UserAccount userAccount = dataSnapshot.getValue(UserAccount.class);
+                    assert userAccount != null;
+                    future.complete(userAccount);
                 } else {
                     future.completeExceptionally(new Exception("User not found"));
                 }
