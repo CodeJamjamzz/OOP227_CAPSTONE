@@ -23,4 +23,8 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.example.capstone_project", appContext.getPackageName());
     }
+
+    // Test Firebase Connection
+
+
 }

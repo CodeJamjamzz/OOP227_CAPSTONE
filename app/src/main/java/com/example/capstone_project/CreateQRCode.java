@@ -68,6 +68,7 @@ public class CreateQRCode extends AppCompatActivity {
     // function that generates QR
     private void generateAndDisplayQRCode() {
         try {
+            // TODO: probably change it to just display studentID
             String data = "{"
                     + "\"name\":\"" + DisplayName.getText().toString() + "\","
                     + "\"studentNumber\":\"" + DisplayStudentNumber.getText().toString() + "\","

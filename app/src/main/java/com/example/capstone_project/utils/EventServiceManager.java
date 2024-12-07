@@ -1,15 +1,22 @@
 package com.example.capstone_project.utils;
 
+import android.util.Log;
+
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
+// Singleton
 public class EventServiceManager {
     private static EventServiceManager instance;
     private static List<Event> events;
+    private final RegItFirebaseController db = RegItFirebaseController.getInstance();
 
     private EventServiceManager() {
         // Load events from database here ig
@@ -23,7 +30,7 @@ public class EventServiceManager {
         return instance;
     }
 
-    public String createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, int audienceLimit) {
+    public void createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, int audienceLimit) {
         EventBuilder builder = new EventBuilder();
         // TODO: pass event details from EventForms here
         Event event = builder
@@ -35,9 +42,12 @@ public class EventServiceManager {
                 .setDescription(description)
                 .build();
         events.add(event);
-        return event.getEventId();
+
+        RegItFirebaseController.getInstance().createNewEvent(event);
+
     }
 
+    // TODO: add firebase connetion to dis
     public boolean registerAttendee(String eventId, Attendee a) {
         for (Event e : events) {
             if (e.getEventId().equals(eventId)) {
@@ -49,17 +59,21 @@ public class EventServiceManager {
     }
 
     public Event getEventFromId(String eventId) {
-        for (Event e : events) {
-            if (e.getEventId().equals(eventId)) {
-                return e;
-            }
+        CompletableFuture<Event> eventFuture = db.getEvent(eventId);
+
+        try {
+            return eventFuture.get(); // This will block until the future completes
+        } catch (InterruptedException | ExecutionException e) {
+            // Handle the exception appropriately, e.g., log the error and return null
+            Log.e("EventServiceManager", "Error fetching event: " + e.getMessage());
+            return null;
         }
-        return null;
     }
 
     public Attendee getAttendeeFromId(String eventId, String attendeeId) {
         for (Attendee a : getEventFromId(eventId).getAttendees()) {
-            if (a.getIdNumber().equals(attendeeId)) {
+            // TODO: connect with firebase
+            if (a.getAttendeeIDNumber().equals(attendeeId)) {
                 return a;
             }
         }
@@ -76,7 +90,8 @@ public class EventServiceManager {
             throw new IllegalStateException("Event not found!");
         }
         for (Attendee b : event.getAttendees()) {
-            if (attendeeId.equals(b.getIdNumber())) {
+            // TODO: add firebase connections in Attendee getters
+            if (attendeeId.equals(b.getAttendeeIDNumber())) {
                 return true;
             }
         }
@@ -87,9 +102,11 @@ public class EventServiceManager {
         if (!events.contains(e)) {
             return;
         }
-        for (Attendee b : e.getAttendees()) {
-            b.getEventsRegistered().remove(e.getEventId());
-        }
+        // TODO: change to access attendeeAccountID then delete from UserAccount in DB
+        // attendee -> userAccount
+//        for (Attendee b : e.getAttendees()) {
+//            b.getEventsRegistered().remove(e.getEventId());
+//        }
         events.remove(e);
     }
 

@@ -170,7 +170,7 @@ public class VerifyAttendee extends AppCompatActivity {
                     Log.d("QRScanner", "Attendee verified");
                     attendeeStatus.setBackground(ContextCompat.getDrawable(this, R.drawable.white_button));
                     attendeeStatus.setText(R.string.attendee_verified);
-                    attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getName());
+                    attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getAttendeeName());
                 } else {
                     Log.d("QRScanner", "Attendee verification failed");
                     attendeeStatus.setBackground(ContextCompat.getDrawable(this, R.drawable.red_button));

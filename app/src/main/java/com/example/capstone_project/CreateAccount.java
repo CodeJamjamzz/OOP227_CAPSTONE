@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.example.capstone_project.utils.InputValidator;
 
 import androidx.activity.EdgeToEdge;
@@ -193,6 +194,11 @@ public class CreateAccount extends AppCompatActivity {
         String Email = InputedEmail.getText().toString();
         String CourseYear = InputedCourseYear.getText().toString();
 
+        // creating a new Account in firebase
+        // TODO: check if account is already created maybe? ako nalang lagi i overwrite i swear
+        RegItFirebaseController.getInstance().createNewUser(StudentNumber, Name, Email, CourseYear, Password.getText().toString());
+
+        // Display Information in Next Activity
         nextActivity.putExtra("InputedName", Name);
         nextActivity.putExtra("InputedStudentNumber", StudentNumber);
         nextActivity.putExtra("InputedEmail", Email);
