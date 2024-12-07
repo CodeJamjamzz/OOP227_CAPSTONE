@@ -13,29 +13,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Event implements Parcelable {
+public class Event {
     private String name;
-    private String eventId;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private final String eventId; // eventID must not be changeable
+    private String startDate;
+    private String endDate;
     private String venue;
     private int audienceLimit;
     private String description;
     private String category;
     private double ticketPrice;
-    private List<Attendee> attendants;
+    private List<Attendee> attendees;
 
-    public Event(String name, LocalDateTime startDate, LocalDateTime endDate, String venue, int audienceLimit, String description, String category, double ticketPrice) {
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.venue = venue;
-        this.audienceLimit = audienceLimit;
-        this.description = description;
-        this.category = category;
-        this.ticketPrice = ticketPrice;
-        attendants = new ArrayList<>();
+    public Event() {
+        startDate = null;
+        endDate = null;
+        venue = "TBA";
+        audienceLimit = 0;
+        description = "TBA";
+        category = null;
+        ticketPrice = 0.0;
         this.eventId = UUID.randomUUID().toString();
+        this.attendees = new ArrayList<>();
     }
 
     public String getName() {
@@ -46,11 +45,9 @@ public class Event implements Parcelable {
         return eventId;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
+    public String getStartDate() { return startDate; }
 
-    public LocalDateTime getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
@@ -74,65 +71,48 @@ public class Event implements Parcelable {
         return ticketPrice;
     }
 
-    public List<Attendee> getAttendants() {
-        return attendants;
+    public List<Attendee> getAttendees() {
+        return attendees;
     }
 
-    // Parcelable-specific stuff
-    protected Event(Parcel in) {
-        name = in.readString();
-        eventId = in.readString();
-
-        // Read LocalDateTime as long timestamps
-        long startDateTimestamp = in.readLong();
-        startDate = startDateTimestamp == -1 ? null :
-                LocalDateTime.ofInstant(Instant.ofEpochMilli(startDateTimestamp), ZoneOffset.UTC);
-
-        long endDateTimestamp = in.readLong();
-        endDate = endDateTimestamp == -1 ? null :
-                LocalDateTime.ofInstant(Instant.ofEpochMilli(endDateTimestamp), ZoneOffset.UTC);
-
-        venue = in.readString();
-        audienceLimit = in.readInt();
-        description = in.readString();
-        category = in.readString();
-        ticketPrice = in.readDouble();
-
-        attendants = new ArrayList<>();
-        in.readList(attendants, Attendee.class.getClassLoader());
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public static final Creator<Event> CREATOR = new Creator<Event>() {
-        @Override
-        public Event createFromParcel(Parcel in) {
-            return new Event(in);
-        }
+    public void setStartDate(String startDate) { this.startDate = startDate; }
 
-        @Override
-        public Event[] newArray(int size) {
-            return new Event[size];
-        }
-    };
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
 
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+
+    public void setAudienceLimit(int audienceLimit) {
+        this.audienceLimit = audienceLimit;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setTicketPrice(double ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
+
+    public void setAttendees(List<Attendee> attendees) {
+        this.attendees = attendees;
+    }
+
+    @NonNull
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(eventId);
-
-        // Write LocalDateTime as long timestamps
-        dest.writeLong(startDate.toInstant(ZoneOffset.UTC).toEpochMilli());
-        dest.writeLong(endDate.toInstant(ZoneOffset.UTC).toEpochMilli());
-
-        dest.writeString(venue);
-        dest.writeInt(audienceLimit);
-        dest.writeString(description);
-        dest.writeString(category);
-        dest.writeDouble(ticketPrice);
-        dest.writeList(attendants);
+    // name of the event object will always be its own event ID as it will always stay and be unique
+    public String toString() {
+        return eventId;
     }
 }

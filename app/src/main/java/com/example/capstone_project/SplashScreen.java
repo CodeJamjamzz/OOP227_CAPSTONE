@@ -10,7 +10,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
+import com.example.capstone_project.utils.EventServiceManager;
+
 public class SplashScreen extends AppCompatActivity {
+
+    RegItFirebaseController db = RegItFirebaseController.getInstance();
+    EventServiceManager evManager = EventServiceManager.getInstance();
 
     // its just the splash screen
     @Override
@@ -28,7 +34,7 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashScreen.this,MainActivity.class);
+                Intent intent = new Intent(SplashScreen.this, MainMenu.class);
                 startActivity(intent);
                 finish();
             }

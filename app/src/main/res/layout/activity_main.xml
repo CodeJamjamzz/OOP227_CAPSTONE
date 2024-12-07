@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00712d"
-    tools:context=".MainActivity" >
+    tools:context=".MainMenu" >
 
     <TextView
         android:id="@+id/textView"
@@ -91,7 +91,7 @@
     <TextView
         android:id="@+id/textView3"
         android:layout_width="91dp"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:fontFamily="sans-serif-condensed"
         android:text="Created by:"
         android:textColor="@color/white"

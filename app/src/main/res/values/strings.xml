@@ -2,7 +2,7 @@
     <!-- Main Activity Strings -->
     <string name="app_name">Capstone_Project</string>
     <string name="admin_dashboard">Admin Dashboard</string>
-    <string name="create_account">Create Account</string>
+    <string name="create_account">Student Account</string>
 
     <!-- Create Account Strings -->
     <string name="formHeader">STUDENT ACCOUNT FORMS</string>
@@ -27,5 +27,35 @@
     <string name="upcoming_events">UPCOMING EVENTS</string>
     <string name="list_of_events">LIST OF EVENTS</string>
 
+    <!--  Verify Attendee Strings  -->
+    <string name="waiting_for_scan">WAITING FOR SCAN</string>
+    <string name="status">Status:</string>
+    <string name="type_of_admission">Type of\nAdmission:</string>
+    <string name="name">Name:</string>
+    <string name="attendant_details">Attendee Details:</string>
+    <string name="attendant_verification">Attendee Verification</string>
+    <string name="attendant_verification_tip">
+        Scan the attendee’s QR code by placing the
+        QR code within the viewfinder</string>
+    <string name="attendee_verified">ATTENDEE IN EVENT</string>
+    <string name="attendee_verifail">NOT IN EVENT</string>
+
+    <!-- Event Forms strings-->
+    <string name="eventFormsHeader">CREATE EVENT FORMS</string>
+    <string name="eventName">Event Name:</string>
+    <string name="eventDescription">Desciption:</string>
+    <string name="eventVenue">Venue :</string>
+    <string name="eventStartDateHeader">Start Date :</string>
+    <string name="eventEndDate">End Date :</string>
+    <string name="eventAudienceLimit">Limit :</string>
+    <string name="eventTimeStart">Time Start :</string>
+    <string name="eventTimeEnd">Time End :</string>
+    <string name="eventCreate">Create Event</string>
+    <string name="eventTicket">Ticket Price :</string>
+    <string name="tba">TBA</string>
+    <string name="attendee_placeholder">Attendee</string>
+    <string name="confirmEdit">CONFIRM EDIT</string>
+    <string name="attendee_registered">ATTENDEE REGISTERED</string>
+    <string name="attendee_register_error">ALREADY IN EVENT</string>
 </resources>
 

@@ -1,6 +1,7 @@
 package com.example.capstone_project;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.text.TextWatcher;
@@ -9,9 +10,11 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.example.capstone_project.utils.InputValidator;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,7 +24,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class CreateAccount extends AppCompatActivity {
     // open activity_create_account.xml
     TextView QRCodecreate;
-    EditText InputedName, InputedStudentNumber,InputedEmail, InputedCourseYear;
+    EditText InputedName, InputedStudentNumber,InputedEmail, InputedCourseYear, Password, ConfirmPassword;
     boolean isNameValid = false, isStudentNumberValid = false, isEmailValid = false, isCourseValid = false;
 
     @Override
@@ -40,13 +43,106 @@ public class CreateAccount extends AppCompatActivity {
         InputedStudentNumber = findViewById(R.id.inputStudentNumber);
         InputedEmail = findViewById(R.id.inputEmail);
         InputedCourseYear = findViewById(R.id.inputCourseYear);
+        Password = findViewById(R.id.inputPassword);
+        ConfirmPassword = findViewById(R.id.inputConfirmPassword);
 
+        Intent intent = getIntent();
+        String studentNumber = intent.getStringExtra("studentNumber");
+
+        if (studentNumber != null) {
+            InputedStudentNumber.setText(studentNumber);
+        }
+        View rootView = findViewById(android.R.id.content);
+        final boolean[] isKeyboardOpen = {false};
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            Rect areawindow = new Rect();
+            rootView.getWindowVisibleDisplayFrame(areawindow);
+            int screenHeight = rootView.getRootView().getHeight();
+            int mykeypadHeight = screenHeight - areawindow.bottom;
+
+            // Check if the keyboard is visible
+            if (mykeypadHeight > screenHeight * 0.05) {
+                if (!isKeyboardOpen[0]) {
+                    // Keyboard has just opened
+                    isKeyboardOpen[0] = true;
+                    scrollToFocusedView(rootView, areawindow);
+                }
+            } else {
+                if (isKeyboardOpen[0]) {
+                    isKeyboardOpen[0] = false;
+                    rootView.scrollTo(0, 0);  // Reset scroll position when keyboard is hidden
+                }
+            }
+        });
+        addFocusChangeListener(Password, rootView);
+        addFocusChangeListener(ConfirmPassword, rootView);
+
+        showPrivacyNotice();
         RealTimeValidate(InputedName, "name");
         RealTimeValidate(InputedStudentNumber, "studentNumber");
         RealTimeValidate(InputedEmail, "email");
         RealTimeValidate(InputedCourseYear, "course");
     }
-
+    //helper for keyboard scrolling
+    private void scrollToFocusedView(View rootView, Rect areawindow) {
+        View focusedView = getCurrentFocus();
+        if (focusedView != null) {
+            int scrollAmount = focusedView.getBottom() - areawindow.bottom + 70;
+            if (scrollAmount > 0) {
+                rootView.scrollBy(0, scrollAmount);
+            }
+        }
+    }
+    //another helper
+    private void addFocusChangeListener(EditText editText, View rootView) {
+        editText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                rootView.post(() -> {
+                    //  reset to 0 0
+                    rootView.scrollTo(0, 0);
+                    //  scrolling to view
+                    Rect areawindow = new Rect();
+                    rootView.getWindowVisibleDisplayFrame(areawindow);
+                    scrollToFocusedView(rootView, areawindow);
+                });
+            }
+        });
+    }
+    // function to show privacy notice in a popup
+    private void showPrivacyNotice() {
+        AlertDialog.Builder popup = new AlertDialog.Builder(this);
+        popup.setTitle("Privacy Notice");
+        popup.setMessage("The information you provide will be used exclusively to enhance the " +
+                        "success of the organization's future events. " +
+                        "This data will help us improve planning, " +
+                        "communication, and event experiences. " +
+                        "Your information will not be shared with third parties " +
+                        "or used for any unrelated purposes. " +
+                        "We are committed to protecting your privacy and ensuring your data is handled responsibly");
+        popup.setPositiveButton("Agree", (dialog, which) -> {
+            Toast.makeText(this, "You agreed to the Terms and Conditions", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+        popup.setCancelable(false);
+        AlertDialog dialog = popup.create();
+        dialog.show();
+    }
+    // helper
+    private void resetFlag(String type){
+        switch (type) {
+            case "name":
+                isNameValid = false;
+            case "studentNumber":
+                isStudentNumberValid = false;
+                break;
+            case "email":
+                isEmailValid = false;
+                break;
+            case "course":
+                isCourseValid = false;
+                break;
+        }
+    }
     // function to validate each input in real time
     public void RealTimeValidate(EditText text, String type){
         text.addTextChangedListener(new TextWatcher() {
@@ -57,6 +153,11 @@ public class CreateAccount extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String input = s.toString().trim();
+                if (input.isEmpty()) {
+                    text.setError(null);
+                    resetFlag(type);
+                    return;
+                }
                 boolean isValid = false;
                 String errorMessage = "";
                 // validate input
@@ -78,7 +179,7 @@ public class CreateAccount extends AppCompatActivity {
                         break;
                     case "course":
                         isValid = InputValidator.isValidCourse(input);
-                        errorMessage = "Invalid course. Follow the format like BSCS, BSN, BSMBA.";
+                        errorMessage = "Invalid course. Follow the format like BSCS - 2, BSN - 1, BSMBA - 3.";
                         isCourseValid = isValid;
                         break;
                 }
@@ -91,13 +192,18 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
     }
+    String Name, StudentNumber, Email, CourseYear;
     public void getInformationCreateAccount(Intent nextActivity){
 
-        String Name = InputedName.getText().toString();
-        String StudentNumber = InputedStudentNumber.getText().toString();
-        String Email = InputedEmail.getText().toString();
-        String CourseYear = InputedCourseYear.getText().toString();
+        Name = InputedName.getText().toString();
+        StudentNumber = InputedStudentNumber.getText().toString();
+        Email = InputedEmail.getText().toString();
+        CourseYear = InputedCourseYear.getText().toString();
 
+        // creating a new Account in firebase
+        RegItFirebaseController.getInstance().createNewUser(StudentNumber, Name, Email, CourseYear, Password.getText().toString());
+
+        // Display Information in Next Activity
         nextActivity.putExtra("InputedName", Name);
         nextActivity.putExtra("InputedStudentNumber", StudentNumber);
         nextActivity.putExtra("InputedEmail", Email);
@@ -106,6 +212,8 @@ public class CreateAccount extends AppCompatActivity {
 
     // create account button; final checkpoint if it has any invalid inputs.
     public void createQRCodeActivity(View view){
+        String pass1 = Password.getText().toString();
+        String pass2 = ConfirmPassword.getText().toString();
         if (!isNameValid) {
             Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
             return;
@@ -120,6 +228,10 @@ public class CreateAccount extends AppCompatActivity {
         }
         if (!isCourseValid) {
             Toast.makeText(this, "Please enter a valid course", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!(pass1.equals(pass2))) {
+            Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent CreateQrCode = new Intent(CreateAccount.this, CreateQRCode.class);

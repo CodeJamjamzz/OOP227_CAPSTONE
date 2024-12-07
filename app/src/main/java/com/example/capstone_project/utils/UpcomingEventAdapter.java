@@ -15,6 +15,7 @@ import com.example.capstone_project.models.Event;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Arrays;
 
 public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdapter.ViewHolder> {
 
@@ -35,7 +36,7 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
             // Define click listener for the ViewHolder's View
             view.setOnClickListener(v -> {
                 Intent intent = new Intent(view.getContext(), EventDetails.class);
-                intent.putExtra("SELECTED_EVENT", localDataSet[position]);
+                intent.putExtra("SELECTED_EVENT_ID", localDataSet[position].getEventId());
                 view.getContext().startActivity(intent);
             });
             eventTitle = view.findViewById(R.id.eventTitle);
@@ -63,7 +64,10 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
      * by RecyclerView
      */
     public UpcomingEventAdapter(Event[] dataSet) {
-        localDataSet = dataSet;
+        localDataSet = (dataSet.length > 1)
+                ? Arrays.copyOfRange(dataSet, 1, dataSet.length)
+                : new Event[0];
+
     }
 
     // Create new views (invoked by the layout manager)
@@ -85,7 +89,11 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
         // contents of the view with that element
         viewHolder.position = viewHolder.getAdapterPosition();
         viewHolder.getEventTitle().setText(localDataSet[position].getName());
-        viewHolder.getEventStartDate().setText(localDataSet[position].getStartDate().format(dateTimeFormatter));
+        if (localDataSet[position].getStartDate() == null) {
+            viewHolder.getEventStartDate().setText(R.string.tba);
+        } else {
+            viewHolder.getEventStartDate().setText(localDataSet[position].getStartDate());
+        }
         viewHolder.getEventDescription().setText(localDataSet[position].getDescription());
     }
 

@@ -27,6 +27,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                style="@style/eventDetails_noAttendeeStatus"
+                android:id="@+id/noEventsText"
+                android:paddingStart="@dimen/padding_large"
+                android:paddingEnd="@dimen/padding_large"
+                android:textSize="22sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dashboardHeader2"
+                android:text="No Event!\n\nCreate a new Event\n using the Plus Button"/>
+
             <include
                 android:id="@+id/latestEvent"
                 android:layout_width="match_parent"
@@ -35,7 +48,8 @@
                 app:layout_constraintTop_toBottomOf="@id/dashboardHeader1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                layout="@layout/latest_event_view"/>
+                layout="@layout/latest_event_view"
+                android:visibility="gone"/>
 
             <TextView
                 style="@style/dashboard_heading_1"
@@ -51,6 +65,17 @@
                 app:layout_constraintTop_toBottomOf="@id/latestEvent"
                 android:text="@string/upcoming_events"/>
 
+            <TextView
+                style="@style/eventDetails_noAttendeeStatus"
+                android:id="@+id/noUpcomingEventText"
+                android:paddingStart="@dimen/padding_large"
+                android:paddingEnd="@dimen/padding_large"
+                android:textSize="22sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dashboardHeader2"
+                android:text="No Upcoming Events!"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/upcoming_events_cardList"
@@ -61,5 +86,22 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:enabled="true"
+
+        android:contentDescription="@string/add_event"
+        android:src="@drawable/add_icon"
+        android:scaleType="center"
+        app:fabSize="auto"
+        android:layout_margin="24dp"
+        app:maxImageSize="36dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:backgroundTint="@color/green"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

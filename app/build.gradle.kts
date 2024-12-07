@@ -1,5 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
+
+    /* id("com.android.application") */
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
+
 }
 
 android {
@@ -43,4 +48,23 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.cardview)
+    implementation(libs.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
+    implementation(libs.barcode.scanning)
+    implementation(libs.play.services.tasks)
+    implementation(libs.androidx.core.ktx)
+
+    // Import the Firebase BoM (Bill of Materials, specific dependency versions)
+    implementation(platform(libs.firebase.bom))
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    // https://firebase.google.com/docs/android/setup#available-libraries
+    implementation(libs.firebase.database)
+
+    // jBCRypt hasher
+    implementation(libs.jbcrypt)
+
 }

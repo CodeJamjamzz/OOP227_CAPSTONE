@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.capstone_project.utils.QRCodeGenerator;
 import com.google.zxing.WriterException;
 
 import androidx.activity.EdgeToEdge;
@@ -67,16 +68,9 @@ public class CreateQRCode extends AppCompatActivity {
     // function that generates QR
     private void generateAndDisplayQRCode() {
         try {
-            String data = "{"
-                    + "\"name\":\"" + DisplayName.getText().toString() + "\","
-                    + "\"studentNumber\":\"" + DisplayStudentNumber.getText().toString() + "\","
-                    + "\"email\":\"" + DisplayEmail.getText().toString() + "\","
-                    + "\"course\":\"" + DisplayCourseYear.getText().toString() + "\""
-                    + "}";
-
+            String data = DisplayStudentNumber.getText().toString() + " - " + DisplayName.getText().toString();
             QRCodeGenerator qrCodeGenerator = QRCodeGenerator.getInstance();
             Bitmap qrCodeBitmap = qrCodeGenerator.generateQRCode(data);
-
             qrCodeImageView.setImageBitmap(qrCodeBitmap);
         } catch (WriterException e) {
             e.printStackTrace();
@@ -123,7 +117,7 @@ public class CreateQRCode extends AppCompatActivity {
     }
     // function to return to main page
     public void returnMainActivity(View view){
-        startActivity(new Intent(CreateQRCode.this , MainActivity.class));
+        startActivity(new Intent(CreateQRCode.this , MainMenu.class));
     }
 
 }
