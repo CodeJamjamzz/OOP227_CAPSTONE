@@ -142,6 +142,7 @@ public class MainMenu extends AppCompatActivity {
                 } else {
                     // Student number not found, navigate to CreateAccount activity
                     Intent intent = new Intent(MainMenu.this, CreateAccount.class);
+                    intent.putExtra("studentNumber", studentNumber);
                     startActivity(intent);
                 }
             } else {
