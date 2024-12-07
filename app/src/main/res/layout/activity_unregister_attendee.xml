@@ -48,7 +48,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <Button
-        android:id="@+id/CreateEvent"
+        android:id="@+id/unregisterAttendee_confirmUnregistrationsButton"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

@@ -10,4 +10,5 @@
     <dimen name="cardElevation">6dp</dimen>
     <dimen name="padding_extra_large">32dp</dimen>
     <dimen name="list_item_height">16dp</dimen>
+    <dimen name="padding_extra_small">4dp</dimen>
 </resources>

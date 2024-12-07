@@ -63,6 +63,13 @@ public class EventDetails extends AppCompatActivity {
 
         // TODO: register and unregister attendee
 
+        registerAttendeeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), RegisterAttendee.class);
+            intent.putExtra("SELECTED_EVENT_ID", event.getEventId());
+            intent.putExtra("ATTENDEES", attendeeListArray);
+            v.getContext().startActivity(intent);
+        });
+
         unregisterAttendeeButton.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), UnregisterAttendee.class);
             intent.putExtra("SELECTED_EVENT_ID", event.getEventId());

@@ -1,6 +1,5 @@
 package com.example.capstone_project.utils;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.capstone_project.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapter.ViewHolder> {
 
@@ -24,20 +26,20 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final TextView unregisterButton;
-        private boolean isSelected = false;
+        public boolean status = false;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
 
-            textView = (TextView) view.findViewById(R.id.attendeeName);
+            textView = view.findViewById(R.id.attendeeName);
             unregisterButton = view.findViewById(R.id.unregisterAttendeeButton);
         }
 
         public void toggle() {
-            isSelected = !isSelected;
+            status = !status;
 
-            if (isSelected) {
+            if (status) {
                 unregisterButton.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.white));
                 unregisterButton.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.red_button));
                 unregisterButton.setText("UNREGISTER");
@@ -46,6 +48,10 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
                 unregisterButton.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.white_button));
                 unregisterButton.setText("REGISTERED");
             }
+        }
+
+        public boolean isSelected() {
+            return status;
         }
 
         public TextView getTextView() {
@@ -92,7 +98,7 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
             viewHolder.getUnregisterButton().setVisibility(View.VISIBLE);
             // TODO: confirm to unregister attendee
             viewHolder.getUnregisterButton().setOnClickListener(v -> {
-//                String attendeeId = EventServiceManager.getInstance().getAttendeeFromName(eventId, localDataSet[position]);
+//                String attendeeId = EventServiceManager.getInstance().getAttendeeIdFromName(eventId, localDataSet[position]);
 //                EventServiceManager.getInstance().unRegisterAttendee(eventId, attendeeId);
                 viewHolder.toggle();
             });
@@ -105,4 +111,5 @@ public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapte
     public int getItemCount() {
         return localDataSet.length;
     }
+
 }
