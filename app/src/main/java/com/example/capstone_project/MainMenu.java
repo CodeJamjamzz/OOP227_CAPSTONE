@@ -12,6 +12,8 @@ import android.app.AlertDialog;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -21,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.utils.EventServiceManager;
 import com.example.capstone_project.utils.InputValidator;
+import com.google.firebase.database.DatabaseReference;
 
 import java.time.LocalDateTime;
 
@@ -112,10 +115,7 @@ public class MainMenu extends AppCompatActivity {
         builder.setPositiveButton("Submit", (dialog, which) -> {
             String studentNumber = input.getText().toString().trim();
             if (isValid) {
-                // TODO: Add if statement to check if it is in firebase
-                // if in firebase go straight to CreateQRCode activity
-                // else go to CreateAccount activity
-                startActivity(new Intent(MainMenu.this, CreateAccount.class));
+                checkIfStudentNumberExists(studentNumber);
             } else {
                 Toast.makeText(MainMenu.this, "Please enter a valid student number", Toast.LENGTH_SHORT).show();
             }
@@ -124,6 +124,29 @@ public class MainMenu extends AppCompatActivity {
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         // Show the popup
         builder.show();
+    }
+
+    // Method to check if the student number exists in Firebase
+    private void checkIfStudentNumberExists(String studentNumber) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance()
+                .getReference("RegItUserAccountListDatabaseSubtreeNode");
+
+        databaseRef.child(studentNumber).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().exists()) {
+                    // Student number exists, navigate to CreateQRCode activity
+                    Intent intent = new Intent(MainMenu.this, CreateQRCode.class);
+                    startActivity(intent);
+                } else {
+                    // Student number not found, navigate to CreateAccount activity
+                    Intent intent = new Intent(MainMenu.this, CreateAccount.class);
+                    startActivity(intent);
+                }
+            } else {
+                // Handle potential errors
+                Toast.makeText(MainMenu.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     public void createAccountActivity(View view){
         showStudentNumberPopup();
