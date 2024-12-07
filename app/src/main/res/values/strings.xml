@@ -56,6 +56,6 @@
     <string name="attendee_placeholder">Attendee</string>
     <string name="confirmEdit">CONFIRM EDIT</string>
     <string name="attendee_registered">ATTENDEE REGISTERED</string>
-    <string name="attendee_register_error">REGISTRATION ERROR</string>
+    <string name="attendee_register_error">ALREADY IN EVENT</string>
 </resources>
 

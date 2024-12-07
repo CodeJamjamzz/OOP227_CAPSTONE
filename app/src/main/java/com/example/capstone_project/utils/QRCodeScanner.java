@@ -31,7 +31,7 @@ import java.util.concurrent.ExecutionException;
 
 public class QRCodeScanner {
     private static final String TAG = "QRCodeScanner";
-    private static final long SCAN_DELAY_MILLIS = 1000;
+    private static final long SCAN_DELAY_MILLIS = 2000;
 
     private PreviewView previewView;
     private ProcessCameraProvider cameraProvider;

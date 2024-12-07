@@ -58,12 +58,19 @@ public class EventServiceManager {
         sortEvents();
     }
 
-    // TODO: add firebase connetion to dis
-    public boolean registerAttendee(String eventId, String attendeeID, String attendeeName) {
-        Event e = getEventFromId(eventId);
-        if(e != null) {
-            Attendee newAttendee = new Attendee(attendeeID, attendeeName);
-            e.getAttendees().add(newAttendee);
+    public boolean registerAttendee(String eventId, Attendee a) {
+        for (Event e : events) {
+            if (e.getEventId().equals(eventId)) {
+                Log.d(TAG, "Event found, adding attendee...");
+                for (Attendee a1 : e.getAttendees()) {
+                    if (a1.getIdNumber().equals(a.getIdNumber())) {
+                        Log.d(TAG, "Attendee already in event! Skipped");
+                        return false;
+                    }
+                }
+                e.getAttendees().add(a);
+                return true;
+             }
         }
         Log.d(TAG, "Event was not found!");
         return false;
