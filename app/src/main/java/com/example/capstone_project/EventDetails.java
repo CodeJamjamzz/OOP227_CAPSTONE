@@ -83,7 +83,7 @@ public class EventDetails extends AppCompatActivity {
         eventDescription.setText(event.getDescription());
 
         if (event.getStartDate() != null) {
-            eventStartDate.setText(event.getStartDate().format(dateTimeFormatter));
+            eventStartDate.setText(event.getStartDate());
         } else {
             eventStartDate.setText(R.string.tba);
         }

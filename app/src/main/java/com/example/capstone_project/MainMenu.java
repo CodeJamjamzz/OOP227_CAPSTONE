@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.example.capstone_project.models.UserAccount;
+import com.example.capstone_project.utils.EventServiceManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -39,6 +40,7 @@ public class MainMenu extends AppCompatActivity {
     TextView createAccount;
     TextView adminDashboard;
     RegItFirebaseController db = RegItFirebaseController.getInstance();
+    EventServiceManager evManager = EventServiceManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -88,7 +88,7 @@ public class AdminDashboard extends AppCompatActivity {
         latestEventTitle.setText(events[0].getName());
         latestEventDescription.setText(events[0].getDescription());
         if (events[0].getStartDate() != null) {
-            latestEventStartDate.setText(events[0].getStartDate().format(dateTimeFormatter));
+            latestEventStartDate.setText(events[0].getStartDate());
         } else {
             latestEventStartDate.setText(R.string.tba);
         }

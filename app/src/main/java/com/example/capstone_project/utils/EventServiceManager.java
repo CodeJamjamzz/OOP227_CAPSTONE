@@ -32,7 +32,7 @@ public class EventServiceManager {
         return instance;
     }
 
-    public void createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, double ticketPrice, int audienceLimit) {
+    public void createEvent(String name, String description, String venue, String startDate, String endDate, double ticketPrice, int audienceLimit) {
         EventBuilder builder = new EventBuilder();
         // TODO: pass event details from EventForms here
         Event event = builder
