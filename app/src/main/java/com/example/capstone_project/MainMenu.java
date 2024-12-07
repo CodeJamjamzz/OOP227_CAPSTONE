@@ -1,5 +1,7 @@
 package com.example.capstone_project;
 
+import static com.example.capstone_project.utils.PasswordEncryptor.checkPassword;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +15,7 @@ import android.app.AlertDialog;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.activity.EdgeToEdge;
@@ -23,6 +26,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.capstone_project.utils.InputValidator;
 import com.google.firebase.database.DatabaseReference;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 // java code for activity_main.xml screen the first one
 public class MainMenu extends AppCompatActivity {
@@ -175,11 +180,25 @@ public class MainMenu extends AppCompatActivity {
         builder.setPositiveButton("Submit", (dialog, which) -> {
             String password = input.getText().toString().trim();
             if (!password.isEmpty()) {
-                // todo get and verify password
-                // todo if password is wrong toast error
-                // todo if password is correct go to createqrcode activity
-                //dummy
-                 Toast.makeText(MainMenu.this, "yey u have password", Toast.LENGTH_SHORT).show();
+                DatabaseReference databaseRef = FirebaseDatabase.getInstance()
+                        .getReference("RegItUserAccountListDatabaseSubtreeNode");
+
+                databaseRef.child(studentNumber).child("accountPassword").get().addOnCompleteListener(task -> {
+                    Intent CreateQrCode = new Intent(MainMenu.this, CreateQRCode.class);
+                    if (task.isSuccessful()) {
+                        if (task.getResult().exists()) {
+                            String storedPassword = task.getResult().getValue(String.class);
+                            if(checkPassword(password, storedPassword)){
+                                goToQRCode(CreateQrCode, studentNumber);
+                            }else{
+                                Toast.makeText(MainMenu.this, "Incorrect password", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    } else {
+                        // Handle potential errors
+                        Toast.makeText(MainMenu.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             } else {
                 Toast.makeText(MainMenu.this, "Please enter a password", Toast.LENGTH_SHORT).show();
             }
@@ -190,6 +209,31 @@ public class MainMenu extends AppCompatActivity {
 
         // Show the popup
         builder.show();
+    }
+    public void goToQRCode(Intent nextActivity,String studentNumber){
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance()
+                .getReference("RegItUserAccountListDatabaseSubtreeNode");
+        databaseRef.child(studentNumber).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult().exists()) {
+                // Retrieve the fields from the Firebase snapshot
+                String accountName = task.getResult().child("accountName").getValue(String.class);
+                String accountCourseYear = task.getResult().child("accountCourseYear").getValue(String.class);
+                String accountEmail = task.getResult().child("accountEmail").getValue(String.class);
+                String accountID = task.getResult().child("accountID").getValue(String.class);
+
+                // Put the data as extras in the Intent
+                nextActivity.putExtra("InputedName", accountName);
+                nextActivity.putExtra("InputedStudentNumber", accountID);
+                nextActivity.putExtra("InputedEmail", accountEmail);
+                nextActivity.putExtra("InputedCourseYear", accountCourseYear);
+
+                // Start the next activity
+                startActivity(nextActivity);
+            } else {
+                // Handle potential errors or the case where the student number doesn't exist
+                Toast.makeText(MainMenu.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     public void createAccountActivity(View view){
         showStudentNumberPopup();
