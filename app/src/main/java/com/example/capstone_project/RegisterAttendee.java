@@ -61,16 +61,17 @@ public class RegisterAttendee extends AppCompatActivity {
                     previewView.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.scan_success));
                     if (EventServiceManager.getInstance().registerAttendee(eventId, a)) {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.white_button));
+                        attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.green));
                         attendeeStatus.setText(R.string.attendee_registered);
                         attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getName());
                     } else {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.red_button));
+                        attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.white));
                         attendeeStatus.setText(R.string.attendee_register_error);
                     }
                 } catch (IllegalStateException e) {
                     Log.e("QRScanner", "Invalid event state", e);
                 }
-                qrCodeScanner.resumeScanning(this);
             }
 
             @Override
@@ -80,7 +81,9 @@ public class RegisterAttendee extends AppCompatActivity {
 
             @Override
             public void onScanningResumed() {
-                // Optional: Add any UI updates when scanning is resumed
+                attendeeStatus.setText(R.string.waiting_for_scan);
+                attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.green));
+                attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.yellow_button));
             }
         });
     }
@@ -110,5 +113,23 @@ public class RegisterAttendee extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        qrCodeScanner.pauseScanning(null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        qrCodeScanner.resumeScanning(null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        qrCodeScanner.stopCamera();
     }
 }
