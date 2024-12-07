@@ -46,7 +46,12 @@ public class CreateAccount extends AppCompatActivity {
         Password = findViewById(R.id.inputPassword);
         ConfirmPassword = findViewById(R.id.inputConfirmPassword);
 
+        Intent intent = getIntent();
+        String studentNumber = intent.getStringExtra("studentNumber");
 
+        if (studentNumber != null) {
+            InputedStudentNumber.setText(studentNumber);
+        }
         View rootView = findViewById(android.R.id.content);
         final boolean[] isKeyboardOpen = {false};
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
