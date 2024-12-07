@@ -68,18 +68,8 @@ public class CreateQRCode extends AppCompatActivity {
     // function that generates QR
     private void generateAndDisplayQRCode() {
         try {
-            // TODO: probably change it to just display studentID
-//            String data = "{"
-//                    + "\"name\":\"" + DisplayName.getText().toString() + "\","
-//                    + "\"studentNumber\":\"" + DisplayStudentNumber.getText().toString() + "\","
-//                    + "\"email\":\"" + DisplayEmail.getText().toString() + "\","
-//                    + "\"course\":\"" + DisplayCourseYear.getText().toString() + "\""
-//                    + "}";
-            String data = DisplayStudentNumber.getText().toString();
-
             QRCodeGenerator qrCodeGenerator = QRCodeGenerator.getInstance();
-            Bitmap qrCodeBitmap = qrCodeGenerator.generateQRCode(data);
-
+            Bitmap qrCodeBitmap = qrCodeGenerator.generateQRCode(DisplayStudentNumber.getText().toString());
             qrCodeImageView.setImageBitmap(qrCodeBitmap);
         } catch (WriterException e) {
             e.printStackTrace();
