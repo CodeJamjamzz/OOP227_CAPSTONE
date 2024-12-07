@@ -12,17 +12,19 @@ import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.utils.EventServiceManager;
 import com.example.capstone_project.utils.QRCodeScanner;
 
-public class VerifyAttendee extends AppCompatActivity {
+public class RegisterAttendee extends AppCompatActivity {
     private String eventId;
     private PreviewView previewView;
     private QRCodeScanner qrCodeScanner;
+    private TextView header;
     private TextView attendeeStatus;
     private TextView attendeeName;
 
-    private static final String TAG = "VerifyAttendee";
+    private static final String TAG = "RegisterAttendee";
     private static final int REQUEST_CODE_PERMISSIONS = 10;
     private static final String[] REQUIRED_PERMISSIONS = new String[]{android.Manifest.permission.CAMERA};
 
@@ -30,13 +32,16 @@ public class VerifyAttendee extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.verify_attendee);
-        eventId = getIntent().getStringExtra("SELECTED_EVENT_ID");
 
+        eventId = getIntent().getStringExtra("SELECTED_EVENT_ID");
+        header = findViewById(R.id.textView);
         previewView = findViewById(R.id.viewFinder);
         attendeeStatus = findViewById(R.id.verifyAttendantStatus);
         attendeeName = findViewById(R.id.attendeeName);
 
         qrCodeScanner = new QRCodeScanner(previewView);
+
+        header.setText("Register Attendee");
 
         if (allPermissionsGranted()) {
             startQRScanner();
@@ -50,19 +55,22 @@ public class VerifyAttendee extends AppCompatActivity {
             @Override
             public void onQRCodeScanned(String attendeeId) {
                 try {
-                    previewView.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.scan_success));
-                    if (EventServiceManager.getInstance().verifyAttendee(eventId, attendeeId)) {
-                        attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.white_button));
-                        attendeeStatus.setTextColor(ContextCompat.getColor(VerifyAttendee.this, R.color.green));
-                        attendeeStatus.setText(R.string.attendee_verified);
+                    // TODO: get account details here
+                    Attendee a = new Attendee("John Smith", attendeeId, "john.smith@cit.edu", "BSCS - 2");
+
+                    previewView.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.scan_success));
+                    if (EventServiceManager.getInstance().registerAttendee(eventId, a)) {
+                        attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.white_button));
+                        attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.green));
+                        attendeeStatus.setText(R.string.attendee_registered);
                         attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getName());
                     } else {
-                        attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.red_button));
-                        attendeeStatus.setTextColor(ContextCompat.getColor(VerifyAttendee.this, R.color.white));
-                        attendeeStatus.setText(R.string.attendee_verifail);
+                        attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.red_button));
+                        attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.white));
+                        attendeeStatus.setText(R.string.attendee_register_error);
                     }
                 } catch (IllegalStateException e) {
-                    Log.e(TAG, "Invalid event state", e);
+                    Log.e("QRScanner", "Invalid event state", e);
                 }
             }
 
@@ -74,8 +82,8 @@ public class VerifyAttendee extends AppCompatActivity {
             @Override
             public void onScanningResumed() {
                 attendeeStatus.setText(R.string.waiting_for_scan);
-                attendeeStatus.setTextColor(ContextCompat.getColor(VerifyAttendee.this, R.color.green));
-                attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.yellow_button));
+                attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.green));
+                attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.yellow_button));
             }
         });
     }

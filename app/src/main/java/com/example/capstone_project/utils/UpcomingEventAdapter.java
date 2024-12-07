@@ -36,7 +36,7 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
             // Define click listener for the ViewHolder's View
             view.setOnClickListener(v -> {
                 Intent intent = new Intent(view.getContext(), EventDetails.class);
-                intent.putExtra("SELECTED_EVENT", localDataSet[position]);
+                intent.putExtra("SELECTED_EVENT_ID", localDataSet[position].getEventId());
                 view.getContext().startActivity(intent);
             });
             eventTitle = view.findViewById(R.id.eventTitle);
