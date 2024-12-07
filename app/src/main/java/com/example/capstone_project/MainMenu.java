@@ -61,7 +61,7 @@ public class MainMenu extends AppCompatActivity {
         EventServiceManager.getInstance().registerAttendee(id1, testPerson3);
     }
     boolean isValid = false;
-    public void RealTimeValidate(EditText text, String type){
+    public void RealTimeValidate(EditText text){
         text.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -108,29 +108,21 @@ public class MainMenu extends AppCompatActivity {
         // adding to popup
         builder.setView(layout);
         // validating sn
-        RealTimeValidate(input, "student number");
+        RealTimeValidate(input);
         // confirm behavior
-        builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String studentNumber = input.getText().toString().trim();
-                if (isValid) {
-                    // TODO: Add if statement to check if it is in firebase
-                    // if in firebase go straight to CreateQRCode activity
-                    // else go to CreateAccount activity
-                    startActivity(new Intent(MainMenu.this, CreateAccount.class));
-                } else {
-                    Toast.makeText(MainMenu.this, "Please enter a valid student number", Toast.LENGTH_SHORT).show();
-                }
+        builder.setPositiveButton("Submit", (dialog, which) -> {
+            String studentNumber = input.getText().toString().trim();
+            if (isValid) {
+                // TODO: Add if statement to check if it is in firebase
+                // if in firebase go straight to CreateQRCode activity
+                // else go to CreateAccount activity
+                startActivity(new Intent(MainMenu.this, CreateAccount.class));
+            } else {
+                Toast.makeText(MainMenu.this, "Please enter a valid student number", Toast.LENGTH_SHORT).show();
             }
         });
         // cancel behavior
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
         // Show the popup
         builder.show();
     }

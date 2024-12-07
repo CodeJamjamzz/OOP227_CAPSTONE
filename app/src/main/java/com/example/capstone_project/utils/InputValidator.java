@@ -55,9 +55,6 @@ public class InputValidator {
     }
 
     public static boolean isValidEventName(String InputedEventName){
-        if(InputedEventName == null || InputedEventName.trim().isEmpty()){
-            return false;
-        }
-        return true;
+        return InputedEventName != null && !InputedEventName.trim().isEmpty();
     }
 }
