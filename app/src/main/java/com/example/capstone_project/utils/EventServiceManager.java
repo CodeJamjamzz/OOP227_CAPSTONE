@@ -59,13 +59,11 @@ public class EventServiceManager {
     }
 
     // TODO: add firebase connetion to dis
-    public boolean registerAttendee(String eventId, Attendee a) {
-        for (Event e : events) {
-            if (e.getEventId().equals(eventId)) {
-                Log.d(TAG, "Event found, adding attendee...");
-                e.getAttendees().add(a);
-                return true;
-            }
+    public boolean registerAttendee(String eventId, String attendeeID, String attendeeName) {
+        Event e = getEventFromId(eventId);
+        if(e != null) {
+            Attendee newAttendee = new Attendee(attendeeID, attendeeName);
+            e.getAttendees().add(newAttendee);
         }
         Log.d(TAG, "Event was not found!");
         return false;
@@ -80,7 +78,7 @@ public class EventServiceManager {
         }
 
         for (Attendee a : event.getAttendees()) {
-            if (a.getAttendeeIDNumber().equals(attendeeId)) {
+            if (a.getUserAccountID().equals(attendeeId)) {
                 Log.d(TAG, "Attendee found. Unregistering...");
                 event.getAttendees().remove(a);
                 return true;
@@ -102,7 +100,7 @@ public class EventServiceManager {
     public Attendee getAttendeeFromId(String eventId, String attendeeId) {
         for (Attendee a : getEventFromId(eventId).getAttendees()) {
             // TODO: connect with firebase
-            if (a.getAttendeeIDNumber().equals(attendeeId)) {
+            if (a.getUserAccountID().equals(attendeeId)) {
                 return a;
             }
         }
@@ -112,7 +110,7 @@ public class EventServiceManager {
     public String getAttendeeIdFromName(String eventId, String attendeeName) {
         for (Attendee a : getEventFromId(eventId).getAttendees()) {
             if (a.getAttendeeName().equals(attendeeName)) {
-                return a.getAttendeeIDNumber();
+                return a.getUserAccountID();
             }
         }
         return "";
@@ -129,7 +127,7 @@ public class EventServiceManager {
         }
         for (Attendee b : event.getAttendees()) {
             // TODO: add firebase connections in Attendee getters
-            if (attendeeId.equals(b.getAttendeeIDNumber())) {
+            if (attendeeId.equals(b.getUserAccountID())) {
                 return true;
             }
         }

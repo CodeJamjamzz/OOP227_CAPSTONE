@@ -10,50 +10,25 @@ import java.util.List;
 // security checks for access are already setup there & locally
 
 public class Attendee {
-    private String attendeeIDNumber;
     private String userAccountID;
-    private String course;
-    private int year;
+    private String userAccountName;
 
-    public Attendee(String attendeeIDNumber, String userAccountID, String course, int year) {
-        setAttendeeIDNumber(attendeeIDNumber);
+    public Attendee() {
+
+    }
+
+    public Attendee(String userAccountID, String userAccountName) {
         setUserAccountID(userAccountID); // student ID
-        setCourse(course);
-        setYear(year);
+        setUserAccountName(userAccountName);
     }
 
-    public String getAttendeeIDNumber() {
-        return attendeeIDNumber;
-    }
+    public String getUserAccountID() { return userAccountID; }
 
-    public String getUserAccountID() {
-        return userAccountID;
-    }
+    public String getUserAccountName() { return userAccountName; }
 
-    public String getCourse() {
-        return course;
-    }
+    public void setUserAccountID(String userAccountID) { this.userAccountID = userAccountID; }
 
-    public int getYear() {
-        return year;
-    }
-
-    // these are all for the attendee object in the event list
-    public void setAttendeeIDNumber(String attendeeIDNumber) {
-        this.attendeeIDNumber = attendeeIDNumber;
-    }
-
-    public void setUserAccountID(String userAccountID) {
-        this.userAccountID = userAccountID;
-    }
-
-    public void setCourse(String course) {
-        this.course = course;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
+    public void setUserAccountName(String userAccountName) { this.userAccountName = userAccountName; }
 
     // TODO: getting UserAccount Information getters
     // private String accountName;

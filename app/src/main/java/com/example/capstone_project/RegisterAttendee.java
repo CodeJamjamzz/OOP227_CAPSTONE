@@ -56,10 +56,15 @@ public class RegisterAttendee extends AppCompatActivity {
             public void onQRCodeScanned(String attendeeId) {
                 try {
                     // TODO: get account details here & add email maybe
-                    Attendee a = new Attendee("John Smith", attendeeId, "BSCS", 2);
+                    // Split the string using the ' - ' as the delimiter
+                    String[] parts = attendeeId.split(" - ");
+
+                    // Access the two parts
+                    String p1 = parts[0];
+                    String p2 = parts[1];
 
                     previewView.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.scan_success));
-                    if (EventServiceManager.getInstance().registerAttendee(eventId, a)) {
+                    if (EventServiceManager.getInstance().registerAttendee(eventId, p1, p2)) {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.white_button));
                         attendeeStatus.setText(R.string.attendee_registered);
                         attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getAttendeeName());
