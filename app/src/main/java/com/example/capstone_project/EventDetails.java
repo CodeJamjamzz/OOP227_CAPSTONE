@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,9 +67,20 @@ public class EventDetails extends AppCompatActivity {
         });
 
         deleteEventButton.setOnClickListener(n -> {
-            // TODO: should probably add confirmation to delete
-            EventServiceManager.getInstance().deleteEvent(event.getEventId());
-            finish();
+            // DONE: should probably add confirmation to delete
+            AlertDialog.Builder popup = new AlertDialog.Builder(this);
+            popup.setTitle("Delete Event");
+            popup.setMessage("Are you sure you want to delete " + event.getName() + "?");
+            popup.setPositiveButton("Yes", (dialog, which) -> {
+                Toast.makeText(this, "Deleted " + event.getName(), Toast.LENGTH_SHORT).show();
+                EventServiceManager.getInstance().deleteEvent(event.getEventId());
+                finish();
+            });
+            popup.setNegativeButton("No", (dialog, which) -> {
+                dialog.dismiss();
+            });
+            AlertDialog dialog = popup.create();
+            dialog.show();
         });
 
     }
