@@ -1,5 +1,7 @@
 package com.example.capstone_project;
 
+import static com.example.capstone_project.utils.PasswordEncryptor.checkPassword;
+
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,10 +59,17 @@ public class VerifyAttendee extends AppCompatActivity {
                 try {
 
                     String[] parts = attendeeId.split(" - ");
-
+                    if(parts.length != 3) throw new RuntimeException();
                     // Access the two parts
                     String p1 = parts[0];
                     String p2 = parts[1];
+                    String p3 = parts[2];
+                    System.out.println("p1 and p2 is: "+ p1 +" dawawd " + p2);
+                    System.out.println(p3);
+                    if(!checkPassword(p1 + " - " + p2, p3)) {
+                        System.out.println("Wrong password");
+                        throw new RuntimeException();
+                    }
 
                     previewView.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.scan_success));
                     Attendee a = new Attendee(p1, p2);
@@ -72,10 +81,6 @@ public class VerifyAttendee extends AppCompatActivity {
                             attendeeStatus.setTextColor(ContextCompat.getColor(VerifyAttendee.this, R.color.green));
                             attendeeStatus.setText(R.string.attendee_verified);
                             attendeeName.setText(p2);
-                            Handler handler = new Handler();
-                            handler.postDelayed(() -> {
-                                finish();
-                            }, 1500); // 2000 milliseconds = 2 seconds
                         } else {
                             attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.red_button));
                             attendeeStatus.setTextColor(ContextCompat.getColor(VerifyAttendee.this, R.color.white));
@@ -88,6 +93,11 @@ public class VerifyAttendee extends AppCompatActivity {
                     });
                 } catch (IllegalStateException e) {
                     Log.e(TAG, "Invalid event state", e);
+                } catch (RuntimeException e) {
+                    Log.e("QRScanner", "Invalid QR", e);
+                    attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.red_button));
+                    attendeeStatus.setTextColor(ContextCompat.getColor(VerifyAttendee.this, R.color.white));
+                    attendeeStatus.setText("INVALID QR");
                 }
             }
 

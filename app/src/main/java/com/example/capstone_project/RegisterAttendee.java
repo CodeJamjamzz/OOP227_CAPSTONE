@@ -1,5 +1,7 @@
 package com.example.capstone_project;
 
+import static com.example.capstone_project.utils.PasswordEncryptor.checkPassword;
+
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -59,13 +61,19 @@ public class RegisterAttendee extends AppCompatActivity {
             @Override
             public void onQRCodeScanned(String attendeeId) {
                 try {
-                    // TODO: get account details here & add email maybe
                     // Split the string using the ' - ' as the delimiter
                     String[] parts = attendeeId.split(" - ");
-
+                    if(parts.length != 3) throw new RuntimeException();
                     // Access the two parts
                     String p1 = parts[0];
                     String p2 = parts[1];
+                    String p3 = parts[2];
+                    System.out.println("p1 and p2 is: "+ p1 +" dawawd " + p2);
+                    System.out.println(p3);
+                    if(!checkPassword(p1 + " - " + p2, p3)) {
+                        System.out.println("Wrong password");
+                        throw new RuntimeException();
+                    }
 
                     previewView.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.scan_success));
                     Attendee a = new Attendee(p1, p2);
@@ -99,6 +107,11 @@ public class RegisterAttendee extends AppCompatActivity {
                     });
                 } catch (IllegalStateException e) {
                     Log.e("QRScanner", "Invalid event state", e);
+                } catch (RuntimeException e) {
+                    Log.e("QRScanner", "Invalid QR", e);
+                    attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.red_button));
+                    attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.white));
+                    attendeeStatus.setText("INVALID QR");
                 }
             }
 
