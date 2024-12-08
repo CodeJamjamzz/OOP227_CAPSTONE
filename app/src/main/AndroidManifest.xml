@@ -44,6 +44,9 @@
             android:name=".VerifyAttendee"
             android:exported="false" />
         <activity
+            android:name=".EventsList"
+            android:exported="false" />
+        <activity
             android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
