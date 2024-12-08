@@ -2,13 +2,23 @@ package com.example.capstone_project.utils;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.capstone_project.FirebaseController.RegItFirebaseController;
+import com.example.capstone_project.RegisterAttendee;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 // Singleton
@@ -146,27 +156,26 @@ public class EventServiceManager {
         events.remove(e);
     }
 
-    public String[] getAttendeeNames(String eventId) {
-        Event event = null;
-        for (Event e : events) {
-            if (e.getEventId().equals(eventId)) {
-                event = e;
-                break;
-            }
-        }
+    public Task<String[]> getAttendeeNames(String eventId) {
+        DatabaseReference eventReference = RegItFirebaseController.getInstance().getRegItEventsListDB().child(eventId);
 
-        if (event == null) {
-            return null;
-        }
-
-        // TODO: make to hashmap
-//        String[] attendees = new String[event.getAttendees().size()];
-//        int i = 0;
-//        for (Attendee a : event.getAttendees()) {
-//            attendees[i] = a.getUserAccountName();
-//            i++;
-//        }
-        return null;
+        return eventReference.get()
+                .continueWithTask(task -> {
+                    if (task.isSuccessful()) {
+                        Event event = task.getResult().getValue(Event.class);
+                        if (event != null) {
+                            List<String> attendeeNames = new ArrayList<>();
+                            for (Attendee attendee : event.getAttendees().values()) {
+                                attendeeNames.add(attendee.getUserAccountName());
+                            }
+                            return Tasks.forResult(attendeeNames.toArray(new String[0]));
+                        } else {
+                            throw new RuntimeException("Event not found");
+                        }
+                    } else {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+                });
     }
 }
 

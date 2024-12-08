@@ -16,6 +16,7 @@ import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 import com.example.capstone_project.utils.AttendeeListAdapter;
 import com.example.capstone_project.utils.EventServiceManager;
+import com.google.android.gms.tasks.Task;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -117,34 +118,38 @@ public class EventDetails extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         event = EventServiceManager.getInstance().getEventFromId(getIntent().getStringExtra("SELECTED_EVENT_ID"));
-        attendeeListArray = EventServiceManager.getInstance().getAttendeeNames(event.getEventId());
+        Task<String[]> task = EventServiceManager.getInstance().getAttendeeNames(event.getEventId())
+                .addOnSuccessListener(attendeeListArray -> {
+                    eventTitle.setText(event.getName());
 
-        eventTitle.setText(event.getName());
+                    eventDescription.setText(event.getDescription());
 
-        eventDescription.setText(event.getDescription());
+                    if (event.getStartDate() != null) {
+                        eventStartDate.setText(event.getStartDate());
+                    } else {
+                        eventStartDate.setText(R.string.tba);
+                    }
 
-        if (event.getStartDate() != null) {
-            eventStartDate.setText(event.getStartDate());
-        } else {
-            eventStartDate.setText(R.string.tba);
-        }
+                    numAttendeesRegistered.setText(String.format("%d", attendeeListArray.length));
 
-        numAttendeesRegistered.setText(String.format("%d", attendeeListArray.length));
+                    if (event.getAudienceLimit() == 0) {
+                        numRemainingSlots.setText("∞");
+                    } else {
+                        numRemainingSlots.setText(String.format("%d", event.getAudienceLimit() - attendeeListArray.length));
+                    }
 
-        if (event.getAudienceLimit() == 0) {
-            numRemainingSlots.setText("∞");
-        } else {
-            numRemainingSlots.setText(String.format("%d", event.getAudienceLimit() - attendeeListArray.length));
-        }
+                    numTotalRevenue.setText(String.format("%.2f", event.getTicketPrice() * attendeeListArray.length));
 
-        numTotalRevenue.setText(String.format("%.2f", event.getTicketPrice() * attendeeListArray.length));
+                    if (attendeeListArray.length != 0) {
+                        noAttendeeText.setVisibility(View.GONE);
+                    }
 
-        if (attendeeListArray.length != 0) {
-            noAttendeeText.setVisibility(View.GONE);
-        }
-
-        AttendeeListAdapter attendeeListAdapter = new AttendeeListAdapter(event.getEventId(), attendeeListArray, 0);
-        attendeeList.setLayoutManager(new LinearLayoutManager(this));
-        attendeeList.setAdapter(attendeeListAdapter);
+                    AttendeeListAdapter attendeeListAdapter = new AttendeeListAdapter(event.getEventId(), attendeeListArray, 0);
+                    attendeeList.setLayoutManager(new LinearLayoutManager(this));
+                    attendeeList.setAdapter(attendeeListAdapter);
+                })
+                .addOnFailureListener(e -> {
+                    // Handle errors
+                });
     }
 }
