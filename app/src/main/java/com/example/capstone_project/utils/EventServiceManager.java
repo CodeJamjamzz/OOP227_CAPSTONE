@@ -6,7 +6,10 @@ import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 // Singleton
 public class EventServiceManager {
@@ -14,12 +17,11 @@ public class EventServiceManager {
     private static EventServiceManager instance;
     // DONE: make Comparator for Event to sort by start date
     private static List<Event> events;
-    private final RegItFirebaseController db = RegItFirebaseController.getInstance();
+    private static final RegItFirebaseController db = RegItFirebaseController.getInstance();
 
     private EventServiceManager() {
         // Load events from database here ig
-        events = db.getEventsfromDB();
-        sortEvents();
+        updateEvents();
     }
 
     private static void sortEvents() {
@@ -32,6 +34,11 @@ public class EventServiceManager {
         }
         sortEvents();
         return instance;
+    }
+
+    public static void updateEvents() {
+        events = db.getEventsfromDB();
+        sortEvents();
     }
 
     public void createEvent(String name, String description, String venue, String startDate, String endDate, double ticketPrice, int audienceLimit) {
@@ -53,41 +60,20 @@ public class EventServiceManager {
         sortEvents();
     }
 
-    public boolean registerAttendee(String eventId, Attendee newAttendee) {
-        for (Event e : events) {
-            if (e.getEventId().equals(eventId)) {
-                Log.d(TAG, "Event found, adding attendee...");
-                for (Attendee a : e.getAttendees()) {
-                    if (a.getUserAccountID().equals(newAttendee.getUserAccountID())) {
-                        Log.d(TAG, "Attendee already in event! Skipped");
-                        return false;
-                    }
-                }
-                e.getAttendees().add(newAttendee);
-                return true;
-             }
-        }
-        Log.d(TAG, "Event was not found!");
-        return false;
+    public CompletableFuture<Boolean> registerAttendee(String eventId, Attendee newAttendee) {
+        return db.addNewAttendee(eventId, newAttendee);
     }
 
-    public boolean unRegisterAttendee(String eventId, String attendeeId) {
+    public void unRegisterAttendee(String eventId, String attendeeId) {
         Event event = getEventFromId(eventId);
 
         if (event == null) {
             Log.d(TAG, "Event was not found!");
-            return false;
+            return;
         }
 
-        for (Attendee a : event.getAttendees()) {
-            if (a.getUserAccountID().equals(attendeeId)) {
-                Log.d(TAG, "Attendee found. Unregistering...");
-                event.getAttendees().remove(a);
-                return true;
-            }
-        }
-        Log.d(TAG, "Attendee was not found!");
-        return false;
+        db.removeAttendeeFromEvent(eventId, attendeeId);
+        db.removeEventFromUser(eventId, attendeeId);
     }
 
     public Event getEventFromId(String eventId) {
@@ -100,17 +86,20 @@ public class EventServiceManager {
     }
 
     public Attendee getAttendeeFromId(String eventId, String attendeeId) {
-        for (Attendee a : getEventFromId(eventId).getAttendees()) {
-            // TODO: connect with firebase
-            if (a.getUserAccountID().equals(attendeeId)) {
-                return a;
-            }
-        }
+        // TODO: turn to hashmap
+//        for (Attendee a : getEventFromId(eventId).getAttendees()) {
+//            // TODO: connect with firebase
+//            if (a.getUserAccountID().equals(attendeeId)) {
+//                return a;
+//            }
+//        }
         return null;
     }
 
     public String getAttendeeIdFromName(String eventId, String attendeeName) {
-        for (Attendee a : getEventFromId(eventId).getAttendees()) {
+        List<Attendee>  attendList = RegItFirebaseController.getInstance().getAttendeesFromEvent(eventId);
+        for (Attendee a : attendList) {
+            Log.d("checking attendee", "Attendee "+ a.getUserAccountName()  + " with ID " + a.getUserAccountID());
             if (a.getUserAccountName().equals(attendeeName)) {
                 return a.getUserAccountID();
             }
@@ -127,12 +116,18 @@ public class EventServiceManager {
         if (event == null) {
             throw new IllegalStateException("Event not found!");
         }
-        for (Attendee b : event.getAttendees()) {
-            // TODO: add firebase connections in Attendee getters
-            if (attendeeId.equals(b.getUserAccountID())) {
-                return true;
-            }
-        }
+        // TODO: turn to hashmap
+//        Map<String, Attendee> map = event.getAttendees();
+//        for (Map.Entry<String, Attendee> entry : map.entrySet()) {
+//            attendees[i] = entry.getValue().getUserAccountName();
+//        }
+
+//        for (Attendee b : event.getAttendees()) {
+//            // TODO: add firebase connections in Attendee getters
+//            if (attendeeId.equals(b.getUserAccountID())) {
+//                return true;
+//            }
+//        }
         return false;
     }
 
@@ -147,7 +142,6 @@ public class EventServiceManager {
 //        for (Attendee b : e.getAttendees()) {
 //            b.getEventsRegistered().remove(e.getEventId());
 //        }
-        // TODO: deleteEvents will delete EventID from userAccount first
         db.deleteEventFromDB(eventId);
         events.remove(e);
     }
@@ -165,13 +159,14 @@ public class EventServiceManager {
             return null;
         }
 
-        String[] attendees = new String[event.getAttendees().size()];
-        int i = 0;
-        for (Attendee a : event.getAttendees()) {
-            attendees[i] = a.getUserAccountName();
-            i++;
-        }
-        return attendees;
+        // TODO: make to hashmap
+//        String[] attendees = new String[event.getAttendees().size()];
+//        int i = 0;
+//        for (Attendee a : event.getAttendees()) {
+//            attendees[i] = a.getUserAccountName();
+//            i++;
+//        }
+        return null;
     }
 }
 
