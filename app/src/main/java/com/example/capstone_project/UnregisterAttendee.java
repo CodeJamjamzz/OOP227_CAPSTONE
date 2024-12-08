@@ -1,6 +1,7 @@
 package com.example.capstone_project;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
@@ -8,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
+import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.utils.AttendeeListAdapter;
 import com.example.capstone_project.utils.EventServiceManager;
 
@@ -56,7 +59,11 @@ public class UnregisterAttendee extends AppCompatActivity {
                     }
                 }
             }
-            finish();
+            EventServiceManager.updateEvents();
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                finish();
+            }, 1500); // 2000 milliseconds = 2 seconds();
         });
     }
 }

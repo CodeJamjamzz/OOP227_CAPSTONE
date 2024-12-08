@@ -13,9 +13,12 @@ import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.utils.EventServiceManager;
 import com.example.capstone_project.utils.QRCodeScanner;
+
+import java.util.concurrent.CompletableFuture;
 
 public class RegisterAttendee extends AppCompatActivity {
     private String eventId;
@@ -66,20 +69,34 @@ public class RegisterAttendee extends AppCompatActivity {
 
                     previewView.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.scan_success));
                     Attendee a = new Attendee(p1, p2);
-                    if (EventServiceManager.getInstance().registerAttendee(eventId, a)) {
-                        attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.white_button));
-                        attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.green));
-                        attendeeStatus.setText(R.string.attendee_registered);
-                        attendeeName.setText(p2);
-                        Handler handler = new Handler();
-                        handler.postDelayed(() -> {
-                            finish();
-                        }, 2000); // 2000 milliseconds = 2 seconds
-                    } else {
-                        attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.red_button));
-                        attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.white));
-                        attendeeStatus.setText(R.string.attendee_register_error);
-                    }
+
+                    CompletableFuture<Boolean> future = EventServiceManager.getInstance().registerAttendee(eventId, a);
+                    future.thenAccept(result -> {
+                        if (result) {
+                            // Attendee added successfully
+                            RegItFirebaseController.getInstance().addEventToUserAccount(eventId, p1);
+                            EventServiceManager.updateEvents();
+                            System.out.println("Attendee added successfully");
+                            attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.white_button));
+                            attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.green));
+                            attendeeStatus.setText(R.string.attendee_registered);
+                            attendeeName.setText(p2);
+                            Handler handler = new Handler();
+                            handler.postDelayed(() -> {
+                                finish();
+                            }, 1500); // 2000 milliseconds = 2 seconds
+                        } else {
+                            // Attendee already exists or an error occurred
+                            attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.red_button));
+                            attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.white));
+                            attendeeStatus.setText(R.string.attendee_register_error);
+                            System.out.println("Attendee already exists or failed to add");
+                        }
+                    }).exceptionally(e -> {
+                        // Handle exceptions
+                        System.out.println("Error adding attendee: " + e.getMessage());
+                        return null;
+                    });
                 } catch (IllegalStateException e) {
                     Log.e("QRScanner", "Invalid event state", e);
                 }
