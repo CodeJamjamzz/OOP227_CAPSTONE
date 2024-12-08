@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 import com.example.capstone_project.utils.AttendeeListAdapter;
@@ -42,7 +41,7 @@ public class EventDetails extends AppCompatActivity {
     private RecyclerView attendeeList;
 
     private Event event;
-    private String[] attendeeListArray;
+    private String[] attendeeListArray = null;
 
     private List<Attendee> ListOfAttendees;
 
@@ -119,7 +118,9 @@ public class EventDetails extends AppCompatActivity {
         super.onResume();
         event = EventServiceManager.getInstance().getEventFromId(getIntent().getStringExtra("SELECTED_EVENT_ID"));
         Task<String[]> task = EventServiceManager.getInstance().getAttendeeNames(event.getEventId())
-                .addOnSuccessListener(attendeeListArray -> {
+                .addOnSuccessListener(attendeeList -> {
+                    attendeeListArray = attendeeList;
+
                     eventTitle.setText(event.getName());
 
                     eventDescription.setText(event.getDescription());
@@ -130,23 +131,23 @@ public class EventDetails extends AppCompatActivity {
                         eventStartDate.setText(R.string.tba);
                     }
 
-                    numAttendeesRegistered.setText(String.format("%d", attendeeListArray.length));
+                    numAttendeesRegistered.setText(String.format("%d", attendeeList.length));
 
                     if (event.getAudienceLimit() == 0) {
                         numRemainingSlots.setText("∞");
                     } else {
-                        numRemainingSlots.setText(String.format("%d", event.getAudienceLimit() - attendeeListArray.length));
+                        numRemainingSlots.setText(String.format("%d", event.getAudienceLimit() - attendeeList.length));
                     }
 
-                    numTotalRevenue.setText(String.format("%.2f", event.getTicketPrice() * attendeeListArray.length));
+                    numTotalRevenue.setText(String.format("%.2f", event.getTicketPrice() * attendeeList.length));
 
-                    if (attendeeListArray.length != 0) {
+                    if (attendeeList.length != 0) {
                         noAttendeeText.setVisibility(View.GONE);
                     }
 
-                    AttendeeListAdapter attendeeListAdapter = new AttendeeListAdapter(event.getEventId(), attendeeListArray, 0);
-                    attendeeList.setLayoutManager(new LinearLayoutManager(this));
-                    attendeeList.setAdapter(attendeeListAdapter);
+                    AttendeeListAdapter attendeeListAdapter = new AttendeeListAdapter(event.getEventId(), attendeeList, 0);
+                    this.attendeeList.setLayoutManager(new LinearLayoutManager(this));
+                    this.attendeeList.setAdapter(attendeeListAdapter);
                 })
                 .addOnFailureListener(e -> {
                     // Handle errors

@@ -75,12 +75,6 @@ public class EventServiceManager {
     }
 
     public void unRegisterAttendee(String eventId, String attendeeId) {
-        Event event = getEventFromId(eventId);
-
-        if (event == null) {
-            Log.d(TAG, "Event was not found!");
-            return;
-        }
 
         db.removeAttendeeFromEvent(eventId, attendeeId);
         db.removeEventFromUser(eventId, attendeeId);
@@ -95,26 +89,43 @@ public class EventServiceManager {
         return null;
     }
 
-    public Attendee getAttendeeFromId(String eventId, String attendeeId) {
-        // TODO: turn to hashmap
-//        for (Attendee a : getEventFromId(eventId).getAttendees()) {
-//            // TODO: connect with firebase
-//            if (a.getUserAccountID().equals(attendeeId)) {
-//                return a;
-//            }
-//        }
-        return null;
-    }
 
-    public String getAttendeeIdFromName(String eventId, String attendeeName) {
-        List<Attendee>  attendList = RegItFirebaseController.getInstance().getAttendeesFromEvent(eventId);
-        for (Attendee a : attendList) {
-            Log.d("checking attendee", "Attendee "+ a.getUserAccountName()  + " with ID " + a.getUserAccountID());
-            if (a.getUserAccountName().equals(attendeeName)) {
-                return a.getUserAccountID();
+    public CompletableFuture<String> getAttendeeIDFromName(String eventId, String attendeeName) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+
+        DatabaseReference eventReference = RegItFirebaseController.getInstance()
+                .getRegItEventsListDB()
+                .child(eventId)
+                .child("attendees");
+
+        eventReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot attendeeSnapshot : dataSnapshot.getChildren()) {
+                        Attendee attendee = attendeeSnapshot.getValue(Attendee.class);
+                        if (attendee != null && attendee.getUserAccountName().equals(attendeeName)) {
+                            Log.d("Attendee Found", "Attendee found: " + attendee.getUserAccountName());
+                            future.complete(attendeeSnapshot.getKey());
+                            return;
+                        }
+                    }
+                    Log.d("Attendee Not Found", "Attendee not found: " + attendeeName);
+                    future.complete(null); // Or throw an exception if desired
+                } else {
+                    Log.d("Event Not Found", "Event not found: " + eventId);
+                    future.completeExceptionally(new Exception("Event or attendees not found"));
+                }
             }
-        }
-        return "";
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("Attendee ID Retrieval", "Failed to retrieve attendee ID", databaseError.toException());
+                future.completeExceptionally(databaseError.toException());
+            }
+        });
+
+        return future;
     }
 
     public Event[] getEvents() {
