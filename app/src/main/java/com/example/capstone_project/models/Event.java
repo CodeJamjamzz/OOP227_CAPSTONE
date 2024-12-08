@@ -10,7 +10,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class Event {
@@ -23,7 +25,7 @@ public class Event {
     private String description;
     private String category;
     private double ticketPrice;
-    private List<Attendee> attendees;
+    private Map<String, Attendee> attendees;
 
     public Event() {
         startDate = null;
@@ -34,7 +36,7 @@ public class Event {
         category = null;
         ticketPrice = 0.0;
         this.eventId = UUID.randomUUID().toString();
-        this.attendees = new ArrayList<>();
+        this.attendees = new HashMap<>();
     }
 
     public String getName() {
@@ -71,7 +73,7 @@ public class Event {
         return ticketPrice;
     }
 
-    public List<Attendee> getAttendees() {
+    public Map<String, Attendee> getAttendees() {
         return attendees;
     }
 
@@ -105,7 +107,7 @@ public class Event {
         this.ticketPrice = ticketPrice;
     }
 
-    public void setAttendees(List<Attendee> attendees) {
+    public void setAttendees(Map<String, Attendee> attendees) {
         this.attendees = attendees;
     }
 

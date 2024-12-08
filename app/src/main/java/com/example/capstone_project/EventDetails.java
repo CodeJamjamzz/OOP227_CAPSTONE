@@ -11,12 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
+import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 import com.example.capstone_project.utils.AttendeeListAdapter;
 import com.example.capstone_project.utils.EventServiceManager;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.List;
 
 public class EventDetails extends AppCompatActivity {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM);
@@ -39,6 +42,8 @@ public class EventDetails extends AppCompatActivity {
 
     private Event event;
     private String[] attendeeListArray;
+
+    private List<Attendee> ListOfAttendees;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
