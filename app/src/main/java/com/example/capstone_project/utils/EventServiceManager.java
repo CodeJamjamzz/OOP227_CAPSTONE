@@ -132,24 +132,8 @@ public class EventServiceManager {
         return events.toArray(new Event[0]);
     }
 
-    public boolean verifyAttendee(String eventId, String attendeeId) {
-        Event event = getEventFromId(eventId);
-        if (event == null) {
-            throw new IllegalStateException("Event not found!");
-        }
-        // TODO: turn to hashmap
-//        Map<String, Attendee> map = event.getAttendees();
-//        for (Map.Entry<String, Attendee> entry : map.entrySet()) {
-//            attendees[i] = entry.getValue().getUserAccountName();
-//        }
-
-//        for (Attendee b : event.getAttendees()) {
-//            // TODO: add firebase connections in Attendee getters
-//            if (attendeeId.equals(b.getUserAccountID())) {
-//                return true;
-//            }
-//        }
-        return false;
+    public CompletableFuture<Boolean> verifyAttendee(String eventId, Attendee attendeeId) {
+        return db.verifyAttendee(eventId, attendeeId);
     }
 
     public void deleteEvent(String eventId) {

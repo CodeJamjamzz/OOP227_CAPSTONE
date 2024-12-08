@@ -336,6 +336,44 @@ public class RegItFirebaseController {
         });
     }
 
+    public CompletableFuture<Boolean> verifyAttendee(String eventId, Attendee attendee) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        DatabaseReference eventRef = regItEventsListDB.child(eventId).child("attendees");
+
+        eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot attendeeSnapshot : dataSnapshot.getChildren()) {
+                        Attendee existingAttendee = attendeeSnapshot.getValue(Attendee.class);
+                        if (existingAttendee != null && existingAttendee.getUserAccountID().equals(attendee.getUserAccountID())) {
+                            // Update the attendee's confirmation status
+                            existingAttendee.setUserConfirm(true);
+                            attendeeSnapshot.getRef().setValue(existingAttendee)
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            future.complete(true); // Attendee confirmed and updated
+                                        } else {
+                                            future.completeExceptionally(task.getException());
+                                        }
+                                    });
+                            return;
+                        }
+                    }
+                }
+                future.complete(false); // Attendee not found
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                future.completeExceptionally(error.toException());
+            }
+        });
+
+        return future;
+    }
+
 
     // Firebase Add Attendee Method
 
