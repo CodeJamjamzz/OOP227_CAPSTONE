@@ -27,30 +27,59 @@
             app:layout_constraintTop_toTopOf="parent"
             android:text="Event Name"/>
 
-        <TextView
-            android:id="@+id/textView14"
-            style="@style/dashboard_eventDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Starts in: "
-            app:layout_constraintTop_toBottomOf="@id/eventDetailName"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteX="16dp" />
+            <LinearLayout
+                android:id="@+id/dateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/eventDetailName">
 
-        <TextView
-            android:id="@+id/eventDetailStartDate"
-            style="@style/dashboard_eventDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@+id/textView14"
-            app:layout_constraintTop_toBottomOf="@+id/eventDetailName"
-            android:text="DATE"/>
+                <TextView
+                    android:id="@+id/textView14"
+                    style="@style/dashboard_eventDateLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Starts in  : "/>
+
+                <TextView
+                    android:id="@+id/eventDetailStartDate"
+                    style="@style/dashboard_eventDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="DATE"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/endDateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/dateLayout">
+
+                <TextView
+                    android:id="@+id/textView23"
+                    style="@style/dashboard_eventDateLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ends in    : "/>
+
+                <TextView
+                    android:id="@+id/eventDetailEndDate"
+                    style="@style/dashboard_eventDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="DATE"/>
+            </LinearLayout>
 
         <TextView
             android:id="@+id/eventDetailDescription"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
             android:text="Event Description"
             app:layout_constraintTop_toBottomOf="@id/textView14"
             app:layout_constraintStart_toStartOf="parent"/>

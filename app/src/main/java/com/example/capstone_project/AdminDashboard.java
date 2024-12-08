@@ -30,6 +30,7 @@ public class AdminDashboard extends AppCompatActivity {
     private TextView latestEventTitle;
     private TextView latestEventDescription;
     private TextView latestEventStartDate;
+    private TextView latestEventEndDate;
     private TextView latestEventAttendeesRegistered;
     private TextView latestEventRemainingSlots;
     private TextView latestEventTotalRevenue;
@@ -49,6 +50,7 @@ public class AdminDashboard extends AppCompatActivity {
         latestEventTitle = findViewById(R.id.latestEventTitle);
         latestEventDescription = findViewById(R.id.latestEventDescription);
         latestEventStartDate = findViewById(R.id.latestEventStartDate);
+        latestEventEndDate = findViewById(R.id.latestEventEndDate);
         latestEventAttendeesRegistered = findViewById(R.id.adminDashboard_attendeesRegistered);
         latestEventRemainingSlots = findViewById(R.id.adminDashboard_remainingSlots);
         latestEventTotalRevenue = findViewById(R.id.adminDashboard_totalRevenue);
@@ -101,6 +103,11 @@ public class AdminDashboard extends AppCompatActivity {
             latestEventStartDate.setText(events[0].getStartDate());
         } else {
             latestEventStartDate.setText(R.string.tba);
+        }
+        if (events[0].getEndDate() != null) {
+            latestEventEndDate.setText(events[0].getEndDate());
+        } else {
+            latestEventEndDate.setText(R.string.tba);
         }
 
         latestEventAttendeesRegistered.setText(String.format("%d", events[0].getAttendees().size()));

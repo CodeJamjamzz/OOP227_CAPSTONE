@@ -27,7 +27,7 @@
 
         <TextView
             android:id="@+id/subhead"
-            style="@style/dashboard_eventDate"
+            style="@style/dashboard_eventDateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -51,11 +51,37 @@
             app:layout_constraintTop_toBottomOf="@id/latestEventTitle"
             app:layout_constraintVertical_bias="0.0" />
 
+        <TextView
+            android:id="@+id/subhead2"
+            style="@style/dashboard_eventDateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/dashboard_eventEndDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/latestEventStartDate" />
+
+        <TextView
+            android:id="@+id/latestEventEndDate"
+            style="@style/dashboard_eventDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:minWidth="24dp"
+            android:text="Date"
+            app:layout_constraintBottom_toTopOf="@+id/latestEvent_status"
+            app:layout_constraintStart_toEndOf="@+id/subhead"
+            app:layout_constraintTop_toBottomOf="@id/latestEventStartDate"
+            app:layout_constraintVertical_bias="0.0" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/latestEvent_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/latestEventStartDate"
+            app:layout_constraintTop_toBottomOf="@id/latestEventEndDate"
             android:layout_marginTop="@dimen/margin_small"
             app:cardBackgroundColor="@color/green"
             app:cardCornerRadius="20dp"

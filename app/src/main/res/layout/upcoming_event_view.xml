@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/subhead"
-            style="@style/dashboard_eventDate"
+            style="@style/dashboard_eventDateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -54,7 +54,7 @@
 
         <TextView
             android:id="@+id/subhead2"
-            style="@style/dashboard_eventDate"
+            style="@style/dashboard_eventDateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"

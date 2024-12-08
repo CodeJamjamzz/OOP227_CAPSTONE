@@ -24,6 +24,7 @@ public class EventDetails extends AppCompatActivity {
     private TextView eventTitle;
     private TextView eventDescription;
     private TextView eventStartDate;
+    private TextView eventEndDate;
 
     private TextView registerAttendeeButton;
     private TextView unregisterAttendeeButton;
@@ -48,6 +49,7 @@ public class EventDetails extends AppCompatActivity {
         eventTitle = findViewById(R.id.eventDetailName);
         eventDescription = findViewById(R.id.eventDetailDescription);
         eventStartDate = findViewById(R.id.eventDetailStartDate);
+        eventEndDate = findViewById(R.id.eventDetailEndDate);
 
         registerAttendeeButton = findViewById(R.id.eventDetails_registerAttendant_button);
         unregisterAttendeeButton = findViewById(R.id.eventDetails_unRegisterAttendant_button);
@@ -122,6 +124,12 @@ public class EventDetails extends AppCompatActivity {
             eventStartDate.setText(event.getStartDate());
         } else {
             eventStartDate.setText(R.string.tba);
+        }
+
+        if (event.getEndDate() != null) {
+            eventEndDate.setText(event.getEndDate());
+        } else {
+            eventEndDate.setText(R.string.tba);
         }
 
         numAttendeesRegistered.setText(String.format("%d", attendeeListArray.length));
