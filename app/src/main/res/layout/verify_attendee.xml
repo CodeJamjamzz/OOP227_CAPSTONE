@@ -94,24 +94,12 @@
             android:background="@drawable/white_button"
             android:minHeight="48dp"
             android:gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_medium"
             android:paddingHorizontal="@dimen/padding_medium"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/textView9"
             app:layout_constraintStart_toEndOf="@+id/textView5"
             app:layout_constraintTop_toTopOf="@+id/textView5" />
-
-        <!-- Admission Type Field Group -->
-        <TextView
-            android:id="@+id/attendeeType"
-            style="@style/attendant_details_type"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
-            android:text="@string/type_of_admission"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/attendeeName" />
 
         <TextView
             android:id="@+id/textView9"
@@ -125,7 +113,7 @@
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/attendeeType"
-            app:layout_constraintTop_toTopOf="@+id/attendeeType" />
+            app:layout_constraintTop_toTopOf="@+id/stat" />
 
         <!-- Status Field Group -->
 
