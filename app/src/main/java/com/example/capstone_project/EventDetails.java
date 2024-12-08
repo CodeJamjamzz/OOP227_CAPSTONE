@@ -132,14 +132,13 @@ public class EventDetails extends AppCompatActivity {
                         eventStartDate.setText(R.string.tba);
                     }
 
-                    numAttendeesRegistered.setText(String.format("%d", attendeeListArray.length));
-        if (event.getEndDate() != null) {
-            eventEndDate.setText(event.getEndDate());
-        } else {
-            eventEndDate.setText(R.string.tba);
-        }
+                    if (event.getEndDate() != null) {
+                        eventEndDate.setText(event.getEndDate());
+                    } else {
+                        eventEndDate.setText(R.string.tba);
+                    }
 
-        numAttendeesRegistered.setText(String.format("%d", attendeeListArray.length));
+                    numAttendeesRegistered.setText(String.format("%d", attendeeListArray.length));
 
                     if (event.getAudienceLimit() == 0) {
                         numRemainingSlots.setText("∞");
