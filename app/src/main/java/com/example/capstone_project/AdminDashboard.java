@@ -12,16 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.capstone_project.models.Event;
-import com.example.capstone_project.utils.EventBuilder;
 import com.example.capstone_project.utils.EventServiceManager;
 import com.example.capstone_project.utils.UpcomingEventAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class AdminDashboard extends AppCompatActivity {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM);
@@ -30,6 +26,10 @@ public class AdminDashboard extends AppCompatActivity {
     private TextView latestEventTitle;
     private TextView latestEventDescription;
     private TextView latestEventStartDate;
+    private TextView latestEventEndDate;
+    private TextView latestEventAttendeesRegistered;
+    private TextView latestEventRemainingSlots;
+    private TextView latestEventTotalRevenue;
     private TextView noEventsText;
     private TextView noUpcomingEventText;
     private RecyclerView recyclerView;
@@ -46,6 +46,10 @@ public class AdminDashboard extends AppCompatActivity {
         latestEventTitle = findViewById(R.id.latestEventTitle);
         latestEventDescription = findViewById(R.id.latestEventDescription);
         latestEventStartDate = findViewById(R.id.latestEventStartDate);
+        latestEventEndDate = findViewById(R.id.latestEventEndDate);
+        latestEventAttendeesRegistered = findViewById(R.id.adminDashboard_attendeesRegistered);
+        latestEventRemainingSlots = findViewById(R.id.adminDashboard_remainingSlots);
+        latestEventTotalRevenue = findViewById(R.id.adminDashboard_totalRevenue);
         noEventsText = findViewById(R.id.noEventsText);
         noUpcomingEventText = findViewById(R.id.noUpcomingEventText);
         FloatingActionButton addEvent = findViewById(R.id.addEvent);
@@ -96,6 +100,21 @@ public class AdminDashboard extends AppCompatActivity {
         } else {
             latestEventStartDate.setText(R.string.tba);
         }
+        if (events[0].getEndDate() != null) {
+            latestEventEndDate.setText(events[0].getEndDate());
+        } else {
+            latestEventEndDate.setText(R.string.tba);
+        }
+        // TODO: fix date format
+        latestEventAttendeesRegistered.setText(String.format("%d", events[0].getAttendees().size()));
+
+        if (events[0].getAudienceLimit() == 0) {
+            latestEventRemainingSlots.setText("∞");
+        } else {
+            latestEventRemainingSlots.setText(String.format("%d", events[0].getAudienceLimit() - events[0].getAttendees().size()));
+        }
+
+        latestEventTotalRevenue.setText(String.format("%.2f", events[0].getTicketPrice() * events[0].getAttendees().size()));
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(upcomingEventAdapter);

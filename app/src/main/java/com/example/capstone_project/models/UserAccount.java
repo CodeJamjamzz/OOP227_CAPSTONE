@@ -16,9 +16,6 @@ public class UserAccount {
     private String accountCourseYear;
     private List<String> accountEventsAttending;
 
-
-    // TODO: for the account list in firebase, the accountID is the key (school ID)
-
     // Used by Firebase to add in DB (it needs an empty constructor)
     public UserAccount() {
         this.accountEventsAttending = new ArrayList<>(); // Initialize to avoid null
@@ -45,7 +42,6 @@ public class UserAccount {
         this.accountID = accountID;
     }
 
-    // maybe add a add and delete events Attending but maybe just in the firebase
     public void setAccountEventsAttending(List<String> accountEventsAttending) {
         this.accountEventsAttending = accountEventsAttending;
     }

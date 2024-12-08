@@ -19,6 +19,7 @@ import java.util.Arrays;
 
 public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdapter.ViewHolder> {
 
+    private boolean clickable;
     private Event[] localDataSet;
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM);
     /**
@@ -29,19 +30,23 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
         private final TextView eventTitle;
         private final TextView eventDescription;
         private final TextView eventStartDate;
+        private final TextView eventEndDate;
         private int position;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
-            view.setOnClickListener(v -> {
-                Intent intent = new Intent(view.getContext(), EventDetails.class);
-                intent.putExtra("SELECTED_EVENT_ID", localDataSet[position].getEventId());
-                view.getContext().startActivity(intent);
-            });
+            if(clickable) {
+                view.setOnClickListener(v -> {
+                    Intent intent = new Intent(view.getContext(), EventDetails.class);
+                    intent.putExtra("SELECTED_EVENT_ID", localDataSet[position].getEventId());
+                    view.getContext().startActivity(intent);
+                });
+            }
             eventTitle = view.findViewById(R.id.eventTitle);
             eventDescription = view.findViewById(R.id.eventDescription);
             eventStartDate = view.findViewById(R.id.eventStartDate);
+            eventEndDate = view.findViewById(R.id.eventEndDate);
         }
 
 
@@ -52,6 +57,8 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
         public TextView getEventStartDate() {
             return eventStartDate;
         }
+
+        public TextView getEventEndDate() { return eventEndDate; }
 
         public TextView getEventDescription() {
             return eventDescription;
@@ -67,7 +74,12 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
         localDataSet = (dataSet.length > 1)
                 ? Arrays.copyOfRange(dataSet, 1, dataSet.length)
                 : new Event[0];
+        clickable = true;
+    }
 
+    public UpcomingEventAdapter(Event[] dataSet, boolean clickable) {
+        clickable = false;
+        localDataSet = dataSet;
     }
 
     // Create new views (invoked by the layout manager)
@@ -93,6 +105,11 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
             viewHolder.getEventStartDate().setText(R.string.tba);
         } else {
             viewHolder.getEventStartDate().setText(localDataSet[position].getStartDate());
+        }
+        if (localDataSet[position].getEndDate() == null) {
+            viewHolder.getEventEndDate().setText(R.string.tba);
+        } else {
+            viewHolder.getEventEndDate().setText(localDataSet[position].getEndDate());
         }
         viewHolder.getEventDescription().setText(localDataSet[position].getDescription());
     }

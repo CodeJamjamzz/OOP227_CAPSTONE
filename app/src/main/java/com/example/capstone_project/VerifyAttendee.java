@@ -2,6 +2,7 @@ package com.example.capstone_project;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,8 +13,11 @@ import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.utils.EventServiceManager;
 import com.example.capstone_project.utils.QRCodeScanner;
+
+import java.util.concurrent.CompletableFuture;
 
 public class VerifyAttendee extends AppCompatActivity {
     private String eventId;
@@ -48,6 +52,7 @@ public class VerifyAttendee extends AppCompatActivity {
     private void startQRScanner() {
         qrCodeScanner.startCamera(this, this, new QRCodeScanner.QRScanCallback() {
             @Override
+
             public void onQRCodeScanned(String attendeeId) {
                 try {
 
@@ -58,20 +63,34 @@ public class VerifyAttendee extends AppCompatActivity {
                     String p2 = parts[1];
 
                     previewView.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.scan_success));
-                    if (EventServiceManager.getInstance().verifyAttendee(eventId, p1)) {
-                        attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.white_button));
-                        attendeeStatus.setTextColor(ContextCompat.getColor(VerifyAttendee.this, R.color.green));
-                        attendeeStatus.setText(R.string.attendee_verified);
-                        attendeeName.setText(p2);
-                    } else {
-                        attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.red_button));
-                        attendeeStatus.setTextColor(ContextCompat.getColor(VerifyAttendee.this, R.color.white));
-                        attendeeStatus.setText(R.string.attendee_verifail);
-                    }
+                    Attendee a = new Attendee(p1, p2);
+
+                    CompletableFuture<Boolean> future = EventServiceManager.getInstance().verifyAttendee(eventId, a);
+                    future.thenAccept(result -> {
+                        if (result) {
+                            attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.white_button));
+                            attendeeStatus.setTextColor(ContextCompat.getColor(VerifyAttendee.this, R.color.green));
+                            attendeeStatus.setText(R.string.attendee_verified);
+                            attendeeName.setText(p2);
+                            Handler handler = new Handler();
+                            handler.postDelayed(() -> {
+                                finish();
+                            }, 1500); // 2000 milliseconds = 2 seconds
+                        } else {
+                            attendeeStatus.setBackground(ContextCompat.getDrawable(VerifyAttendee.this, R.drawable.red_button));
+                            attendeeStatus.setTextColor(ContextCompat.getColor(VerifyAttendee.this, R.color.white));
+                            attendeeStatus.setText(R.string.attendee_verifail);
+                        }
+                    }).exceptionally(e -> {
+                        // Handle exceptions
+                        System.out.println("Error adding attendee: " + e.getMessage());
+                        return null;
+                    });
                 } catch (IllegalStateException e) {
                     Log.e(TAG, "Invalid event state", e);
                 }
             }
+
 
             @Override
             public void onScanningPaused() {

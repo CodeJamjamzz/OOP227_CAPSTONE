@@ -31,12 +31,12 @@
 
         <TextView
             android:id="@+id/subhead"
-            style="@style/dashboard_eventDate"
+            style="@style/dashboard_eventDateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
-            android:text="@string/eventStartDate"
+            android:text="@string/dashboard_eventStartDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/eventTitle" />
 
@@ -53,6 +53,28 @@
             app:layout_constraintTop_toBottomOf="@id/eventTitle" />
 
         <TextView
+            android:id="@+id/subhead2"
+            style="@style/dashboard_eventDateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/dashboard_eventEndDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/subhead" />
+
+        <TextView
+            android:id="@+id/eventEndDate"
+            style="@style/dashboard_eventDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:minWidth="24dp"
+            android:text="Date"
+            app:layout_constraintStart_toStartOf="@id/eventStartDate"
+            app:layout_constraintTop_toBottomOf="@id/subhead" />
+
+        <TextView
             android:id="@+id/eventDescription"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="match_parent"
@@ -62,6 +84,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subhead" />
+            app:layout_constraintTop_toBottomOf="@+id/subhead2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

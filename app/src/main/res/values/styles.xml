@@ -38,6 +38,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="dashboard_eventDateLabel">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="dashboard_eventDate">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/black</item>

@@ -1,7 +1,5 @@
 package com.example.capstone_project.models;
 
-import java.time.LocalDateTime;
-
 public interface Builder {
     Builder setEventName(String eventName);
     Builder setStartDateTime(String startDate);

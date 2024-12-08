@@ -3,8 +3,6 @@ package com.example.capstone_project.utils;
 import com.example.capstone_project.models.Builder;
 import com.example.capstone_project.models.Event;
 
-import java.time.LocalDateTime;
-
 public class EventBuilder implements Builder {
 
     private Event event;

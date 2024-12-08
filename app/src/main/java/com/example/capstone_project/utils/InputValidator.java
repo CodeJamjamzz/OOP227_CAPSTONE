@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 
 public class InputValidator {
 
-
     // valid name checker
     public static boolean isValidName(String InputedName) {
         if (InputedName == null || InputedName.trim().isEmpty()) {

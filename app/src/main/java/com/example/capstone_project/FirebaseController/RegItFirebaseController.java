@@ -11,8 +11,6 @@ import androidx.annotation.NonNull;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 import com.example.capstone_project.models.UserAccount;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 // Singleton
 public class RegItFirebaseController {
@@ -57,7 +54,7 @@ public class RegItFirebaseController {
     // Technically I can disallow account creation here if account already exists
     public void createNewUser(String StudentNumber, String name, String email, String courseYear, String password) {
 
-        // TODO: probably just implement firebase Authenticator
+        // probably just implement firebase Authenticator for 2.0
         String hashedPassword = hashPassword(password);
         // creates a UserObject
         UserAccount user = new UserAccount(StudentNumber, name, email, courseYear, hashedPassword);
@@ -209,6 +206,7 @@ public class RegItFirebaseController {
 
         return future;
     }
+
     public CompletableFuture<Event> getEvent(String eventID) {
         return fetchEventFromSource(eventID);
     }
@@ -267,10 +265,9 @@ public class RegItFirebaseController {
         return eventList;
     }
 
+    /** Important Note on How to Use the Completable Future
 
-    /* Use the user obtained within here
-
-    CompletableFuture<UserAccount> userFuture = db.getUser("23-2772-181");
+    CompletableFuture<UserAccount> userFuture = db.getUser(studentID);
     userFuture.thenAccept(userAccount -> {
         // Error checking is already done in the method so just use the new userAccount object here
     }).exceptionally(e -> {
@@ -280,32 +277,40 @@ public class RegItFirebaseController {
 
      */
 
-    // Firebase get data Method
-    /*   USAGE
-    fetchData("23-2772-181").thenAccept(accountName -> {
-        System.out.println("Account Name: " + accountName);
-    }).exceptionally(e -> {
-        System.err.println("Error fetching account name: " + e.getMessage());
-    });
-     */
-
     /* ================================ DELETIONS METHODS ================================ */
 
     // Event Deletion Method
     public void deleteEventFromDB(String eventId) {
-        //TODO: remove Attendee from DB before deleting event
-
         DatabaseReference eventRef = regItEventsListDB.child(eventId);
-        eventRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Log.d("Firebase", "Event deleted successfully");
-                    // Handle successful deletion, e.g., update UI or show a message
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Event event = dataSnapshot.getValue(Event.class);
+                    if (event != null) {
+                        for (Attendee attendee : event.getAttendees().values()) {
+                            removeEventFromUser(eventId, attendee.getUserAccountID());
+                        }
+
+                        eventRef.removeValue().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Log.d("Firebase", "Event and attendees deleted successfully");
+                            } else {
+                                Log.e("Firebase", "Error deleting event or attendees: " + Objects.requireNonNull(task.getException()).getMessage());
+                            }
+                        });
+                    } else {
+                        Log.w("Firebase", "Event not found");
+                    }
                 } else {
-                    Log.e("Firebase", "Error deleting event: " + Objects.requireNonNull(task.getException()).getMessage());
-                    // Handle the error, e.g., show an error message to the user
+                    Log.w("Firebase", "Event not found");
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("Firebase", "Error fetching event data: " + error.getMessage());
             }
         });
     }
@@ -337,11 +342,42 @@ public class RegItFirebaseController {
         });
     }
 
+    public CompletableFuture<Boolean> verifyAttendee(String eventId, Attendee attendee) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-    // Firebase Add Attendee Method
+        DatabaseReference eventRef = regItEventsListDB.child(eventId).child("attendees");
 
-    // Firebase Remove Attendee Method
+        eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot attendeeSnapshot : dataSnapshot.getChildren()) {
+                        Attendee existingAttendee = attendeeSnapshot.getValue(Attendee.class);
+                        if (existingAttendee != null && existingAttendee.getUserAccountID().equals(attendee.getUserAccountID())) {
+                            // Update the attendee's confirmation status
+                            existingAttendee.setUserConfirm(true);
+                            attendeeSnapshot.getRef().setValue(existingAttendee)
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            future.complete(true); // Attendee confirmed and updated
+                                        } else {
+                                            future.completeExceptionally(task.getException());
+                                        }
+                                    });
+                            return;
+                        }
+                    }
+                }
+                future.complete(false); // Attendee not found
+            }
 
-    // Firebase Edit Attendee Method
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                future.completeExceptionally(error.toException());
+            }
+        });
+
+        return future;
+    }
 
 }

@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.capstone_project.FirebaseController.RegItFirebaseController;
-import com.example.capstone_project.RegisterAttendee;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 import com.google.android.gms.tasks.Task;
@@ -17,7 +16,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -25,7 +23,6 @@ import java.util.concurrent.CompletableFuture;
 public class EventServiceManager {
     private String TAG = "EventServiceManager";
     private static EventServiceManager instance;
-    // DONE: make Comparator for Event to sort by start date
     private static List<Event> events;
     private static final RegItFirebaseController db = RegItFirebaseController.getInstance();
 
@@ -53,7 +50,6 @@ public class EventServiceManager {
 
     public void createEvent(String name, String description, String venue, String startDate, String endDate, double ticketPrice, int audienceLimit) {
         EventBuilder builder = new EventBuilder();
-        // DONE: pass event details from EventForms here
         Event event = builder
                 .setEventName(name)
                 .setVenue(venue)
@@ -75,12 +71,6 @@ public class EventServiceManager {
     }
 
     public void unRegisterAttendee(String eventId, String attendeeId) {
-        Event event = getEventFromId(eventId);
-
-        if (event == null) {
-            Log.d(TAG, "Event was not found!");
-            return;
-        }
 
         db.removeAttendeeFromEvent(eventId, attendeeId);
         db.removeEventFromUser(eventId, attendeeId);
@@ -95,50 +85,51 @@ public class EventServiceManager {
         return null;
     }
 
-    public Attendee getAttendeeFromId(String eventId, String attendeeId) {
-        // TODO: turn to hashmap
-//        for (Attendee a : getEventFromId(eventId).getAttendees()) {
-//            // TODO: connect with firebase
-//            if (a.getUserAccountID().equals(attendeeId)) {
-//                return a;
-//            }
-//        }
-        return null;
-    }
 
-    public String getAttendeeIdFromName(String eventId, String attendeeName) {
-        List<Attendee>  attendList = RegItFirebaseController.getInstance().getAttendeesFromEvent(eventId);
-        for (Attendee a : attendList) {
-            Log.d("checking attendee", "Attendee "+ a.getUserAccountName()  + " with ID " + a.getUserAccountID());
-            if (a.getUserAccountName().equals(attendeeName)) {
-                return a.getUserAccountID();
+    public CompletableFuture<String> getAttendeeIDFromName(String eventId, String attendeeName) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+
+        DatabaseReference eventReference = RegItFirebaseController.getInstance()
+                .getRegItEventsListDB()
+                .child(eventId)
+                .child("attendees");
+
+        eventReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot attendeeSnapshot : dataSnapshot.getChildren()) {
+                        Attendee attendee = attendeeSnapshot.getValue(Attendee.class);
+                        if (attendee != null && attendee.getUserAccountName().equals(attendeeName)) {
+                            Log.d("Attendee Found", "Attendee found: " + attendee.getUserAccountName());
+                            future.complete(attendeeSnapshot.getKey());
+                            return;
+                        }
+                    }
+                    Log.d("Attendee Not Found", "Attendee not found: " + attendeeName);
+                    future.complete(null); // Or throw an exception if desired
+                } else {
+                    Log.d("Event Not Found", "Event not found: " + eventId);
+                    future.completeExceptionally(new Exception("Event or attendees not found"));
+                }
             }
-        }
-        return "";
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("Attendee ID Retrieval", "Failed to retrieve attendee ID", databaseError.toException());
+                future.completeExceptionally(databaseError.toException());
+            }
+        });
+
+        return future;
     }
 
     public Event[] getEvents() {
         return events.toArray(new Event[0]);
     }
 
-    public boolean verifyAttendee(String eventId, String attendeeId) {
-        Event event = getEventFromId(eventId);
-        if (event == null) {
-            throw new IllegalStateException("Event not found!");
-        }
-        // TODO: turn to hashmap
-//        Map<String, Attendee> map = event.getAttendees();
-//        for (Map.Entry<String, Attendee> entry : map.entrySet()) {
-//            attendees[i] = entry.getValue().getUserAccountName();
-//        }
-
-//        for (Attendee b : event.getAttendees()) {
-//            // TODO: add firebase connections in Attendee getters
-//            if (attendeeId.equals(b.getUserAccountID())) {
-//                return true;
-//            }
-//        }
-        return false;
+    public CompletableFuture<Boolean> verifyAttendee(String eventId, Attendee attendeeId) {
+        return db.verifyAttendee(eventId, attendeeId);
     }
 
     public void deleteEvent(String eventId) {
@@ -147,11 +138,6 @@ public class EventServiceManager {
             Log.d(TAG, "Delete Event Error: Event not in list!");
             return;
         }
-        // TODO: change to access attendeeAccountID then delete from UserAccount in DB
-        // attendee -> userAccount
-//        for (Attendee b : e.getAttendees()) {
-//            b.getEventsRegistered().remove(e.getEventId());
-//        }
         db.deleteEventFromDB(eventId);
         events.remove(e);
     }

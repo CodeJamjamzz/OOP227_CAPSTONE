@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -38,7 +39,10 @@ import java.util.Calendar;
 
 public class EventForms extends AppCompatActivity {
 
+    // TODO: fix date format
+
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/d/yyyy hh:mm a");
+    private TextView formTitle;
     EditText EventName, EventDescription, EventVenue, EventAudienceLimit, EventDate, EventStart,
              EventEnd, EventDateEnd, EventTicketPrice;
     int inputtedHourStart, inputtedMinuteStart;
@@ -71,6 +75,7 @@ public class EventForms extends AppCompatActivity {
         EventStart = findViewById(R.id.inputEventStart);
         EventEnd = findViewById(R.id.inputEventEnd);
         createEventButton = findViewById(R.id.CreateEvent);
+        formTitle = findViewById(R.id.textView6);
 
         inputValidation(EventName, "EventName");
         inputValidation(EventAudienceLimit, "EventLimit");
@@ -178,6 +183,7 @@ public class EventForms extends AppCompatActivity {
         String eventId = getIntent().getStringExtra("SELECTED_EVENT_ID");
         if (eventId != null) {
             if (!eventId.isEmpty()) {
+                formTitle.setText("EDIT EVENT");
                 event = EventServiceManager.getInstance().getEventFromId(eventId);
                 EventName.setText(event.getName());
                 EventDescription.setText(event.getDescription());
