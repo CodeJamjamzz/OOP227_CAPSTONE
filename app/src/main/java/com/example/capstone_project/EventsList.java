@@ -65,11 +65,13 @@ public class EventsList extends AppCompatActivity {
                         String eventName = eventSnapshot.child("name").getValue(String.class);
                         String eventDescription = eventSnapshot.child("description").getValue(String.class);
                         String eventStartDate = eventSnapshot.child("startDate").getValue(String.class);
+                        String eventEndDate = eventSnapshot.child("endDate").getValue(String.class);
 
                         Event event = new Event();
                         event.setName(eventName);
                         event.setDescription(eventDescription);
                         event.setStartDate(eventStartDate);
+                        event.setEndDate(eventEndDate);
 
                         // Add the event to the list
                         eventList.add(event);
