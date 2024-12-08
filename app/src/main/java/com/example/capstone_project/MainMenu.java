@@ -254,6 +254,52 @@ public class MainMenu extends AppCompatActivity {
     }
 
     public void adminDashboardActivity(View view) {
-        startActivity(new Intent(MainMenu.this, AdminDashboard.class));
+        showAdminPasswordPopup();
+    }
+    public void showAdminPasswordPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter Password");
+
+        // Layout
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 20, 50, 20); // padding
+
+        // Password field
+        final EditText input = new EditText(this);
+        input.setHint("Enter your password");
+        input.setTransformationMethod(PasswordTransformationMethod.getInstance()); // to hide password
+        // Centring
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 20, 0, 60); // padding
+        input.setLayoutParams(params);
+
+        // Adding to layout
+        layout.addView(input);
+        // Adding to popup
+        builder.setView(layout);
+
+        // Confirm behavior
+        builder.setPositiveButton("Submit", (dialog, which) -> {
+            String password = input.getText().toString().trim();
+            if (!password.isEmpty()) {
+                if(password.equals("hackstreet")){
+                    startActivity(new Intent(MainMenu.this, AdminDashboard.class));
+                }else{
+                    Toast.makeText(MainMenu.this, "Incorrect password", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(MainMenu.this, "Please enter a password", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Cancel behavior
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        // Show the popup
+        builder.show();
     }
 }
