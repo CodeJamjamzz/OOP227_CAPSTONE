@@ -33,6 +33,8 @@ import java.util.Calendar;
 
 public class EventForms extends AppCompatActivity {
 
+    // TODO: fix date format
+
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/d/yyyy hh:mm a");
     private TextView formTitle;
     EditText EventName, EventDescription, EventVenue, EventAudienceLimit, EventDate, EventStart,

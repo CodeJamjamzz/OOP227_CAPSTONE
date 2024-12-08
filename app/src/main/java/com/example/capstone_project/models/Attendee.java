@@ -1,11 +1,5 @@
 package com.example.capstone_project.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.util.ArrayList;
-import java.util.List;
-
 // Attendee Object is to access userAccount information through the database
 // security checks for access are already setup there & locally
 
@@ -37,11 +31,4 @@ public class Attendee {
     public void setUserConfirm(boolean userConfirm) { this.userConfirm = userConfirm; }
 
     public void toggleUserConfirm() { this.userConfirm = !userConfirm; }
-
-    // TODO: getting UserAccount Information getters
-    // private String accountEmail;
-
-//    public String getAttendeeEmail() {
-//        return null;
-//    }
 }

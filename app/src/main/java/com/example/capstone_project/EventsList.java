@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: fix date format
 public class EventsList extends AppCompatActivity {
 
     private RecyclerView recyclerView;
@@ -96,7 +97,7 @@ public class EventsList extends AppCompatActivity {
         Event[] eventsArray = new Event[eventList.size()];
         eventList.toArray(eventsArray);
 
-        eventAdapter = new UpcomingEventAdapter(eventsArray);
+        eventAdapter = new UpcomingEventAdapter(eventsArray, false);
         recyclerView.setAdapter(eventAdapter);
     }
 }

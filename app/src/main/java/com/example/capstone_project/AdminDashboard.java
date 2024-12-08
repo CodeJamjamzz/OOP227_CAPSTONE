@@ -12,16 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.capstone_project.models.Event;
-import com.example.capstone_project.utils.EventBuilder;
 import com.example.capstone_project.utils.EventServiceManager;
 import com.example.capstone_project.utils.UpcomingEventAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class AdminDashboard extends AppCompatActivity {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM);
@@ -109,7 +105,7 @@ public class AdminDashboard extends AppCompatActivity {
         } else {
             latestEventEndDate.setText(R.string.tba);
         }
-
+        // TODO: fix date format
         latestEventAttendeesRegistered.setText(String.format("%d", events[0].getAttendees().size()));
 
         if (events[0].getAudienceLimit() == 0) {

@@ -1,7 +1,5 @@
 package com.example.capstone_project.utils;
 
-import android.util.Log;
-
 import com.example.capstone_project.models.Event;
 
 import java.time.LocalDateTime;

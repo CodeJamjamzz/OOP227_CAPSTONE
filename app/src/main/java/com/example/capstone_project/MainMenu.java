@@ -16,15 +16,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.capstone_project.FirebaseController.RegItFirebaseController;
-import com.example.capstone_project.models.Event;
-import com.example.capstone_project.models.UserAccount;
 import com.example.capstone_project.utils.EventServiceManager;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -32,11 +27,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.capstone_project.utils.InputValidator;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.concurrent.CompletableFuture;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 // java code for activity_main.xml screen the first one
 public class MainMenu extends AppCompatActivity {
@@ -58,25 +48,6 @@ public class MainMenu extends AppCompatActivity {
         EventServiceManager.updateEvents();
         createAccount = findViewById(R.id.createAccount);
         adminDashboard = findViewById(R.id.adminDashboard);
-
-        /*
-            TODO: load events from database here using EventServiceManager
-            Hardcoded objects will be here for testing
-        */
-        /*
-        Attendee testPerson1 = new Attendee("Ewican, James O.", "23-4496-954", "james.ewican@cit.edu", "BSCS - 2");
-        Attendee testPerson2 = new Attendee("Pinca, Jamiel Kyne R.", "23-4205-826", "jamiel.pinca@cit.edu", "BSCS - 2");
-        Attendee testPerson3 = new Attendee("Galorio, Sydney B.", "23-4105-856", "sydney.galorio@cit.edu", "BSCS - 2");
-        LocalDateTime testStart = LocalDateTime.now().plusDays(1);
-        LocalDateTime testEnd = LocalDateTime.now().plusDays(3);
-//        Moved loading of events in AdminDashboard
-
-        String id1 = EventServiceManager.getInstance().createEvent("CCS Akwe", "Find new friends!", "CIT-U Gym", testStart, testEnd, 0);
-        String id2 = EventServiceManager.getInstance().createEvent("Food Bazaar", "Try our delicious meals!", "CIT-U RTL Quadrangle", testStart, testEnd, 0);
-        EventServiceManager.getInstance().registerAttendee(id1, testPerson1);
-        EventServiceManager.getInstance().registerAttendee(id2, testPerson2);
-        EventServiceManager.getInstance().registerAttendee(id1, testPerson3);
-        */
     }
 
     boolean isValid = false;

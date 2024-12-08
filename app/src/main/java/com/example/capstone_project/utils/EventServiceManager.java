@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.capstone_project.FirebaseController.RegItFirebaseController;
-import com.example.capstone_project.RegisterAttendee;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 import com.google.android.gms.tasks.Task;
@@ -17,7 +16,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -25,7 +23,6 @@ import java.util.concurrent.CompletableFuture;
 public class EventServiceManager {
     private String TAG = "EventServiceManager";
     private static EventServiceManager instance;
-    // DONE: make Comparator for Event to sort by start date
     private static List<Event> events;
     private static final RegItFirebaseController db = RegItFirebaseController.getInstance();
 
@@ -53,7 +50,6 @@ public class EventServiceManager {
 
     public void createEvent(String name, String description, String venue, String startDate, String endDate, double ticketPrice, int audienceLimit) {
         EventBuilder builder = new EventBuilder();
-        // DONE: pass event details from EventForms here
         Event event = builder
                 .setEventName(name)
                 .setVenue(venue)
@@ -142,11 +138,6 @@ public class EventServiceManager {
             Log.d(TAG, "Delete Event Error: Event not in list!");
             return;
         }
-        // TODO: change to access attendeeAccountID then delete from UserAccount in DB
-        // attendee -> userAccount
-//        for (Attendee b : e.getAttendees()) {
-//            b.getEventsRegistered().remove(e.getEventId());
-//        }
         db.deleteEventFromDB(eventId);
         events.remove(e);
     }

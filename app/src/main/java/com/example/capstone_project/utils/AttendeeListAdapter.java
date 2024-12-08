@@ -10,9 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.capstone_project.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AttendeeListAdapter extends RecyclerView.Adapter<AttendeeListAdapter.ViewHolder> {
 
     private final String eventId;

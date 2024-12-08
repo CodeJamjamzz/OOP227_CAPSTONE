@@ -19,6 +19,7 @@ import java.util.Arrays;
 
 public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdapter.ViewHolder> {
 
+    private boolean clickable;
     private Event[] localDataSet;
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM);
     /**
@@ -35,11 +36,13 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
-            view.setOnClickListener(v -> {
-                Intent intent = new Intent(view.getContext(), EventDetails.class);
-                intent.putExtra("SELECTED_EVENT_ID", localDataSet[position].getEventId());
-                view.getContext().startActivity(intent);
-            });
+            if(clickable) {
+                view.setOnClickListener(v -> {
+                    Intent intent = new Intent(view.getContext(), EventDetails.class);
+                    intent.putExtra("SELECTED_EVENT_ID", localDataSet[position].getEventId());
+                    view.getContext().startActivity(intent);
+                });
+            }
             eventTitle = view.findViewById(R.id.eventTitle);
             eventDescription = view.findViewById(R.id.eventDescription);
             eventStartDate = view.findViewById(R.id.eventStartDate);
@@ -71,7 +74,12 @@ public class UpcomingEventAdapter extends RecyclerView.Adapter<UpcomingEventAdap
         localDataSet = (dataSet.length > 1)
                 ? Arrays.copyOfRange(dataSet, 1, dataSet.length)
                 : new Event[0];
+        clickable = true;
+    }
 
+    public UpcomingEventAdapter(Event[] dataSet, boolean clickable) {
+        clickable = false;
+        localDataSet = dataSet;
     }
 
     // Create new views (invoked by the layout manager)

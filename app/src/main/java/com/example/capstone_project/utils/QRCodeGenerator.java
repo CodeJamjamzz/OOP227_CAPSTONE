@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
+
 public class QRCodeGenerator {
     private static QRCodeGenerator instance;
     private QRCodeGenerator(){}

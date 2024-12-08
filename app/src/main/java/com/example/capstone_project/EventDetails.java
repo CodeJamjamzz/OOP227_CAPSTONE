@@ -127,6 +127,7 @@ public class EventDetails extends AppCompatActivity {
 
                     eventDescription.setText(event.getDescription());
 
+                    // TODO: fix date format
                     if (event.getStartDate() != null) {
                         eventStartDate.setText(event.getStartDate());
                     } else {

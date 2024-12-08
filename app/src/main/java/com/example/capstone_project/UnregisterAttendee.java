@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.capstone_project.FirebaseController.RegItFirebaseController;
-import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.utils.AttendeeListAdapter;
 import com.example.capstone_project.utils.EventServiceManager;
 

@@ -206,6 +206,7 @@ public class RegItFirebaseController {
 
         return future;
     }
+
     public CompletableFuture<Event> getEvent(String eventID) {
         return fetchEventFromSource(eventID);
     }
@@ -264,10 +265,9 @@ public class RegItFirebaseController {
         return eventList;
     }
 
+    /** Important Note on How to Use the Completable Future
 
-    /* Use the user obtained within here
-
-    CompletableFuture<UserAccount> userFuture = db.getUser("23-2772-181");
+    CompletableFuture<UserAccount> userFuture = db.getUser(studentID);
     userFuture.thenAccept(userAccount -> {
         // Error checking is already done in the method so just use the new userAccount object here
     }).exceptionally(e -> {
@@ -275,15 +275,6 @@ public class RegItFirebaseController {
         return null;
     });
 
-     */
-
-    // Firebase get data Method
-    /*   USAGE
-    fetchData("23-2772-181").thenAccept(accountName -> {
-        System.out.println("Account Name: " + accountName);
-    }).exceptionally(e -> {
-        System.err.println("Error fetching account name: " + e.getMessage());
-    });
      */
 
     /* ================================ DELETIONS METHODS ================================ */
@@ -388,12 +379,5 @@ public class RegItFirebaseController {
 
         return future;
     }
-
-
-    // Firebase Add Attendee Method
-
-    // Firebase Remove Attendee Method
-
-    // Firebase Edit Attendee Method
 
 }

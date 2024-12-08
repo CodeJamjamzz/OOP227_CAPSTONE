@@ -13,7 +13,6 @@ import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.utils.EventServiceManager;
 import com.example.capstone_project.utils.QRCodeScanner;
