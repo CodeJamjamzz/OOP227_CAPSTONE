@@ -231,6 +231,7 @@ public class CreateAccount extends AppCompatActivity {
         nextActivity.putExtra("InputedStudentNumber", StudentNumber);
         nextActivity.putExtra("InputedEmail", Email);
         nextActivity.putExtra("InputedCourseYear", CourseYear);
+        nextActivity.putExtra("Password", Password.getText().toString());
     }
 
     // create account button; final checkpoint if it has any invalid inputs.

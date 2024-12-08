@@ -51,7 +51,6 @@ public class RegItFirebaseController {
     /* ================================ CREATION METHODS ================================ */
 
     // Firebase Account Creation Method
-    // Technically I can disallow account creation here if account already exists
     public void createNewUser(String StudentNumber, String name, String email, String courseYear, String password) {
 
         // probably just implement firebase Authenticator for 2.0
