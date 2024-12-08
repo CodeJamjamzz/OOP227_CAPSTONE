@@ -2,6 +2,7 @@ package com.example.capstone_project;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,9 +70,11 @@ public class RegisterAttendee extends AppCompatActivity {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.white_button));
                         attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.green));
                         attendeeStatus.setText(R.string.attendee_registered);
-                        //TODO: fix this bruh broken asf
-//                        attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getUserAccountID());
-                        finish();
+                        attendeeName.setText(p2);
+                        Handler handler = new Handler();
+                        handler.postDelayed(() -> {
+                            finish();
+                        }, 2000); // 2000 milliseconds = 2 seconds
                     } else {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.red_button));
                         attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.white));
