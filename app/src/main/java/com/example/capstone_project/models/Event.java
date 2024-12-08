@@ -1,15 +1,23 @@
 package com.example.capstone_project.models;
 
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class Event {
     private String name;
-    private String eventId;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private final String eventId; // eventID must not be changeable
+    private String startDate;
+    private String endDate;
     private String venue;
     private int audienceLimit;
     private String description;
@@ -37,11 +45,9 @@ public class Event {
         return eventId;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
+    public String getStartDate() { return startDate; }
 
-    public LocalDateTime getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
@@ -73,11 +79,9 @@ public class Event {
         this.name = name;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
+    public void setStartDate(String startDate) { this.startDate = startDate; }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -105,4 +109,10 @@ public class Event {
         this.attendees = attendees;
     }
 
+    @NonNull
+    @Override
+    // name of the event object will always be its own event ID as it will always stay and be unique
+    public String toString() {
+        return eventId;
+    }
 }

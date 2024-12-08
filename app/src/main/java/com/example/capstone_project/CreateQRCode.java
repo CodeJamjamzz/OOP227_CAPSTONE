@@ -35,6 +35,7 @@ public class CreateQRCode extends AppCompatActivity {
     TextView DisplayEmail;
     TextView DisplayCourseYear;
     ImageView qrCodeImageView;
+    String name, sNum, email, course, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,31 +55,28 @@ public class CreateQRCode extends AppCompatActivity {
             return insets;
         });
 
+        Intent previousActivity = getIntent();
+        name = previousActivity.getStringExtra("InputedName");
+        sNum = previousActivity.getStringExtra("InputedStudentNumber");
+        email = previousActivity.getStringExtra("InputedEmail");
+        course = previousActivity.getStringExtra("InputedCourseYear");
+        password = previousActivity.getStringExtra("Password");
         DisplayInfo();
         generateAndDisplayQRCode();
     }
 
     public void DisplayInfo(){
-        Intent previousActivity = getIntent();
-        DisplayName.setText(previousActivity.getStringExtra("InputedName"));
-        DisplayStudentNumber.setText(previousActivity.getStringExtra("InputedStudentNumber"));
-        DisplayEmail.setText(previousActivity.getStringExtra("InputedEmail"));
-        DisplayCourseYear.setText(previousActivity.getStringExtra("InputedCourseYear"));
+        DisplayName.setText(name);
+        DisplayStudentNumber.setText(sNum);
+        DisplayEmail.setText(email);
+        DisplayCourseYear.setText(course);
     }
     // function that generates QR
     private void generateAndDisplayQRCode() {
         try {
-            // TODO: probably change it to just display studentID
-            String data = "{"
-                    + "\"name\":\"" + DisplayName.getText().toString() + "\","
-                    + "\"studentNumber\":\"" + DisplayStudentNumber.getText().toString() + "\","
-                    + "\"email\":\"" + DisplayEmail.getText().toString() + "\","
-                    + "\"course\":\"" + DisplayCourseYear.getText().toString() + "\""
-                    + "}";
-
+            String data = DisplayStudentNumber.getText().toString() + " - " + DisplayName.getText().toString();
             QRCodeGenerator qrCodeGenerator = QRCodeGenerator.getInstance();
             Bitmap qrCodeBitmap = qrCodeGenerator.generateQRCode(data);
-
             qrCodeImageView.setImageBitmap(qrCodeBitmap);
         } catch (WriterException e) {
             e.printStackTrace();
@@ -121,6 +119,12 @@ public class CreateQRCode extends AppCompatActivity {
 
     public void editInformationActivity(View view){
         Intent intent = new Intent(CreateQRCode.this, CreateAccount.class);
+        intent.putExtra("EditingInfo", true);
+        intent.putExtra("sName", name);
+        intent.putExtra("studentNumber", sNum);
+        intent.putExtra("sEmail", email);
+        intent.putExtra("sCourse", course);
+        intent.putExtra("Pass", password);
         startActivity(intent);
     }
     // function to return to main page

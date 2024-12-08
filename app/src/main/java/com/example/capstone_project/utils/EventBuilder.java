@@ -22,13 +22,13 @@ public class EventBuilder implements Builder {
     }
 
     @Override
-    public EventBuilder setStartDateTime(LocalDateTime startDate) {
+    public EventBuilder setStartDateTime(String startDate) {
         event.setStartDate(startDate);
         return this;
     }
 
     @Override
-    public EventBuilder setEndDateTime(LocalDateTime endDate) {
+    public EventBuilder setEndDateTime(String endDate) {
         event.setEndDate(endDate);
         return this;
     }

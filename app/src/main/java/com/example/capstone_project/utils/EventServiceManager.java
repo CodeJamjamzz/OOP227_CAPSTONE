@@ -2,25 +2,27 @@ package com.example.capstone_project.utils;
 
 import android.util.Log;
 
+import com.example.capstone_project.FirebaseController.RegItFirebaseController;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
+// Singleton
 public class EventServiceManager {
     private String TAG = "EventServiceManager";
     private static EventServiceManager instance;
     // DONE: make Comparator for Event to sort by start date
     private static List<Event> events;
+    private final RegItFirebaseController db = RegItFirebaseController.getInstance();
 
     private EventServiceManager() {
         // Load events from database here ig
-        events = new ArrayList<>();
+        events = db.getEventsfromDB();
+        sortEvents();
     }
 
-    private void sortEvents() {
+    private static void sortEvents() {
         events.sort(new EventComparator());
     }
 
@@ -28,10 +30,11 @@ public class EventServiceManager {
         if (instance == null) {
             instance = new EventServiceManager();
         }
+        sortEvents();
         return instance;
     }
 
-    public String createEvent(String name, String description, String venue, LocalDateTime startDate, LocalDateTime endDate, double ticketPrice, int audienceLimit) {
+    public void createEvent(String name, String description, String venue, String startDate, String endDate, double ticketPrice, int audienceLimit) {
         EventBuilder builder = new EventBuilder();
         // DONE: pass event details from EventForms here
         Event event = builder
@@ -44,21 +47,23 @@ public class EventServiceManager {
                 .setTicketPrice(ticketPrice)
                 .build();
         events.add(event);
+
+        RegItFirebaseController.getInstance().createNewEvent(event);
+
         sortEvents();
-        return event.getEventId();
     }
 
-    public boolean registerAttendee(String eventId, Attendee a) {
+    public boolean registerAttendee(String eventId, Attendee newAttendee) {
         for (Event e : events) {
             if (e.getEventId().equals(eventId)) {
                 Log.d(TAG, "Event found, adding attendee...");
-                for (Attendee a1 : e.getAttendees()) {
-                    if (a1.getIdNumber().equals(a.getIdNumber())) {
+                for (Attendee a : e.getAttendees()) {
+                    if (a.getUserAccountID().equals(newAttendee.getUserAccountID())) {
                         Log.d(TAG, "Attendee already in event! Skipped");
                         return false;
                     }
                 }
-                e.getAttendees().add(a);
+                e.getAttendees().add(newAttendee);
                 return true;
              }
         }
@@ -75,7 +80,7 @@ public class EventServiceManager {
         }
 
         for (Attendee a : event.getAttendees()) {
-            if (a.getIdNumber().equals(attendeeId)) {
+            if (a.getUserAccountID().equals(attendeeId)) {
                 Log.d(TAG, "Attendee found. Unregistering...");
                 event.getAttendees().remove(a);
                 return true;
@@ -96,7 +101,8 @@ public class EventServiceManager {
 
     public Attendee getAttendeeFromId(String eventId, String attendeeId) {
         for (Attendee a : getEventFromId(eventId).getAttendees()) {
-            if (a.getIdNumber().equals(attendeeId)) {
+            // TODO: connect with firebase
+            if (a.getUserAccountID().equals(attendeeId)) {
                 return a;
             }
         }
@@ -105,8 +111,8 @@ public class EventServiceManager {
 
     public String getAttendeeIdFromName(String eventId, String attendeeName) {
         for (Attendee a : getEventFromId(eventId).getAttendees()) {
-            if (a.getName().equals(attendeeName)) {
-                return a.getIdNumber();
+            if (a.getUserAccountName().equals(attendeeName)) {
+                return a.getUserAccountID();
             }
         }
         return "";
@@ -122,7 +128,8 @@ public class EventServiceManager {
             throw new IllegalStateException("Event not found!");
         }
         for (Attendee b : event.getAttendees()) {
-            if (attendeeId.equals(b.getIdNumber())) {
+            // TODO: add firebase connections in Attendee getters
+            if (attendeeId.equals(b.getUserAccountID())) {
                 return true;
             }
         }
@@ -135,9 +142,13 @@ public class EventServiceManager {
             Log.d(TAG, "Delete Event Error: Event not in list!");
             return;
         }
-        for (Attendee b : e.getAttendees()) {
-            b.getEventsRegistered().remove(e.getEventId());
-        }
+        // TODO: change to access attendeeAccountID then delete from UserAccount in DB
+        // attendee -> userAccount
+//        for (Attendee b : e.getAttendees()) {
+//            b.getEventsRegistered().remove(e.getEventId());
+//        }
+        // TODO: deleteEvents will delete EventID from userAccount first
+        db.deleteEventFromDB(eventId);
         events.remove(e);
     }
 
@@ -157,7 +168,7 @@ public class EventServiceManager {
         String[] attendees = new String[event.getAttendees().size()];
         int i = 0;
         for (Attendee a : event.getAttendees()) {
-            attendees[i] = a.getName();
+            attendees[i] = a.getUserAccountName();
             i++;
         }
         return attendees;

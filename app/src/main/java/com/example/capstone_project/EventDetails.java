@@ -62,7 +62,6 @@ public class EventDetails extends AppCompatActivity {
         attendeeList = findViewById(R.id.eventDetails_attendeeListView);
 
         // TODO: register and unregister attendee
-
         registerAttendeeButton.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), RegisterAttendee.class);
             intent.putExtra("SELECTED_EVENT_ID", event.getEventId());
@@ -120,7 +119,7 @@ public class EventDetails extends AppCompatActivity {
         eventDescription.setText(event.getDescription());
 
         if (event.getStartDate() != null) {
-            eventStartDate.setText(event.getStartDate().format(dateTimeFormatter));
+            eventStartDate.setText(event.getStartDate());
         } else {
             eventStartDate.setText(R.string.tba);
         }

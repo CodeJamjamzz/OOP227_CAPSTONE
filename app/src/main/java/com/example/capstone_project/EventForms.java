@@ -176,12 +176,14 @@ public class EventForms extends AppCompatActivity {
                 EventAudienceLimit.setText(String.format("%d", event.getAudienceLimit()));
                 createEventButton.setText(R.string.confirmEdit);
                 if (event.getStartDate() != null) {
-                    EventDate.setText(event.getStartDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-                    EventStart.setText(event.getStartDate().format(DateTimeFormatter.ofPattern("hh:mm a")));
+                    EventDate.setText(event.getStartDate());
+//                    EventDate.setText(event.getStartDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+//                    EventStart.setText(event.getStartDate().format(DateTimeFormatter.ofPattern("hh:mm a")));
                 }
                 if (event.getEndDate() != null) {
-                    EventDateEnd.setText(event.getEndDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-                    EventEnd.setText(event.getEndDate().format(DateTimeFormatter.ofPattern("hh:mm a")));
+                    EventDate.setText(event.getEndDate());
+//                    EventDateEnd.setText(event.getEndDate().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+//                    EventEnd.setText(event.getEndDate().format(DateTimeFormatter.ofPattern("hh:mm a")));
                 }
                 editMode = true;
             }
@@ -213,17 +215,21 @@ public class EventForms extends AppCompatActivity {
             }
 
             LocalDateTime eventStart;
+            String eventStartString = null;
             try {
                 eventStart = LocalDateTime.parse(String.format("%s %s", EventDate.getText().toString(),
                                                                         EventStart.getText().toString()), dateTimeFormatter);
+                eventStartString = eventStart.format(DateTimeFormatter.ISO_DATE_TIME);
             } catch (DateTimeException e) {
                 eventStart = null;
             }
 
             LocalDateTime eventEnd;
+            String eventEndString = null;
             try {
                 eventEnd = LocalDateTime.parse(String.format("%s %s", EventDateEnd.getText().toString(),
                                                                       EventEnd.getText().toString()), dateTimeFormatter);
+                eventEndString = eventEnd.format(DateTimeFormatter.ISO_DATE_TIME);
             } catch (DateTimeException e) {
                 eventEnd = null;
             }
@@ -233,16 +239,16 @@ public class EventForms extends AppCompatActivity {
                 EventServiceManager.getInstance().createEvent( eventName,
                                                                eventDescription,
                                                                eventVenue,
-                                                               eventStart,
-                                                               eventEnd,
+                                                               eventStartString,
+                                                               eventEndString,
                                                                eventPrice,
                                                                eventLimit);
             } else {
                 event.setName(eventName);
                 event.setDescription(eventDescription);
                 event.setVenue(eventVenue);
-                event.setStartDate(eventStart);
-                event.setEndDate(eventEnd);
+                event.setStartDate(eventStartString);
+                event.setEndDate(eventEndString);
                 event.setTicketPrice(eventPrice);
                 event.setAudienceLimit(eventLimit);
             }

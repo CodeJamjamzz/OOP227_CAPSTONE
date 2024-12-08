@@ -10,13 +10,21 @@ import androidx.annotation.NonNull;
 
 import com.example.capstone_project.models.Event;
 import com.example.capstone_project.models.UserAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 // Singleton
 public class RegItFirebaseController {
@@ -28,7 +36,7 @@ public class RegItFirebaseController {
 
     private RegItFirebaseController() {
         FirebaseDatabase regItFirebaseDatabase = FirebaseDatabase.getInstance();
-        regItEventsListDB = regItFirebaseDatabase.getReference("");
+        regItEventsListDB = regItFirebaseDatabase.getReference("RegItEventListDatabaseSubtreeNode");
         regItUserAccountListDB = regItFirebaseDatabase.getReference("RegItUserAccountListDatabaseSubtreeNode");
     }
 
@@ -109,6 +117,32 @@ public class RegItFirebaseController {
         return future;
     }
 
+    private CompletableFuture<UserAccount> fetchUserFromSource(String studentNumber) {
+        CompletableFuture<UserAccount> future = new CompletableFuture<>();
+
+        DatabaseReference userReference = regItUserAccountListDB.child(studentNumber);
+
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    UserAccount userAccount = dataSnapshot.getValue(UserAccount.class);
+                    assert userAccount != null;
+                    future.complete(userAccount);
+                } else {
+                    future.completeExceptionally(new Exception("User not found"));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                future.completeExceptionally(databaseError.toException());
+            }
+        });
+
+        return future;
+    }
+
     public CompletableFuture<UserAccount> getUser(String studentNumber, String password) {
         return fetchUserFromSource(studentNumber, password);
     }
@@ -144,7 +178,30 @@ public class RegItFirebaseController {
         return fetchEventFromSource(eventID);
     }
 
+    public List<Event> getEventsfromDB() {
+        List<Event> eventList = new ArrayList<>();
+        regItEventsListDB.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                        Event user = userSnapshot.getValue(Event.class);
+                        // Add user to a list or perform other actions
+                        eventList.add(user);
+                    }
+                } else {
+                    // Handle the case where no users exist
+                    Log.d("Firebase", "No users found");
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Firebase", "Failed to fetch users: " + error.getMessage());
+            }
+        });
+        return eventList;
+    }
 
     /* Use the user obtained within here
 
@@ -167,6 +224,24 @@ public class RegItFirebaseController {
     });
      */
 
+    // Event Deletion Method
+    public void deleteEventFromDB(String eventId) {
+        //TODO: remove Attendee from DB before deleting event
+
+        DatabaseReference eventRef = regItEventsListDB.child(eventId);
+        eventRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("Firebase", "Event deleted successfully");
+                    // Handle successful deletion, e.g., update UI or show a message
+                } else {
+                    Log.e("Firebase", "Error deleting event: " + Objects.requireNonNull(task.getException()).getMessage());
+                    // Handle the error, e.g., show an error message to the user
+                }
+            }
+        });
+    }
 
     // Firebase Add Attendee Method
 

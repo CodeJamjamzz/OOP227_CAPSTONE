@@ -1,5 +1,6 @@
 package com.example.capstone_project;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class CreateAccount extends AppCompatActivity {
     EditText InputedName, InputedStudentNumber,InputedEmail, InputedCourseYear, Password, ConfirmPassword;
     boolean isNameValid = false, isStudentNumberValid = false, isEmailValid = false, isCourseValid = false;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +49,38 @@ public class CreateAccount extends AppCompatActivity {
         ConfirmPassword = findViewById(R.id.inputConfirmPassword);
 
         Intent intent = getIntent();
+        String sName = intent.getStringExtra("sName");
+        String sEmail = intent.getStringExtra("sEmail");
+        String sCourse = intent.getStringExtra("sCourse");
         String studentNumber = intent.getStringExtra("studentNumber");
 
+        boolean EditingInfo = getIntent().getBooleanExtra("EditingInfo", false);
+        String password = intent.getStringExtra("Pass");
         if (studentNumber != null) {
             InputedStudentNumber.setText(studentNumber);
+            InputedStudentNumber.setEnabled(false);
         }
+
+        // if editing, change create account a little bit
+        if(EditingInfo){
+            QRCodecreate.setText("Edit Information");
+            isCourseValid = true;
+            isNameValid = true;
+            isEmailValid = true;
+            InputedStudentNumber.setEnabled(false);
+            InputedStudentNumber.setAlpha(0.5f);
+            Password.setEnabled(false);
+            ConfirmPassword.setEnabled(false);
+            InputedName.setText(sName);
+            InputedStudentNumber.setText(studentNumber);
+            InputedEmail.setText(sEmail);
+            InputedCourseYear.setText(sCourse);
+            Password.setText(password);
+            Password.setAlpha(0.5f);
+            ConfirmPassword.setText(password);
+            ConfirmPassword.setAlpha(0.5f);
+        }
+
         View rootView = findViewById(android.R.id.content);
         final boolean[] isKeyboardOpen = {false};
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
@@ -79,7 +108,6 @@ public class CreateAccount extends AppCompatActivity {
 
         showPrivacyNotice();
         RealTimeValidate(InputedName, "name");
-        RealTimeValidate(InputedStudentNumber, "studentNumber");
         RealTimeValidate(InputedEmail, "email");
         RealTimeValidate(InputedCourseYear, "course");
     }
@@ -167,11 +195,6 @@ public class CreateAccount extends AppCompatActivity {
                         errorMessage = "Invalid name. Use 2-50 letters, spaces, hyphens, or apostrophes.";
                         isNameValid = isValid;
                         break;
-                    case "studentNumber":
-                        isValid = InputValidator.isValidStudentNumber(input);
-                        errorMessage = "Invalid student number. Use the format xx-xxxx-xxx.";
-                        isStudentNumberValid = isValid;
-                        break;
                     case "email":
                         isValid = InputValidator.isValidEmail(input);
                         errorMessage = "Invalid email format.";
@@ -199,6 +222,7 @@ public class CreateAccount extends AppCompatActivity {
         StudentNumber = InputedStudentNumber.getText().toString();
         Email = InputedEmail.getText().toString();
         CourseYear = InputedCourseYear.getText().toString();
+
         // creating a new Account in firebase
         RegItFirebaseController.getInstance().createNewUser(StudentNumber, Name, Email, CourseYear, Password.getText().toString());
 
@@ -215,10 +239,6 @@ public class CreateAccount extends AppCompatActivity {
         String pass2 = ConfirmPassword.getText().toString();
         if (!isNameValid) {
             Toast.makeText(this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!isStudentNumberValid) {
-            Toast.makeText(this, "Please enter a valid student number", Toast.LENGTH_SHORT).show();
             return;
         }
         if (!isEmailValid) {

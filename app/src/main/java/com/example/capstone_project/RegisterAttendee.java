@@ -2,6 +2,7 @@ package com.example.capstone_project;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,15 +56,25 @@ public class RegisterAttendee extends AppCompatActivity {
             @Override
             public void onQRCodeScanned(String attendeeId) {
                 try {
-                    // TODO: get account details here
-                    Attendee a = new Attendee("John Smith", attendeeId, "john.smith@cit.edu", "BSCS - 2");
+                    // TODO: get account details here & add email maybe
+                    // Split the string using the ' - ' as the delimiter
+                    String[] parts = attendeeId.split(" - ");
+
+                    // Access the two parts
+                    String p1 = parts[0];
+                    String p2 = parts[1];
 
                     previewView.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.scan_success));
+                    Attendee a = new Attendee(p1, p2);
                     if (EventServiceManager.getInstance().registerAttendee(eventId, a)) {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.white_button));
                         attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.green));
                         attendeeStatus.setText(R.string.attendee_registered);
-                        attendeeName.setText(EventServiceManager.getInstance().getAttendeeFromId(eventId, attendeeId).getName());
+                        attendeeName.setText(p2);
+                        Handler handler = new Handler();
+                        handler.postDelayed(() -> {
+                            finish();
+                        }, 2000); // 2000 milliseconds = 2 seconds
                     } else {
                         attendeeStatus.setBackground(ContextCompat.getDrawable(RegisterAttendee.this, R.drawable.red_button));
                         attendeeStatus.setTextColor(ContextCompat.getColor(RegisterAttendee.this, R.color.white));
