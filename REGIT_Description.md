@@ -13,8 +13,11 @@
 ### Figma Design:
 [View Figma Design](https://www.figma.com/design/rp07a9QJX8UqlpdMU4U4TD/Capstone?node-id=0-1&t=Vm6zcFJn4uRQTgu9-1)
 
-### Class Diagram:
-[View Initial Class Diagram](https://lucid.app/lucidchart/59aadb00-35b2-4540-82e2-3cbe8858e335/edit?invitationId=inv_33673637-acf1-48ba-b3ea-faf7053048f4&fbclid=IwZXh0bgNhZW0CMTEAAR0xfiTdkHPSL44FXmbIo95U2XfGb4g_JW2s4bpA81364KX14_p6TgKNfQU_aem_mtnW283TWKrhedhrg8jfWA&page=0_0#)
+### Class Diagram (Part 1):
+[View Class Diagram - Part 1](https://lucid.app/lucidchart/59aadb00-35b2-4540-82e2-3cbe8858e335/edit?invitationId=inv_33673637-acf1-48ba-b3ea-faf7053048f4&fbclid=IwZXh0bgNhZW0CMTEAAR0xfiTdkHPSL44FXmbIo95U2XfGb4g_JW2s4bpA81364KX14_p6TgKNfQU_aem_mtnW283TWKrhedhrg8jfWA&page=0_0#)
+### Class Diagram (Part 2):
+[View Class Diagram - Part 2](https://lucid.app/lucidchart/00319354-0ff8-4284-bd4d-7faafdb14f94/edit?viewport_loc=-2099%2C-1109%2C6784%2C3200%2C0_0&invitationId=inv_a22dffd6-9a8e-40bc-b753-1dd8d51b2708)
+
 
 ---
 
@@ -22,6 +25,21 @@
 
 **RegIt** is a comprehensive event registration and management system designed to modernize and simplify the registration process for organizations. By leveraging QR code technology, the system eliminates the need for traditional paper forms, reducing wait times and improving overall event efficiency. RegIt provides both participants and organizers with a seamless, automated registration experience, enhancing event management and data tracking.
 
+---
+
+## Design Patterns Used:
+
+### 1. **Singleton Creational Design Pattern**
+   - **QRCodeGenerator Class:** Ensures that only one QR code is generated per user, maintaining uniqueness and preventing duplication.
+   - **EventServiceManager Class:** Manages all events and attendees using a single shared instance, reducing overhead and ensuring consistent event handling throughout the system.
+   - **RegItFirebaseController**: Same with the EventServiceManager in which we only need once instance to connect to the data base.
+
+### 2. **Builder Creational Design Pattern**
+   - **Event Class:** Allows flexible creation of Event objects by enabling the omission of optional fields. For example, if the event venue is not finalized, it can be left blank and marked as "To be announced" (TBA), offering flexibility for incomplete information during event planning.
+
+### 3. **Adaptor Structural Design Pattern** 
+   - **UpcommingEventAdapter:**   
+   - **AttendeeListAdapter:**
 ---
 
 ## How It Works:
@@ -67,16 +85,3 @@
 
 The primary goal of **RegIt** is to revolutionize event registration processes by integrating QR code technology, ensuring faster, more efficient, and accurate event management while providing valuable insights to organizers. This project aims to demonstrate how technology can improve operational efficiency, reduce administrative burden, and enhance the overall event experience.
 
----
-
-## Design Patterns Used:
-
-### 1. **Singleton Creational Design Pattern**
-   - **QRCodeGenerator Class:** Ensures that only one QR code is generated per user, maintaining uniqueness and preventing duplication.
-   - **EventServiceManager Class:** Manages all events and attendees using a single shared instance, reducing overhead and ensuring consistent event handling throughout the system.
-
-### 2. **Builder Creational Design Pattern**
-   - **Event Class:** Allows flexible creation of Event objects by enabling the omission of optional fields. For example, if the event venue is not finalized, it can be left blank and marked as "To be announced" (TBA), offering flexibility for incomplete information during event planning.
-
-### 3. **Abstract Factory Creational Design Pattern**
-   - **Attendee Class:** Supports the creation of two types of attendees: Regular and VIP. This pattern streamlines the registration process by ensuring efficient and consistent attendee creation, allowing for future extensibility and easier management of attendee types.
