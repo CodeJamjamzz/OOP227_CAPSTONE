@@ -32,7 +32,6 @@ public class EventDetails extends AppCompatActivity {
     private TextView registerAttendeeButton;
     private TextView unregisterAttendeeButton;
     private TextView verifyAttendeeButton;
-    private TextView editDetailsButton;
     private TextView deleteEventButton;
 
     private TextView numAttendeesRegistered;
@@ -59,7 +58,6 @@ public class EventDetails extends AppCompatActivity {
         registerAttendeeButton = findViewById(R.id.eventDetails_registerAttendant_button);
         unregisterAttendeeButton = findViewById(R.id.eventDetails_unRegisterAttendant_button);
         verifyAttendeeButton = findViewById(R.id.eventDetails_verifyAttendant_button);
-        editDetailsButton = findViewById(R.id.eventDetails_editDetails_button);
         deleteEventButton = findViewById(R.id.eventDetails_deleteEvent_button);
 
         numAttendeesRegistered = findViewById(R.id.eventDetails_attendeesRegistered);
@@ -86,13 +84,6 @@ public class EventDetails extends AppCompatActivity {
         verifyAttendeeButton.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), VerifyAttendee.class);
             intent.putExtra("SELECTED_EVENT_ID", event.getEventId());
-            v.getContext().startActivity(intent);
-        });
-
-        editDetailsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), EventForms.class);
-            intent.putExtra("SELECTED_EVENT_ID", event.getEventId());
-            intent.putExtra("ATTENDEES", attendeeListArray);
             v.getContext().startActivity(intent);
         });
 
