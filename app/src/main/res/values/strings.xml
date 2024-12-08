@@ -57,5 +57,7 @@
     <string name="confirmEdit">CONFIRM EDIT</string>
     <string name="attendee_registered">ATTENDEE REGISTERED</string>
     <string name="attendee_register_error">ALREADY IN EVENT</string>
+    <!-- Event List strings-->
+    <string name="registered_events">Registered Events</string>
 </resources>
 

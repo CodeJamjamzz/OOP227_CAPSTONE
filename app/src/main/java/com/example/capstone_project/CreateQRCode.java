@@ -131,5 +131,10 @@ public class CreateQRCode extends AppCompatActivity {
     public void returnMainActivity(View view){
         startActivity(new Intent(CreateQRCode.this , MainMenu.class));
     }
+    public void eventsListActivity(View view){
+        Intent intent = new Intent(CreateQRCode.this, EventsList.class);
+        intent.putExtra("studentNumber", sNum);
+        startActivity(intent);
+    }
 
 }
