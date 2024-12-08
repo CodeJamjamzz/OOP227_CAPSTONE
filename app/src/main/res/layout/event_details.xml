@@ -276,21 +276,7 @@
             android:paddingBottom="6dp"
             android:text="VERIFY ATTENDEE"
             android:textColor="@color/yellow"
-            app:layout_constraintBottom_toTopOf="@+id/eventDetails_editDetails_button"
-            tools:layout_editor_absoluteX="16dp" />
-
-        <TextView
-            android:id="@+id/eventDetails_editDetails_button"
-            style="@style/eventDetails_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/white_button"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:text="EDIT DETAILS"
-            app:layout_constraintBottom_toTopOf="@id/eventDetails_deleteEvent_button"
+            app:layout_constraintBottom_toTopOf="@+id/eventDetails_deleteEvent_button"
             tools:layout_editor_absoluteX="16dp" />
 
         <TextView
