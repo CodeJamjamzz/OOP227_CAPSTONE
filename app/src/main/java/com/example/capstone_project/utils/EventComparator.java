@@ -11,19 +11,18 @@ import java.util.Comparator;
 public class EventComparator implements Comparator<Event> {
     @Override
     public int compare(Event o1, Event o2) {
-        LocalDateTime startDate1 = LocalDateTime.parse(o1.getStartDate(), DateTimeFormatter.ISO_DATE_TIME);
-        LocalDateTime startDate2 = LocalDateTime.parse(o2.getStartDate(), DateTimeFormatter.ISO_DATE_TIME);
-
-        if (startDate1 == null && startDate2 == null) {
+        if (o1.getStartDate() == null && o2.getStartDate() == null) {
             return 0;
         }
-        if (startDate1 == null) {
+        if (o1.getStartDate() == null) {
             return 1;
         }
-        if (startDate2 == null) {
+        if (o2.getStartDate() == null) {
             return -1;
         }
 
+        LocalDateTime startDate1 = LocalDateTime.parse(o1.getStartDate(), DateTimeFormatter.ISO_DATE_TIME);
+        LocalDateTime startDate2 = LocalDateTime.parse(o2.getStartDate(), DateTimeFormatter.ISO_DATE_TIME);
 
         return startDate1.compareTo(startDate2);
     }

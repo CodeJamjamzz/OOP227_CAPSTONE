@@ -22,7 +22,8 @@
     </string>
 
     <!-- Dashboard Strings -->
-    <string name="eventStartDate">Starts in: </string>
+    <string name="dashboard_eventStartDate">Starts in : </string>
+    <string name="dashboard_eventEndDate">Ends in : </string>
     <string name="add_event">Add Event</string>
     <string name="upcoming_events">UPCOMING EVENTS</string>
     <string name="list_of_events">LIST OF EVENTS</string>
