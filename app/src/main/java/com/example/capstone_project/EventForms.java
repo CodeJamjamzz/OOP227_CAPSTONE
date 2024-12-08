@@ -1,11 +1,17 @@
 package com.example.capstone_project;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -38,6 +44,7 @@ public class EventForms extends AppCompatActivity {
     int inputtedHourStart, inputtedMinuteStart;
     int inputtedHourEnd, inputtedMinuteEnd;
     boolean InputEventNameValidator = false , InputEventTicketPriceValidator = false, InputEventAudienceLimitValidator = false;
+    boolean InputEventStartDate = false, InputEventEndDate = false;
     Button createEventButton;
 
     private Event event;
@@ -68,6 +75,8 @@ public class EventForms extends AppCompatActivity {
         inputValidation(EventName, "EventName");
         inputValidation(EventAudienceLimit, "EventLimit");
         inputValidation(EventTicketPrice, "EventPrice");
+        inputValidation(EventDate, "EventStartDate");
+        inputValidation(EventDateEnd, "EventEndDate");
 
         EventDate.setFocusable(false);
         EventDate.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +100,7 @@ public class EventForms extends AppCompatActivity {
                 dialog.show();
             }
         });
+
 
         EventDateEnd.setFocusable(false);
         EventDateEnd.setOnClickListener(new View.OnClickListener() {
@@ -195,6 +205,10 @@ public class EventForms extends AppCompatActivity {
                 Toast.makeText(this, "Please input a valid event name", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            if(!InputEventEndDate && !EventDate.getText().toString().trim().isEmpty()){Toast.makeText(this, "Please enter a future or current date.", Toast.LENGTH_SHORT).show();return;}
+            if(!InputEventStartDate && !EventDateEnd.getText().toString().trim().isEmpty()){Toast.makeText(this, "Please enter a future or current date.", Toast.LENGTH_SHORT).show();return;}
+
             if(!InputEventTicketPriceValidator){EventTicketPrice.setText("0");}
             if(!InputEventAudienceLimitValidator){EventAudienceLimit.setText("0");}
 
@@ -293,6 +307,27 @@ public class EventForms extends AppCompatActivity {
                         InputEventAudienceLimitValidator = isValid;
                         if(s.toString().trim().isEmpty()) InputEventAudienceLimitValidator = false;
                         break;
+                    case "EventStartDate":
+                        isValid = InputValidator.isValidDate(input, EventDateEnd.getText().toString().trim());
+                        errorMessage = "Invalid date. Please check date carefully.";
+                        if(!EventDateEnd.getText().toString().trim().isEmpty() && isValid){
+                            EventDateEnd.setError(null);
+                        }
+                        InputEventStartDate = isValid;
+                        break;
+                    case "EventEndDate":
+                        isValid = InputValidator.isValidDateEnd(input, EventDate.getText().toString().trim());
+                        errorMessage = "Invalid date. Please check date carefully.";
+                        if(!EventDate.getText().toString().trim().isEmpty() && isValid){
+                            EventDate.setError(null);
+                        }
+                        InputEventEndDate = isValid;
+                        break;
+                }
+
+                if (!InputEventStartDate || !InputEventEndDate) {
+                    Button button = findViewById(R.id.CreateEvent);
+                    Toast.makeText(button.getContext(), "Please check date carefully.", Toast.LENGTH_SHORT).show();
                 }
 
                 if(!isValid){
@@ -302,6 +337,7 @@ public class EventForms extends AppCompatActivity {
                     text.setError(null);
                     return;
                 }
+
             }
         });
 

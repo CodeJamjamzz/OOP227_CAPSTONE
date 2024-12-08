@@ -1,5 +1,8 @@
 package com.example.capstone_project.utils;
 
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+
 public class InputValidator {
 
 
@@ -56,5 +59,60 @@ public class InputValidator {
 
     public static boolean isValidEventName(String InputedEventName){
         return InputedEventName != null && !InputedEventName.trim().isEmpty();
+    }
+
+    public static boolean isValidDate(String input, String end){
+        if(input.trim().isEmpty()){
+            return true;
+        }
+
+        String res = DateValidFormat(input);
+
+        boolean result = true;
+        LocalDate current = LocalDate.now(ZoneId.of("Asia/Manila"));
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate inputtedDate = LocalDate.parse(res, format);
+
+        if(!end.trim().isEmpty()){
+            end = DateValidFormat(end);
+            LocalDate inputtedendDate = LocalDate.parse(end, format);
+            result = !inputtedDate.isBefore(current) && inputtedDate.isBefore(inputtedendDate);
+            return result;
+        }
+
+        result = !inputtedDate.isBefore(current);
+        return result;
+    }
+
+    public static boolean isValidDateEnd(String input, String start){
+        if(input.trim().isEmpty()){
+            return true;
+        }
+
+        String res = DateValidFormat(input);
+
+        boolean result = true;
+        LocalDate current = LocalDate.now(ZoneId.of("Asia/Manila"));
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate inputtedDate = LocalDate.parse(res, format);
+
+        if(!start.trim().isEmpty()){
+            start = DateValidFormat(start);
+            LocalDate inputtedstartDate = LocalDate.parse(start, format);
+            result = !inputtedDate.isBefore(current) && !inputtedDate.isBefore(inputtedstartDate);
+            return result;
+        }
+
+        result = !inputtedDate.isBefore(current);
+        return result;
+    }
+
+    // Helper function since LocalDate.parse cannot parse a singe digit (e.g. 1,2,3) it must be paired with 0 at first
+    public static String DateValidFormat(String str){
+        String[] parts = str.split("/");
+        String res = str;
+        if(Integer.parseInt(parts[1]) < 10){res = parts[0] + "/" + '0' + parts[1] + "/" + parts[2];}
+        if(Integer.parseInt(parts[0]) < 10){res = "0" + res;}
+        return res;
     }
 }
