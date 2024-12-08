@@ -48,11 +48,18 @@ public class InputValidator {
     // valid Ticket Price checker
     public static boolean isValidEventTicketPrice(String InputedTicketPrice){
         // Already initalized to 0 even the input tag is empty as this is not required.
-        return InputedTicketPrice.matches("^$|^\\d+$");
+        if(InputedTicketPrice.trim().isEmpty()){
+            return true;
+        }
+
+        return InputedTicketPrice.matches("^\\d+(\\.\\d{1,2})?$");
     }
 
     // valid Audience Limit checker
     public static boolean isValidEventAudienceLimit(String InputedAudienceLimit){
+        if(InputedAudienceLimit.trim().isEmpty()){
+            return true;
+        }
         return InputedAudienceLimit.matches("^$|^\\d+$");
     }
 
