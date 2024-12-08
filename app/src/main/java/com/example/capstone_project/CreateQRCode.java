@@ -1,5 +1,7 @@
 package com.example.capstone_project;
 
+import static com.example.capstone_project.utils.PasswordEncryptor.hashPassword;
+
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -74,7 +76,10 @@ public class CreateQRCode extends AppCompatActivity {
     // function that generates QR
     private void generateAndDisplayQRCode() {
         try {
-            String data = DisplayStudentNumber.getText().toString() + " - " + DisplayName.getText().toString();
+            String data = DisplayStudentNumber.getText().toString() +
+                    " - " + DisplayName.getText().toString();
+            data = data + " - " + hashPassword(data);
+
             QRCodeGenerator qrCodeGenerator = QRCodeGenerator.getInstance();
             Bitmap qrCodeBitmap = qrCodeGenerator.generateQRCode(data);
             qrCodeImageView.setImageBitmap(qrCodeBitmap);
