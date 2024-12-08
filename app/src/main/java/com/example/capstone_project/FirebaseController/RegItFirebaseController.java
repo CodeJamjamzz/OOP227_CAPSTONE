@@ -11,8 +11,6 @@ import androidx.annotation.NonNull;
 import com.example.capstone_project.models.Attendee;
 import com.example.capstone_project.models.Event;
 import com.example.capstone_project.models.UserAccount;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,7 +54,7 @@ public class RegItFirebaseController {
     // Technically I can disallow account creation here if account already exists
     public void createNewUser(String StudentNumber, String name, String email, String courseYear, String password) {
 
-        // TODO: probably just implement firebase Authenticator
+        // probably just implement firebase Authenticator for 2.0
         String hashedPassword = hashPassword(password);
         // creates a UserObject
         UserAccount user = new UserAccount(StudentNumber, name, email, courseYear, hashedPassword);
@@ -292,19 +290,36 @@ public class RegItFirebaseController {
 
     // Event Deletion Method
     public void deleteEventFromDB(String eventId) {
-        //TODO: remove Attendee from DB before deleting event
-
         DatabaseReference eventRef = regItEventsListDB.child(eventId);
-        eventRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Log.d("Firebase", "Event deleted successfully");
-                    // Handle successful deletion, e.g., update UI or show a message
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Event event = dataSnapshot.getValue(Event.class);
+                    if (event != null) {
+                        for (Attendee attendee : event.getAttendees().values()) {
+                            removeEventFromUser(eventId, attendee.getUserAccountID());
+                        }
+
+                        eventRef.removeValue().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Log.d("Firebase", "Event and attendees deleted successfully");
+                            } else {
+                                Log.e("Firebase", "Error deleting event or attendees: " + Objects.requireNonNull(task.getException()).getMessage());
+                            }
+                        });
+                    } else {
+                        Log.w("Firebase", "Event not found");
+                    }
                 } else {
-                    Log.e("Firebase", "Error deleting event: " + Objects.requireNonNull(task.getException()).getMessage());
-                    // Handle the error, e.g., show an error message to the user
+                    Log.w("Firebase", "Event not found");
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("Firebase", "Error fetching event data: " + error.getMessage());
             }
         });
     }
