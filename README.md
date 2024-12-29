@@ -2,7 +2,7 @@
 
 ## Important Reminder: 
 This project requires a **stable internet connection** to operate properly. Ensure that your device is connected to a reliable network before running the application.
-
+The password for the admin dashboard in app-debug.apk is set as: hackstreet
 
 ### **Group:** Hackstreet Boys
 
